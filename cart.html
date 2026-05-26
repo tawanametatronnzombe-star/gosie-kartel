@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart | Gosie Kartel</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">Gosie Kartel</a>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="cart.html" class="active">Cart</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="cart-section">
+        <div class="container">
+            <h1>Shopping Cart</h1>
+            <div id="cart-items"></div>
+            <div class="cart-summary" id="cart-summary">
+                <h3>Order Summary</h3>
+                <div class="summary-row"><span>Subtotal:</span><span id="subtotal">$0.00</span></div>
+                <div class="summary-row"><span>Shipping:</span><span id="shipping">$0.00</span></div>
+                <div class="summary-row total"><span>Total:</span><span id="total">$0.00</span></div>
+                <a href="checkout.html" class="btn btn-primary btn-large" id="checkout-btn" style="display:none;">Proceed to Checkout</a>
+            </div>
+            <p class="empty-cart" id="empty-cart">Your cart is empty. <a href="shop.html">Start shopping</a></p>
+        </div>
+    </section>
+
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+</body>
+</html>

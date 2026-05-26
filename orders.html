@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Order | Gosie Kartel</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">Gosie Kartel</a>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="orders.html" class="active">Track Order</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="orders-section">
+        <div class="container">
+            <h1>Track Your Order</h1>
+            <div class="order-lookup">
+                <input type="text" id="order-id" placeholder="Enter Order ID">
+                <input type="email" id="order-email" placeholder="Enter Your Email">
+                <button class="btn btn-primary" onclick="trackOrder()">Track Order</button>
+            </div>
+            <div id="order-status"></div>
+        </div>
+    </section>
+
+    <script src="js/orders.js"></script>
+</body>
+</html>

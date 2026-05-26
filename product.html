@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details | Gosie Kartel</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">Gosie Kartel</a>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="cart.html" class="cart-icon">🛒 <span id="cart-count">0</span></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="product-detail" id="product-detail">
+        <div class="container">
+            <div class="product-images">
+                <div class="main-image" id="main-image"></div>
+            </div>
+            <div class="product-info">
+                <h1 id="product-name"></h1>
+                <p class="product-price" id="product-price"></p>
+                <p class="product-description" id="product-description"></p>
+                <div class="product-options">
+                    <div class="size-selector">
+                        <label>Size:</label>
+                        <select id="size-select">
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                        </select>
+                    </div>
+                    <div class="quantity-selector">
+                        <label>Quantity:</label>
+                        <input type="number" id="quantity" value="1" min="1" max="10">
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-large" id="add-to-cart">Add to Cart</button>
+                <div class="product-meta">
+                    <p>✓ Free shipping on orders over $100</p>
+                    <p>✓ 30-day returns</p>
+                    <p>✓ Secure checkout</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id');
+        loadProductDetail(productId);
+    </script>
+</body>
+</html>

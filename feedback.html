@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback | Gosie Kartel</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">Gosie Kartel</a>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="feedback.html" class="active">Feedback</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="feedback-section">
+        <div class="container">
+            <h1>Send Us Feedback</h1>
+            <p class="section-subtitle">We'd love to hear from you! Your feedback helps us improve.</p>
+            <form id="feedback-form" class="feedback-form">
+                <input type="text" id="feedback-name" placeholder="Your Name *" required>
+                <input type="email" id="feedback-email" placeholder="Your Email *" required>
+                <select id="feedback-type" required>
+                    <option value="">Select Feedback Type *</option>
+                    <option value="product">Product Feedback</option>
+                    <option value="service">Customer Service</option>
+                    <option value="shipping">Shipping Experience</option>
+                    <option value="other">Other</option>
+                </select>
+                <textarea id="feedback-message" rows="6" placeholder="Your Message *" required></textarea>
+                <div class="rating" id="rating">
+                    <label>Rate Your Experience:</label>
+                    <div class="stars">
+                        <span data-rating="1">★</span>
+                        <span data-rating="2">★</span>
+                        <span data-rating="3">★</span>
+                        <span data-rating="4">★</span>
+                        <span data-rating="5">★</span>
+                    </div>
+                    <input type="hidden" id="rating-value" value="0">
+                </div>
+                <button type="submit" class="btn btn-primary btn-large">Send Feedback</button>
+            </form>
+            <div id="feedback-success" class="success-message" style="display:none;">
+                <h2>Thank You!</h2>
+                <p>Your feedback has been sent successfully. We'll get back to you soon!</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.getElementById('feedback-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('feedback-name').value;
+            const email = document.getElementById('feedback-email').value;
+            const type = document.getElementById('feedback-type').value;
+            const message = document.getElementById('feedback-message').value;
+            const rating = document.getElementById('rating-value').value;
+            
+            const subject = `Feedback from ${name} - ${type}`;
+            const body = `Name: ${name}%0D%0AEmail: ${email}%0D%0AType: ${type}%0D%0ARating: ${rating}/5%0D%0A%0D%0AMessage:%0D%0A${message}`;
+            
+            window.location.href = `mailto:tawanametatronnzombe@gmail.com?subject=${subject}&body=${body}`;
+            
+            document.getElementById('feedback-form').style.display = 'none';
+            document.getElementById('feedback-success').style.display = 'block';
+        });
+
+        document.querySelectorAll('.stars span').forEach(star => {
+            star.addEventListener('click', function() {
+                const rating = this.getAttribute('data-rating');
+                document.getElementById('rating-value').value = rating;
+                document.querySelectorAll('.stars span').forEach((s, i) => {
+                    s.style.color = i < rating ? '#00FFFF' : '#333';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
