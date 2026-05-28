@@ -1,57 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout | Gosie Kartel</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout | Gosie Kartel</title>
+<link rel="stylesheet" href="css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+<style>
+.checkout-section { padding:50px 20px; max-width:900px; margin:0 auto; background:#fff; border-radius:10px; margin-top:50px; box-shadow:0 0 10px rgba(0,0,0,0.1); }
+#order-id-display { margin-top:20px; font-weight:bold; color:green; text-align:center; }
+.checkout-grid { display:flex; flex-wrap:wrap; gap:20px; }
+.checkout-left, .checkout-right { flex:1; min-width:250px; }
+.checkout-left input, .checkout-left select { width:100%; padding:10px; margin-bottom:10px; border-radius:5px; border:1px solid #ccc; }
+.checkout-right .checkout-total { margin-top:20px; }
+.checkout-right .total-row { display:flex; justify-content:space-between; font-weight:bold; padding:5px 0; }
+.checkout-right button { width:100%; padding:12px; background:#0d6efd; color:#fff; border:none; border-radius:5px; cursor:pointer; margin-top:10px; font-size:1em; }
+</style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="container nav-container">
-            <a href="index.html" class="logo">Gosie Kartel</a>
-        </div>
-    </nav>
 
-    <section class="checkout-section">
-        <div class="container">
-            <h1>Checkout</h1>
-            <form id="checkout-form" class="checkout-form">
-                <div class="checkout-grid">
-                    <div class="checkout-left">
-                        <h3>Shipping Information</h3>
-                        <input type="text" id="firstName" placeholder="First Name *" required>
-                        <input type="text" id="lastName" placeholder="Last Name *" required>
-                        <input type="email" id="email" placeholder="Email *" required>
-                        <input type="tel" id="phone" placeholder="Phone *" required>
-                        <input type="text" id="address" placeholder="Address *" required>
-                        <input type="text" id="city" placeholder="City *" required>
-                        <input type="text" id="zipCode" placeholder="ZIP Code *" required>
-                        <select id="country" required>
-                            <option value="">Select Country *</option>
-                            <option value="US">United States</option>
-                            <option value="UK">United Kingdom</option>
-                            <option value="CA">Canada</option>
-                            <option value="AU">Australia</option>
-                            <option value="OTHER">Other</option>
-                        </select>
-                    </div>
-                    <div class="checkout-right">
-                        <h3>Order Summary</h3>
-                        <div id="checkout-items"></div>
-                        <div class="checkout-total">
-                            <div class="total-row"><span>Total:</span><span id="checkout-total">$0.00</span></div>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-large">Complete Order</button>
-                    </div>
+<nav class="navbar">
+    <div class="container nav-container">
+        <a href="index.html" class="logo">Gosie Kartel</a>
+    </div>
+</nav>
+
+<section class="checkout-section">
+    <h1>Checkout</h1>
+    <form id="checkout-form" class="checkout-form">
+        <div class="checkout-grid">
+            <div class="checkout-left">
+                <h3>Shipping Information</h3>
+                <input type="text" id="firstName" placeholder="First Name *" required>
+                <input type="text" id="lastName" placeholder="Last Name *" required>
+                <input type="email" id="email" placeholder="Email *" required>
+                <input type="tel" id="phone" placeholder="Phone *" required>
+                <input type="text" id="address" placeholder="Address *" required>
+                <input type="text" id="city" placeholder="City *" required>
+                <input type="text" id="zipCode" placeholder="ZIP Code *" required>
+                <select id="country" required>
+                    <option value="">Select Country *</option>
+                    <option value="US">United States</option>
+                    <option value="UK">United Kingdom</option>
+                    <option value="CA">Canada</option>
+                    <option value="AU">Australia</option>
+                    <option value="OTHER">Other</option>
+                </select>
+            </div>
+            <div class="checkout-right">
+                <h3>Order Summary</h3>
+                <div id="checkout-items"></div>
+                <div class="checkout-total">
+                    <div class="total-row"><span>Total:</span><span id="checkout-total">$0.00</span></div>
                 </div>
-            </form>
+                <button type="submit">Complete Order</button>
+            </div>
         </div>
-    </section>
+    </form>
+    <div id="order-id-display"></div>
+</section>
 
-    <script src="js/products.js"></script>
-    <script src="js/cart.js"></script>
-    <script src="js/orders.js"></script>
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script>
+function generateOrderId() {
+    return Date.now().toString(); // simple unique Order ID
+}
+
+// Update checkout items and total
+function renderCheckoutItems() {
+    const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+    const container = document.getElementById("checkout-items");
+    const totalEl = document.getElementById("checkout-total");
+    container.innerHTML = "";
+    let subtotal = 0;
+
+    cartItems.forEach(item => {
+        const div = document.createElement("div");
+        div.textContent = `${item.name} - $${item.price.toFixed(2)}`;
+        container.appendChild(div);
+        subtotal += item.price;
+    });
+
+    totalEl.textContent = `$${subtotal.toFixed(2)}`;
+}
+
+// Handle form submission and Order ID generation
+document.getElementById("checkout-form").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const email = document.getElementById("email").value.trim().toLowerCase();
+    if (!email) return alert("Please enter your email.");
+
+    const orderId = generateOrderId();
+
+    // Save order to localStorage as a demo backend
+    let orders = JSON.parse(localStorage.getItem("orders")) || [];
+    orders.push({ orderId, email, items: JSON.parse(localStorage.getItem("cart") || "[]"), status:"Processing" });
+    localStorage.setItem("orders", JSON.stringify(orders));
+
+    document.getElementById("order-id-display").textContent = `Order Placed! Your Order ID: ${orderId}\nSave this ID to track your order.`;
+
+    // Optionally, clear cart
+    localStorage.removeItem("cart");
+    renderCheckoutItems();
+});
+
+renderCheckoutItems();
+</script>
+
 </body>
 </html>
