@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="css/style3.css">      
 <link rel="stylesheet" href="css/style4.css">      
 <link rel="stylesheet" href="css/style5.css">      
-<link rel="stylesheet" href="css/style6.css">  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">  <style>      
+<link rel="stylesheet" href="css/style6.css">  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">  <style>
 body { margin:0; font-family:'Montserrat',sans-serif; background:#f5f5f5; color:#222; }      
 .navbar { background:#111; padding:15px 20px; display:flex; align-items:center; justify-content:space-between; }      
 .navbar .logo { color:#00FFFF; font-weight:800; font-size:1.5em; text-decoration:none; }      
@@ -15,11 +15,40 @@ body { margin:0; font-family:'Montserrat',sans-serif; background:#f5f5f5; color:
 .nav-menu li a:hover { color:#00FFFF; }      
 .nav-menu li a.active { color:#00FFFF; }      
 .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; }      
-.hamburger span { display:block; width:25px; height:3px; background:#fff; border-radius:2px; }    .hero { position:relative; text-align:center; padding:100px 20px 80px; background:#111; color:#fff; }  
+.hamburger span { display:block; width:25px; height:3px; background:#fff; border-radius:2px; }    .hero { position:relative; text-align:center; padding:100px 20px 80px; background:#111; color:#fff; }
 .hero .hero-badge { background:#0d6efd; display:inline-block; padding:5px 15px; border-radius:20px; font-weight:700; margin-bottom:15px; }  
 .hero .hero-title { font-size:3em; margin:0 0 10px; }  
 .hero .hero-subtitle { font-size:1.2em; margin-bottom:20px; color:#ddd; }  
-.hero-buttons a { margin:0 10px; text-decoration:none; padding:12px 25px; border-radius:8px; font-weight:600; transition:all 0.3s; }  
+/* Mobile first: vertical stack */
+.hero-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.hero-buttons a { 
+  margin:0 10px; 
+  text-decoration:none; 
+  padding:12px 25px; 
+  border-radius:8px; 
+  font-weight:600; 
+  transition:all 0.3s;
+  width: 180px;
+  text-align: center;
+}
+
+/* Larger screens: horizontal layout */
+@media (min-width: 601px) {
+  .hero-buttons {
+    flex-direction: row;
+    gap: 20px;
+  }
+
+  .hero-buttons a {
+    width: auto;
+  }
+}
 .btn-primary { background:#0d6efd; color:#fff; }  
 .btn-primary:hover { background:#0b5ed7; }  
 .btn-secondary { background:#fff; color:#222; }  
@@ -39,7 +68,7 @@ body { margin:0; font-family:'Montserrat',sans-serif; background:#f5f5f5; color:
 .footer a { color:#00FFFF; text-decoration:none; transition:color 0.3s; }  
 .footer a:hover { color:#0d6efd; }  
 .footer-bottom { text-align:center; margin-top:20px; font-size:0.9em; color:#888; }  
-@media(max-width:900px){ .contact-grid, .features-grid, .footer-content { grid-template-columns:1fr; } .hamburger { display:flex; } .nav-menu { display:none; flex-direction:column; gap:10px; background:#111; padding:20px; position:absolute; top:60px; right:20px; border-radius:8px; } .nav-menu.active { display:flex; } }  
+@media(max-width:900px){ .contact-grid, .features-grid, .footer-content { grid-template-columns:1fr; } .hamburger { display:flex; } .nav-menu { display:none; flex-direction:column; gap:10px; background:#111; padding:10px; border-radius:8px; } .nav-menu.active { display:flex; } }
 </style>  </head>  <body>  <nav class="navbar">      
   <a href="index.html" class="logo">Gosie Kartel</a>      
   <ul class="nav-menu">      
