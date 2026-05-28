@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Track Order | Gosie Kartel</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+<style>
+body { font-family:'Montserrat',sans-serif; background:#f9f9f9; margin:0; padding:0; }
+.orders-section { padding:50px 20px; max-width:600px; margin:0 auto; background:#fff; border-radius:10px; margin-top:50px; box-shadow:0 0 10px rgba(0,0,0,0.1); text-align:center; }
+.order-lookup { display:flex; flex-direction:column; gap:10px; margin-top:20px; }
+.order-lookup input { padding:10px; border-radius:5px; border:1px solid #ccc; width:100%; }
+.order-lookup button { padding:10px; border-radius:5px; border:none; background:#0d6efd; color:#fff; cursor:pointer; font-size:1em; }
+#order-status { margin-top:20px; font-weight:bold; font-size:1.1em; text-align:left; }
+#order-items { margin-top:10px; text-align:left; }
+</style>
+</head>
+<body>
+
+<section class="orders-section">
+<h1>Track Your Order</h1>
+<div class="order-lookup">
+    <input type="text" id="order-id" placeholder="Enter Order ID">
+    <input type="email" id="order-email" placeholder="Enter Your Email">
+    <button onclick="trackOrder()">Track Order</button>
+</div>
+<div id="order-status"></div>
+<div id="order-items"></div>
+</section>
+
+<script>
+// Connects to your checkout page orders stored in localStorage
+function trackOrder() {
+    const orderId = document.getElementById("order-id").value.trim();
+    const email = document.getElementById("order-email").value.trim().toLowerCase();
+    const statusDiv = document.getElementById("order-status");
+    const itemsDiv = document.getElementById("order-items");
+
+    if (!orderId || !email) {
+        statusDiv.textContent = "Please enter both Order ID and Email.";
+        statusDiv.style.color = "red";
+        itemsDiv.innerHTML = "";
+        return;
+    }
+
+    const orders = JSON.parse(localStorage.getItem("orders")) || [];
+    const order = orders.find(o => o.orderId === orderId && o.email === email);
+
+    if (order) {
+        statusDiv.textContent = `Order Found! Status: ${order.status}`;
+        statusDiv.style.color = "green";
+        if (order.items && order.items.length > 0) {
+            itemsDiv.innerHTML = "<strong>Items:</strong><ul>" + order.items.map(item => `<li>${item.name} - $${item.price.toFixed(2)}</li>`).join("") + "</ul>";
+        } else {
+            itemsDiv.innerHTML = "<em>No items found in this order.</em>";
+        }
+    } else {
+        statusDiv.textContent = "Order not found. Please check your Order ID and Email.";
+        statusDiv.style.color = "red";
+        itemsDiv.innerHTML = "";
+    }
+}
+</script>
+
+</body>
+</html>
