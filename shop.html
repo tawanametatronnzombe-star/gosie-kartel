@@ -1,61 +1,114 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shop | Gosie Kartel</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+    <!-- Correct CSS path relative to shop.html -->
+    <link rel="stylesheet" href="./css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet"><!-- Inline CSS to make products display correctly -->
+<style>
+    .products-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .product-card {
+        background-color: #222;
+        color: #fff;
+        padding: 10px;
+        border-radius: 10px;
+        text-align: center;
+        width: 250px;
+    }
+
+    .product-card img {
+        max-width: 100%;
+        border-radius: 10px;
+        display: block;
+        margin: 0 auto;
+    }
+
+    .shop-filters {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .filter-select {
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+</style>
+
 </head>
 <body>
     <nav class="navbar">
         <div class="container nav-container">
-            <a href="index.html" class="logo">Gosie Kartel</a>
+            <a href="./index.html" class="logo">Gosie Kartel</a>
             <ul class="nav-menu">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="shop.html" class="active">Shop</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="contact.html">Contact</a></li>
-                <li><a href="cart.html" class="cart-icon">🛒 <span id="cart-count">0</span></a></li>
+                <li><a href="./index.html">Home</a></li>
+                <li><a href="./shop.html" class="active">Shop</a></li>
+                <li><a href="./about.html">About</a></li>
+                <li><a href="./contact.html">Contact</a></li>
+                <li><a href="./cart.html" class="cart-icon">🛒 <span id="cart-count">0</span></a></li>
             </ul>
         </div>
-    </nav>
+    </nav><section class="page-header">
+    <h1>Shop All Products</h1>
+    <p>Discover our latest winter collection</p>
+</section>
 
-    <section class="page-header">
-        <h1>Shop All Products</h1>
-        <p>Discover our latest winter collection</p>
-    </section>
-
-    <section class="shop-section">
-        <div class="container">
-            <div class="shop-filters">
-                <select id="category-filter" class="filter-select">
-                    <option value="all">All Categories</option>
-                    <option value="hoodies">Hoodies</option>
-                    <option value="tracksuits">Tracksuits</option>
-                    <option value="accessories">Accessories</option>
-                </select>
-                <select id="sort-filter" class="filter-select">
-                    <option value="default">Sort By</option>
-                    <option value="price-low">Price: Low to High</option>
-                    <option value="price-high">Price: High to Low</option>
-                    <option value="name">Name</option>
-                </select>
-            </div>
-            <div class="products-grid" id="shop-products"></div>
+<section class="shop-section">
+    <div class="container">
+        <div class="shop-filters">
+            <select id="category-filter" class="filter-select">
+                <option value="all">All Categories</option>
+                <option value="hoodies">Hoodies</option>
+                <option value="tracksuits">Tracksuits</option>
+                <option value="accessories">Accessories</option>
+            </select>
+            <select id="sort-filter" class="filter-select">
+                <option value="default">Sort By</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="name">Name</option>
+            </select>
         </div>
-    </section>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-bottom">
-                <p>&copy; 2026 Gosie Kartel | Contact: tawanametatronnzombe@gmail.com</p>
+        <!-- Hardcoded products -->
+        <div class="products-grid" id="shop-products">
+            <div class="product-card">
+                <img src="https://i.postimg.cc/Z5prPwgN/winter-hoodie-black.png" alt="Winter Hoodie Black">
+                <h3>Winter Hoodie Black</h3>
+                <p>Premium winter hoodie for bold streetwear vibes.</p>
+            </div>
+            <div class="product-card">
+                <img src="https://i.postimg.cc/d3f86pwB/tracksuit-hoodie-set.png" alt="Tracksuit Hoodie Set">
+                <h3>Tracksuit Hoodie Set</h3>
+                <p>Complete tracksuit set to flex your style effortlessly.</p>
+            </div>
+            <div class="product-card">
+                <img src="https://i.postimg.cc/9MpbdL4H/kartel-beanie.jpg" alt="Kartel Beanie">
+                <h3>Kartel Beanie</h3>
+                <p>Cozy beanie with the signature Gosie Kartel branding.</p>
             </div>
         </div>
-    </footer>
+    </div>
+</section>
 
-    <script src="js/products.js"></script>
-    <script src="js/cart.js"></script>
-    <script src="js/main.js"></script>
+<footer class="footer">
+    <div class="container">
+        <div class="footer-bottom">
+            <p>&copy; 2026 Gosie Kartel | Contact: tawanametatronnzombe@gmail.com</p>
+        </div>
+    </div>
+</footer>
+
+<!-- JS files with correct relative paths -->
+<script src="./js/products.js"></script>
+<script src="./js/cart.js"></script>
+<script src="./js/main.js"></script>
+
 </body>
 </html>
