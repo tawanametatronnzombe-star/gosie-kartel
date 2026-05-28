@@ -6,6 +6,13 @@
     <title>Track Order | Gosie Kartel</title>
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+    <style>
+        .orders-section { padding: 40px 20px; text-align: center; }
+        .order-lookup { margin-top: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .order-lookup input { padding: 10px; width: 250px; border-radius: 5px; border: 1px solid #ccc; }
+        .order-lookup button { padding: 10px 20px; border-radius: 5px; border: none; background-color: #0d6efd; color: white; cursor: pointer; }
+        #order-status { margin-top: 20px; font-weight: bold; font-size: 1.1em; }
+    </style>
 </head>
 <body>
     <nav class="navbar">
@@ -31,6 +38,35 @@
         </div>
     </section>
 
-    <script src="js/orders.js"></script>
+    <script>
+        // Dummy orders for testing
+        const orders = [
+            { orderId: "1001", email: "customer1@example.com", status: "Processing" },
+            { orderId: "1002", email: "customer2@example.com", status: "Shipped" },
+            { orderId: "1003", email: "customer3@example.com", status: "Delivered" }
+        ];
+
+        function trackOrder() {
+            const orderId = document.getElementById("order-id").value.trim();
+            const email = document.getElementById("order-email").value.trim().toLowerCase();
+            const statusDiv = document.getElementById("order-status");
+
+            if (!orderId || !email) {
+                statusDiv.textContent = "Please enter both Order ID and Email.";
+                statusDiv.style.color = "red";
+                return;
+            }
+
+            const order = orders.find(o => o.orderId === orderId && o.email.toLowerCase() === email);
+
+            if (order) {
+                statusDiv.textContent = `Order Found! Status: ${order.status}`;
+                statusDiv.style.color = "green";
+            } else {
+                statusDiv.textContent = "Order not found. Please check your Order ID and Email.";
+                statusDiv.style.color = "red";
+            }
+        }
+    </script>
 </body>
 </html>
