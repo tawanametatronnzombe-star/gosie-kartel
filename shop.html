@@ -1,46 +1,47 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shop | Gosie Kartel</title>
-    <!-- Correct CSS path relative to shop.html -->
     <link rel="stylesheet" href="./css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet"><!-- Inline CSS to make products display correctly -->
-<style>
-    .products-grid {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-    }
-
-    .product-card {
-        background-color: #222;
-        color: #fff;
-        padding: 10px;
-        border-radius: 10px;
-        text-align: center;
-        width: 250px;
-    }
-
-    .product-card img {
-        max-width: 100%;
-        border-radius: 10px;
-        display: block;
-        margin: 0 auto;
-    }
-
-    .shop-filters {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 20px;
-    }
-
-    .filter-select {
-        padding: 5px 10px;
-        border-radius: 5px;
-    }
-</style>
-
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+    <style>
+        .products-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .product-card {
+            background-color: #222;
+            color: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            width: 250px;
+        }
+        .product-card img {
+            max-width: 100%;
+            border-radius: 10px;
+            display: block;
+            margin: 0 auto;
+        }
+        .shop-filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .filter-select {
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .cart-section { padding: 20px; background: #f5f5f5; margin-top: 40px; }
+        .cart-item { display: flex; align-items: center; justify-content: space-between; background: #fff; padding: 10px; border-radius: 8px; margin-bottom: 10px; }
+        .cart-item img { width: 50px; margin-right: 10px; }
+        .cart-summary { margin-top: 20px; background: #fff; padding: 15px; border-radius: 8px; }
+        .cart-summary .summary-row { display: flex; justify-content: space-between; margin-bottom: 5px; }
+        .btn { padding: 10px 15px; background: #0d6efd; color: #fff; text-decoration: none; border-radius: 5px; display: inline-block; cursor: pointer; }
+    </style>
 </head>
 <body>
     <nav class="navbar">
@@ -51,64 +52,183 @@
                 <li><a href="./shop.html" class="active">Shop</a></li>
                 <li><a href="./about.html">About</a></li>
                 <li><a href="./contact.html">Contact</a></li>
-                <li><a href="./cart.html" class="cart-icon">🛒 <span id="cart-count">0</span></a></li>
+                <li><a href="#" class="cart-icon">🛒 <span id="cart-count">0</span></a></li>
             </ul>
         </div>
-    </nav><section class="page-header">
-    <h1>Shop All Products</h1>
-    <p>Discover our latest winter collection</p>
-</section>
+    </nav>
 
-<section class="shop-section">
-    <div class="container">
-        <div class="shop-filters">
-            <select id="category-filter" class="filter-select">
-                <option value="all">All Categories</option>
-                <option value="hoodies">Hoodies</option>
-                <option value="tracksuits">Tracksuits</option>
-                <option value="accessories">Accessories</option>
-            </select>
-            <select id="sort-filter" class="filter-select">
-                <option value="default">Sort By</option>
-                <option value="price-low">Price: Low to High</option>
-                <option value="price-high">Price: High to Low</option>
-                <option value="name">Name</option>
-            </select>
-        </div>
+    <section class="page-header">
+        <h1>Shop All Products</h1>
+        <p>Discover our latest winter collection</p>
+    </section>
 
-        <!-- Hardcoded products -->
-        <div class="products-grid" id="shop-products">
-            <div class="product-card">
-                <img src="https://i.postimg.cc/Z5prPwgN/winter-hoodie-black.png" alt="Winter Hoodie Black">
-                <h3>Winter Hoodie Black</h3>
-                <p>Premium winter hoodie for bold streetwear vibes.</p>
+    <section class="shop-section">
+        <div class="container">
+            <div class="shop-filters">
+                <select id="category-filter" class="filter-select">
+                    <option value="all">All Categories</option>
+                    <option value="hoodies">Hoodies</option>
+                    <option value="tracksuits">Tracksuits</option>
+                    <option value="accessories">Accessories</option>
+                </select>
+                <select id="sort-filter" class="filter-select">
+                    <option value="default">Sort By</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="name">Name</option>
+                </select>
             </div>
-            <div class="product-card">
-                <img src="https://i.postimg.cc/d3f86pwB/tracksuit-hoodie-set.png" alt="Tracksuit Hoodie Set">
-                <h3>Tracksuit Hoodie Set</h3>
-                <p>Complete tracksuit set to flex your style effortlessly.</p>
+
+            <div class="products-grid" id="product-container"></div>
+        </div>
+    </section>
+
+    <section class="cart-section">
+        <div class="container">
+            <h2>Shopping Cart</h2>
+            <div id="cart-items"></div>
+            <div class="cart-summary">
+                <div class="summary-row"><span>Subtotal:</span><span id="subtotal">$0.00</span></div>
+                <div class="summary-row"><span>Shipping:</span><span id="shipping">$0.00</span></div>
+                <div class="summary-row"><strong>Total:</strong><strong id="total">$0.00</strong></div>
+                <button class="btn" id="checkout-btn" style="display:none;">Proceed to Checkout</button>
             </div>
-            <div class="product-card">
-                <img src="https://i.postimg.cc/9MpbdL4H/kartel-beanie.jpg" alt="Kartel Beanie">
-                <h3>Kartel Beanie</h3>
-                <p>Cozy beanie with the signature Gosie Kartel branding.</p>
+            <p id="empty-cart">Your cart is empty.</p>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 Gosie Kartel | Contact: tawanametatronnzombe@gmail.com</p>
             </div>
         </div>
-    </div>
-</section>
+    </footer>
 
-<footer class="footer">
-    <div class="container">
-        <div class="footer-bottom">
-            <p>&copy; 2026 Gosie Kartel | Contact: tawanametatronnzombe@gmail.com</p>
-        </div>
-    </div>
-</footer>
+    <script>
+        // Products with categories
+        const products = [
+            { id:1, name:"Winter Hoodie Black", price:45, category:"hoodies", image:"https://i.postimg.cc/Z5prPwgN/winter-hoodie-black.png" },
+            { id:2, name:"Tracksuit Hoodie Set", price:80, category:"tracksuits", image:"https://i.postimg.cc/d3f86pwB/tracksuit-hoodie-set.png" },
+            { id:3, name:"Kartel Beanie", price:20, category:"accessories", image:"https://i.postimg.cc/9MpbdL4H/kartel-beanie.jpg" }
+        ];
 
-<!-- JS files with correct relative paths -->
-<script src="./js/products.js"></script>
-<script src="./js/cart.js"></script>
-<script src="./js/main.js"></script>
+        // Render products with optional filtering/sorting
+        function renderProducts(filteredProducts = products) {
+            const container = document.getElementById("product-container");
+            container.innerHTML = "";
+            filteredProducts.forEach(p => {
+                const div = document.createElement("div");
+                div.className = "product-card";
+                div.innerHTML = `
+                    <img src="${p.image}" alt="${p.name}">
+                    <h3>${p.name}</h3>
+                    <p>$${p.price.toFixed(2)}</p>
+                    <button class="btn add-to-cart-btn" data-id="${p.id}" style="width:100%; margin-top:10px; background:#fff; color:#222;">Add to Cart</button>
+                `;
+                container.appendChild(div);
+            });
 
+            document.querySelectorAll(".add-to-cart-btn").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const id = parseInt(btn.dataset.id);
+                    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+                    const product = products.find(p => p.id === id);
+                    cart.push(product);
+                    localStorage.setItem("cart", JSON.stringify(cart));
+                    updateCart();
+                });
+            });
+        }
+
+        // Filter and sort
+        function applyFilters() {
+            const category = document.getElementById("category-filter").value;
+            const sort = document.getElementById("sort-filter").value;
+            let result = [...products];
+
+            if (category !== "all") {
+                result = result.filter(p => p.category === category);
+            }
+
+            if (sort === "price-low") result.sort((a, b) => a.price - b.price);
+            if (sort === "price-high") result.sort((a, b) => b.price - a.price);
+            if (sort === "name") result.sort((a, b) => a.name.localeCompare(b.name));
+
+            renderProducts(result);
+        }
+
+        // Cart
+        function renderCart() {
+            const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+            const container = document.getElementById("cart-items");
+            const subtotalEl = document.getElementById("subtotal");
+            const shippingEl = document.getElementById("shipping");
+            const totalEl = document.getElementById("total");
+            const emptyEl = document.getElementById("empty-cart");
+            const checkoutBtn = document.getElementById("checkout-btn");
+
+            container.innerHTML = "";
+            document.getElementById("cart-count").textContent = cartItems.length;
+
+            if (cartItems.length === 0) {
+                emptyEl.style.display = "block";
+                checkoutBtn.style.display = "none";
+                subtotalEl.textContent = "$0.00";
+                shippingEl.textContent = "$0.00";
+                totalEl.textContent = "$0.00";
+                return;
+            }
+
+            emptyEl.style.display = "none";
+            checkoutBtn.style.display = "inline-block";
+
+            let subtotal = 0;
+            cartItems.forEach((item, index) => {
+                subtotal += item.price;
+                const div = document.createElement("div");
+                div.className = "cart-item";
+                div.innerHTML = `
+                    <div style="display:flex;align-items:center;color:#222;">
+                        <img src="${item.image}" alt="${item.name}" style="width:60px; height:60px; object-fit:cover; border-radius:5px;">
+                        <div style="margin-left:15px;">
+                            <strong style="display:block;">${item.name}</strong>
+                            <span>$${item.price.toFixed(2)}</span>
+                        </div>
+                    </div>
+                    <button onclick="removeItem(${index})" style="background:#ff4444; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;">Remove</button>
+                `;
+                container.appendChild(div);
+            });
+
+            const shipping = subtotal > 100 ? 0 : 10;
+            subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+            shippingEl.textContent = shipping === 0 ? "FREE" : `$${shipping.toFixed(2)}`;
+            totalEl.textContent = `$${(subtotal + shipping).toFixed(2)}`;
+        }
+
+        function removeItem(index) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            cart.splice(index, 1);
+            localStorage.setItem("cart", JSON.stringify(cart));
+            updateCart();
+        }
+
+        function updateCart() {
+            renderCart();
+        }
+
+        document.getElementById("category-filter").addEventListener("change", applyFilters);
+        document.getElementById("sort-filter").addEventListener("change", applyFilters);
+
+        document.getElementById("checkout-btn").addEventListener("click", () => {
+            alert("Redirecting to payment gateway...");
+        });
+
+        window.onload = () => {
+            renderProducts();
+            renderCart();
+        };
+    </script>
 </body>
 </html>
