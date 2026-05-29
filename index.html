@@ -336,6 +336,122 @@
         line-height: 1.6;
       }
       
+      /* Payment Section */
+      .payment-section{
+        padding:80px 20px;
+        background:#0f0f0f;
+        color:#fff;
+      }
+
+      .payment-subtitle{
+        text-align:center;
+        color:#aaa;
+        margin-bottom:40px;
+      }
+
+      .payment-grid{
+        display:grid;
+        grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+        gap:20px;
+        margin-bottom:50px;
+      }
+
+      .payment-card{
+        background:#1a1a1a;
+        border:2px solid transparent;
+        padding:25px;
+        border-radius:18px;
+        text-align:center;
+        cursor:pointer;
+        transition:0.3s ease;
+      }
+
+      .payment-card:hover{
+        transform:translateY(-6px);
+        border-color:#0d6efd;
+      }
+
+      .payment-card.active{
+        border-color:#00ffff;
+        background:#151f2f;
+      }
+
+      .payment-icon{
+        font-size:2.5rem;
+        margin-bottom:10px;
+      }
+
+      .payment-form-box{
+        max-width:500px;
+        margin:auto;
+        background:#1a1a1a;
+        padding:35px;
+        border-radius:20px;
+        box-shadow:0 0 25px rgba(0,0,0,0.4);
+      }
+
+      .payment-form-box h3{
+        margin-bottom:25px;
+        text-align:center;
+      }
+
+      .payment-form-box input{
+        width:100%;
+        padding:15px;
+        margin-bottom:15px;
+        border:none;
+        border-radius:10px;
+        background:#2a2a2a;
+        color:#fff;
+        font-size:1rem;
+        box-sizing:border-box;
+      }
+
+      .payment-form-box input:focus{
+        outline:none;
+        border:2px solid #0d6efd;
+      }
+
+      .payment-row{
+        display:flex;
+        gap:15px;
+      }
+
+      .pay-btn{
+        width:100%;
+        padding:15px;
+        border:none;
+        border-radius:12px;
+        background:#0d6efd;
+        color:#fff;
+        font-size:1rem;
+        font-weight:700;
+        cursor:pointer;
+        transition:0.3s;
+      }
+
+      .pay-btn:hover{
+        background:#0b5ed7;
+        transform:translateY(-2px);
+      }
+
+      #payment-success{
+        display:none;
+        margin-top:20px;
+        background:#0d3b1f;
+        color:#7dffb3;
+        padding:15px;
+        border-radius:10px;
+        text-align:center;
+        font-weight:700;
+      }
+
+      @media(max-width:600px){
+        .payment-row{
+          flex-direction:column;
+        }
+      }
+      
       /* Footer */
       .footer { 
         background: var(--dark-bg);
@@ -528,6 +644,82 @@
       </div>
     </section>
 
+    <!-- PAYMENT SECTION -->
+    <section class="payment-section">
+      <div class="container">
+        <h2 class="section-title">Secure <span>Checkout</span></h2>
+        <p class="payment-subtitle">
+          Fast, secure and worldwide payment options.
+        </p>
+
+        <div class="payment-grid">
+
+          <div class="payment-card active" onclick="selectPayment(this, 'Visa / Mastercard')">
+            <div class="payment-icon">💳</div>
+            <h3>Visa / Mastercard</h3>
+            <p>Pay securely using your debit or credit card.</p>
+          </div>
+
+          <div class="payment-card" onclick="selectPayment(this, 'PayPal')">
+            <div class="payment-icon">🅿️</div>
+            <h3>PayPal</h3>
+            <p>Fast global checkout with PayPal protection.</p>
+          </div>
+
+          <div class="payment-card" onclick="selectPayment(this, 'Apple Pay')">
+            <div class="payment-icon">📱</div>
+            <h3>Apple Pay</h3>
+            <p>Quick tap payments from your Apple device.</p>
+          </div>
+
+          <div class="payment-card" onclick="selectPayment(this, 'Google Pay')">
+            <div class="payment-icon">🤖</div>
+            <h3>Google Pay</h3>
+            <p>Simple and secure Android payments.</p>
+          </div>
+
+          <div class="payment-card" onclick="selectPayment(this, 'Crypto')">
+            <div class="payment-icon">₿</div>
+            <h3>Crypto</h3>
+            <p>Accept Bitcoin and other crypto payments.</p>
+          </div>
+
+        </div>
+
+        <!-- PAYMENT FORM -->
+        <div class="payment-form-box">
+
+          <h3 id="selected-payment">Selected: Visa / Mastercard</h3>
+
+          <form id="payment-form">
+
+            <input type="text" placeholder="Cardholder Name" required>
+
+            <input type="text" id="card-number"
+              placeholder="Card Number"
+              maxlength="19"
+              required>
+
+            <div class="payment-row">
+              <input type="text" placeholder="MM/YY" maxlength="5" required>
+              <input type="password" placeholder="CVV" maxlength="4" required>
+            </div>
+
+            <button type="submit" class="pay-btn">
+              Complete Secure Payment
+            </button>
+
+          </form>
+
+          <div id="payment-success">
+            ✅ Payment Successful!<br>
+            Order confirmed successfully.
+          </div>
+
+        </div>
+      </div>
+    </section>
+
     <section class="features">
       <div class="container">
         <div class="features-grid">
@@ -586,5 +778,42 @@
         </div>
       </div>
     </footer>
+
+    <script>
+
+    function selectPayment(card, method){
+
+      document.querySelectorAll('.payment-card')
+        .forEach(c => c.classList.remove('active'));
+
+      card.classList.add('active');
+
+      document.getElementById('selected-payment')
+        .innerText = "Selected: " + method;
+    }
+
+    document.getElementById('card-number')
+    .addEventListener('input', function(e){
+
+      let value = e.target.value.replace(/\D/g,'');
+
+      value = value.replace(/(.{4})/g, '$1 ').trim();
+
+      e.target.value = value;
+    });
+
+    document.getElementById('payment-form')
+    .addEventListener('submit', function(e){
+
+      e.preventDefault();
+
+      document.getElementById('payment-success')
+        .style.display = 'block';
+
+      setTimeout(() => {
+        window.location.href = "orders.html";
+      }, 2500);
+    });
+    </script>
   </body>
 </html>
