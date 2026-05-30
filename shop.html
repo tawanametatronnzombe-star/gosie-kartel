@@ -97,6 +97,13 @@
         </div>
     </section>
 
+    <!-- Proceed to Checkout Button -->
+    <div class="text-center" style="margin-top:3rem">
+      <a href="index.html#payment-section" class="btn btn-primary btn-checkout">
+        Proceed to Checkout
+      </a>
+    </div>
+
     <footer class="footer">
         <div class="container">
             <div class="footer-bottom">
@@ -229,6 +236,25 @@
             renderProducts();
             renderCart();
         };
+    </script>
+
+    <!-- Optional JS for smooth scroll in case some browsers don't support CSS scroll-behavior -->
+    <script>
+      document.querySelectorAll('.btn-checkout').forEach(button => {
+        button.addEventListener('click', (e) => {
+          e.preventDefault();
+          const target = document.querySelector('#payment-section');
+          if (target) {
+            // Scroll smoothly
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Redirect to homepage with anchor
+            window.location.href = 'index.html#payment-section';
+          } else {
+            // fallback if the section isn't found
+            window.location.href = 'index.html';
+          }
+        });
+      });
     </script>
 </body>
 </html>
