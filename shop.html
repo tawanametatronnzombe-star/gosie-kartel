@@ -91,18 +91,11 @@
                 <div class="summary-row"><span>Subtotal:</span><span id="subtotal">$0.00</span></div>
                 <div class="summary-row"><span>Shipping:</span><span id="shipping">$0.00</span></div>
                 <div class="summary-row"><strong>Total:</strong><strong id="total">$0.00</strong></div>
-                <button class="btn" id="checkout-btn" style="display:none;">Proceed to Checkout</button>
+                <button class="btn" id="checkout-btn" style="display:none; margin-top: 15px;">Proceed to Checkout</button>
             </div>
             <p id="empty-cart">Your cart is empty.</p>
         </div>
     </section>
-
-    <!-- Proceed to Checkout Button -->
-    <div class="text-center" style="margin-top:3rem">
-      <a href="index.html#payment-section" class="btn btn-primary btn-checkout">
-        Proceed to Checkout
-      </a>
-    </div>
 
     <footer class="footer">
         <div class="container">
@@ -229,32 +222,13 @@
         document.getElementById("sort-filter").addEventListener("change", applyFilters);
 
         document.getElementById("checkout-btn").addEventListener("click", () => {
-            alert("Redirecting to payment gateway...");
+            window.location.href = 'index.html#payment-section';
         });
 
         window.onload = () => {
             renderProducts();
             renderCart();
         };
-    </script>
-
-    <!-- Optional JS for smooth scroll in case some browsers don't support CSS scroll-behavior -->
-    <script>
-      document.querySelectorAll('.btn-checkout').forEach(button => {
-        button.addEventListener('click', (e) => {
-          e.preventDefault();
-          const target = document.querySelector('#payment-section');
-          if (target) {
-            // Scroll smoothly
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            // Redirect to homepage with anchor
-            window.location.href = 'index.html#payment-section';
-          } else {
-            // fallback if the section isn't found
-            window.location.href = 'index.html';
-          }
-        });
-      });
     </script>
 </body>
 </html>
