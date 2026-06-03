@@ -1,33 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Checkout | Gosie Kartel</title>
-<link rel="stylesheet" href="css/style.css">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
-<style>
-.checkout-section { padding:50px 20px; max-width:900px; margin:0 auto; background:#fff; border-radius:10px; margin-top:50px; box-shadow:0 0 10px rgba(0,0,0,0.1); }
-#order-id-display { margin-top:20px; font-weight:bold; color:green; text-align:center; padding:15px; background:#e8f5e9; border-radius:5px; }
-.track-order-section { margin-top:40px; padding:20px; background:#f9f9f9; border-radius:10px; text-align:center; }
-.track-order-section input { padding:10px; width:300px; max-width:100%; border:1px solid #ccc; border-radius:5px; margin-right:10px; }
-.track-order-section button { padding:10px 20px; background:#0d6efd; color:white; border:none; border-radius:5px; cursor:pointer; }
-.order-status { margin-top:20px; padding:15px; background:#e3f2fd; border-radius:5px; text-align:left; }
-.status-timeline { margin-top:15px; }
-.status-step { display:flex; align-items:center; margin:10px 0; }
-.status-dot { width:20px; height:20px; border-radius:50%; background:#ccc; margin-right:15px; display:flex; align-items:center; justify-content:center; color:white; font-size:12px; }
-.status-dot.active { background:#4caf50; }
-.status-text { flex:1; }
-.checkout-grid { display:flex; flex-wrap:wrap; gap:20px; }
-.checkout-left, .checkout-right { flex:1; min-width:250px; }
-.checkout-left input, .checkout-left select { width:100%; padding:10px; margin-bottom:10px; border-radius:5px; border:1px solid #ccc; }
-.checkout-right .checkout-total { margin-top:20px; }
-.checkout-right .total-row { display:flex; justify-content:space-between; font-weight:bold; padding:5px 0; }
-.checkout-right button { width:100%; padding:12px; background:#0d6efd; color:#fff; border:none; border-radius:5px; cursor:pointer; margin-top:10px; font-size:1em; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | Gosie Kartel</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+    <style>
+        .checkout-section { padding:50px 20px; max-width:900px; margin:0 auto; background:#fff; border-radius:10px; margin-top:50px; box-shadow:0 0 10px rgba(0,0,0,0.1); }
+        #order-id-display { margin-top:20px; font-weight:bold; color:green; text-align:center; padding:15px; background:#e8f5e9; border-radius:5px; }
+        .track-order-section { margin-top:40px; padding:20px; background:#f9f9f9; border-radius:10px; text-align:center; }
+        .track-order-section input { padding:10px; width:300px; max-width:100%; border:1px solid #ccc; border-radius:5px; margin-right:10px; }
+        .track-order-section button { padding:10px 20px; background:#0d6efd; color:white; border:none; border-radius:5px; cursor:pointer; }
+        .order-status { margin-top:20px; padding:15px; background:#e3f2fd; border-radius:5px; text-align:left; }
+        .status-timeline { margin-top:15px; }
+        .status-step { display:flex; align-items:center; margin:10px 0; }
+        .status-dot { width:20px; height:20px; border-radius:50%; background:#ccc; margin-right:15px; display:flex; align-items:center; justify-content:center; color:white; font-size:12px; }
+        .status-dot.active { background:#4caf50; }
+        .status-text { flex:1; }
+        .checkout-grid { display:flex; flex-wrap:wrap; gap:20px; }
+        .checkout-left, .checkout-right { flex:1; min-width:250px; }
+        .checkout-left input, .checkout-left select { width:100%; padding:10px; margin-bottom:10px; border-radius:5px; border:1px solid #ccc; }
+        .checkout-right .checkout-total { margin-top:20px; }
+        .checkout-right .total-row { display:flex; justify-content:space-between; font-weight:bold; padding:5px 0; }
+        .checkout-right button { width:100%; padding:12px; background:#0d6efd; color:#fff; border:none; border-radius:5px; cursor:pointer; margin-top:10px; font-size:1em; }
+        .error-message { color: red; background: #ffe0e0; padding: 10px; border-radius: 5px; margin-bottom: 15px; display: none; }
+    </style>
 </head>
 <body>
-
+    
 <nav class="navbar">
     <div class="container nav-container">
         <a href="index.html" class="logo">Gosie Kartel</a>
@@ -37,6 +38,7 @@
 <section class="checkout-section">
     <h1>Checkout</h1>
     <form id="checkout-form" class="checkout-form">
+        <div class="error-message" id="error-message"></div>
         <div class="checkout-grid">
             <div class="checkout-left">
                 <h3>Shipping Information</h3>
@@ -60,9 +62,11 @@
                 <h3>Order Summary</h3>
                 <div id="checkout-items"></div>
                 <div class="checkout-total">
-                    <div class="total-row"><span>Total:</span><span id="checkout-total">$0.00</span></div>
+                    <div class="total-row"><span>Subtotal:</span><span id="checkout-subtotal">$0.00</span></div>
+                    <div class="total-row"><span>Shipping:</span><span id="checkout-shipping">$0.00</span></div>
+                    <div class="total-row"><strong>Total:</strong><strong id="checkout-total">$0.00</strong></div>
                 </div>
-                <button type="submit">Complete Order</button>
+                <button type="submit" id="submit-btn">Complete Order</button>
             </div>
         </div>
     </form>
@@ -74,7 +78,7 @@
         <p>Enter your Order ID to track your shipment status</p>
         <div style="margin-top:15px;">
             <input type="text" id="track-order-id" placeholder="Enter your Order ID">
-            <button onclick="trackOrder()">Track Order</button>
+            <button type="button" onclick="trackOrder()">Track Order</button>
         </div>
         <div id="order-tracking-result"></div>
     </div>
@@ -83,167 +87,256 @@
 <script src="js/products.js"></script>
 <script src="js/cart.js"></script>
 <script>
-function generateOrderId() {
-    return "ORD-" + Date.now().toString(); // formatted Order ID
-}
+    const API_URL = "http://localhost:3000/api"; // Change to your backend URL
 
-// Update checkout items and total
-function renderCheckoutItems() {
-    const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
-    const container = document.getElementById("checkout-items");
-    const totalEl = document.getElementById("checkout-total");
-    container.innerHTML = "";
-    let subtotal = 0;
-
-    cartItems.forEach(item => {
-        const div = document.createElement("div");
-        div.textContent = `${item.name} - $${item.price.toFixed(2)}`;
-        container.appendChild(div);
-        subtotal += item.price;
-    });
-
-    totalEl.textContent = `$${subtotal.toFixed(2)}`;
-}
-
-// Get order status based on order age
-function getOrderStatus(orderId) {
-    const orders = JSON.parse(localStorage.getItem("orders")) || [];
-    const order = orders.find(o => o.orderId === orderId);
-    
-    if (!order) {
-        return null;
+    function generateOrderId() {
+        return "ORD-" + Date.now().toString();
     }
 
-    // Calculate days since order
-    const orderTime = parseInt(orderId.split("-")[1]);
-    const now = Date.now();
-    const daysSinceOrder = Math.floor((now - orderTime) / (1000 * 60 * 60 * 24));
-
-    // Determine status based on days
-    let status = "Processing";
-    let progress = 1;
-    
-    if (daysSinceOrder >= 7) {
-        status = "Delivered";
-        progress = 4;
-    } else if (daysSinceOrder >= 5) {
-        status = "Out for Delivery";
-        progress = 3;
-    } else if (daysSinceOrder >= 2) {
-        status = "In Transit";
-        progress = 2;
+    // Calculate shipping cost
+    function calculateShipping(subtotal, country) {
+        if (subtotal > 100) return 0;
+        const rates = {
+            "US": 10,
+            "UK": 15,
+            "CA": 12,
+            "AU": 20,
+            "OTHER": 25
+        };
+        return rates[country] || 25;
     }
 
-    return { ...order, status, progress, daysSinceOrder };
-}
+    // Update checkout items and total
+    function renderCheckoutItems() {
+        const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+        const container = document.getElementById("checkout-items");
+        const subtotalEl = document.getElementById("checkout-subtotal");
+        const shippingEl = document.getElementById("checkout-shipping");
+        const totalEl = document.getElementById("checkout-total");
+        
+        container.innerHTML = "";
+        let subtotal = 0;
 
-// Track order function
-function trackOrder() {
-    const orderId = document.getElementById("track-order-id").value.trim();
-    const resultContainer = document.getElementById("order-tracking-result");
-    resultContainer.innerHTML = "";
+        if (cartItems.length === 0) {
+            container.innerHTML = '<p style="color: #999;">Your cart is empty. <a href="shop.html">Continue shopping</a></p>';
+            subtotalEl.textContent = "$0.00";
+            shippingEl.textContent = "$0.00";
+            totalEl.textContent = "$0.00";
+            return;
+        }
 
-    if (!orderId) {
-        resultContainer.innerHTML = '<p style="color:red;">Please enter an Order ID</p>';
-        return;
+        cartItems.forEach(item => {
+            const div = document.createElement("div");
+            div.style.cssText = "display: flex; justify-content: space-between; margin-bottom: 10px;";
+            div.innerHTML = `
+                <span>${item.name}</span>
+                <span>$${item.price.toFixed(2)}</span>
+            `;
+            container.appendChild(div);
+            subtotal += item.price;
+        });
+
+        const country = document.getElementById("country").value || "US";
+        const shipping = calculateShipping(subtotal, country);
+        const total = subtotal + shipping;
+
+        subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+        shippingEl.textContent = shipping === 0 ? "FREE" : `$${shipping.toFixed(2)}`;
+        totalEl.textContent = `$${total.toFixed(2)}`;
     }
 
-    const orderData = getOrderStatus(orderId);
+    // Get order status based on order age
+    function getOrderStatus(orderId) {
+        const orders = JSON.parse(localStorage.getItem("orders")) || [];
+        const order = orders.find(o => o.orderId === orderId);
+        
+        if (!order) {
+            return null;
+        }
 
-    if (!orderData) {
-        resultContainer.innerHTML = '<p style="color:red;">Order not found. Please check your Order ID.</p>';
-        return;
+        const orderTime = new Date(order.createdAt).getTime();
+        const now = Date.now();
+        const daysSinceOrder = Math.floor((now - orderTime) / (1000 * 60 * 60 * 24));
+
+        let status = "Processing";
+        let progress = 1;
+        
+        if (daysSinceOrder >= 7) {
+            status = "Delivered";
+            progress = 4;
+        } else if (daysSinceOrder >= 5) {
+            status = "Out for Delivery";
+            progress = 3;
+        } else if (daysSinceOrder >= 2) {
+            status = "In Transit";
+            progress = 2;
+        }
+
+        return { ...order, status, progress, daysSinceOrder };
     }
 
-    const statusSteps = [
-        { label: "Order Placed", step: 1 },
-        { label: "Processing", step: 2 },
-        { label: "In Transit", step: 3 },
-        { label: "Delivered", step: 4 }
-    ];
+    // Track order function
+    function trackOrder() {
+        const orderId = document.getElementById("track-order-id").value.trim();
+        const resultContainer = document.getElementById("order-tracking-result");
+        resultContainer.innerHTML = "";
 
-    let html = `
-        <div class="order-status">
-            <strong>Order ID:</strong> ${orderData.orderId}<br>
-            <strong>Current Status:</strong> ${orderData.status}<br>
-            <strong>Email:</strong> ${orderData.email}<br>
-            <div class="status-timeline">
-    `;
+        if (!orderId) {
+            resultContainer.innerHTML = '<p style="color:red;">Please enter an Order ID</p>';
+            return;
+        }
 
-    statusSteps.forEach(step => {
-        const isActive = step.step <= orderData.progress;
+        const orderData = getOrderStatus(orderId);
+
+        if (!orderData) {
+            resultContainer.innerHTML = '<p style="color:red;">Order not found. Please check your Order ID.</p>';
+            return;
+        }
+
+        const statusSteps = [
+            { label: "Order Placed", step: 1 },
+            { label: "Processing", step: 2 },
+            { label: "In Transit", step: 3 },
+            { label: "Delivered", step: 4 }
+        ];
+
+        let html = `
+            <div class="order-status">
+                <strong>Order ID:</strong> ${orderData.orderId}<br>
+                <strong>Current Status:</strong> ${orderData.status}<br>
+                <strong>Email:</strong> ${orderData.email}<br>
+                <div class="status-timeline">
+        `;
+
+        statusSteps.forEach(step => {
+            const isActive = step.step <= orderData.progress;
+            html += `
+                <div class="status-step">
+                    <div class="status-dot ${isActive ? 'active' : ''}">${isActive ? '✓' : ''}</div>
+                    <div class="status-text">${step.label}</div>
+                </div>
+            `;
+        });
+
         html += `
-            <div class="status-step">
-                <div class="status-dot ${isActive ? 'active' : ''}">${isActive ? '✓' : ''}</div>
-                <div class="status-text">${step.label}</div>
+                </div>
+                <p style="margin-top:15px; font-size:0.9em; color:#666;">
+                    ${orderData.status === 'Delivered' ? 'Your order has been delivered!' : 'Your order is on its way. Thank you for shopping with Gosie Kartel!'}
+                </p>
             </div>
         `;
-    });
 
-    html += `
+        resultContainer.innerHTML = html;
+    }
+
+    // Handle form submission and Order ID generation
+    document.getElementById("checkout-form").addEventListener("submit", async function(e) {
+        e.preventDefault();
+        
+        const email = document.getElementById("email").value.trim().toLowerCase();
+        const errorDiv = document.getElementById("error-message");
+        const submitBtn = document.getElementById("submit-btn");
+
+        if (!email) {
+            errorDiv.textContent = "Please enter your email.";
+            errorDiv.style.display = "block";
+            return;
+        }
+
+        const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+        if (cartItems.length === 0) {
+            errorDiv.textContent = "Your cart is empty. Please add items before checkout.";
+            errorDiv.style.display = "block";
+            return;
+        }
+
+        const orderId = generateOrderId();
+        const country = document.getElementById("country").value;
+        let subtotal = 0;
+        cartItems.forEach(item => subtotal += item.price);
+        const shipping = calculateShipping(subtotal, country);
+        const total = subtotal + shipping;
+
+        const shippingInfo = {
+            firstName: document.getElementById("firstName").value,
+            lastName: document.getElementById("lastName").value,
+            email: email,
+            phone: document.getElementById("phone").value,
+            address: document.getElementById("address").value,
+            city: document.getElementById("city").value,
+            zipCode: document.getElementById("zipCode").value,
+            country: country
+        };
+
+        // Create order object
+        const orderData = {
+            orderId,
+            email,
+            shippingInfo,
+            items: cartItems,
+            subtotal,
+            shipping,
+            total,
+            status: "Processing",
+            createdAt: new Date().toISOString()
+        };
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Processing...";
+
+        // Try to send to API first
+        let orderCreated = false;
+        try {
+            const response = await fetch(`${API_URL}/orders`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(orderData)
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                console.log("Order created via API:", result);
+                orderCreated = true;
+            }
+        } catch (error) {
+            console.log("API not available, saving to localStorage");
+        }
+
+        // Always save to localStorage as backup
+        let orders = JSON.parse(localStorage.getItem("orders")) || [];
+        orders.push(orderData);
+        localStorage.setItem("orders", JSON.stringify(orders));
+
+        // Display success message
+        const displayDiv = document.getElementById("order-id-display");
+        displayDiv.innerHTML = `
+            <div>
+                <strong>✓ Order Placed Successfully!</strong><br>
+                Your Order ID: <span style="font-size:1.2em; color:#0d6efd;">${orderId}</span><br>
+                <small>Save this ID to track your order. ${orderCreated ? 'A confirmation email has been sent to ' + email : 'Check your email for confirmation.'}</small>
             </div>
-            <p style="margin-top:15px; font-size:0.9em; color:#666;">
-                ${orderData.status === 'Delivered' ? 'Your order has been delivered!' : 'Your order is on its way. Thank you for shopping with Gosie Kartel!'}
-            </p>
-        </div>
-    `;
+        `;
 
-    resultContainer.innerHTML = html;
-}
+        // Populate track order field
+        document.getElementById("track-order-id").value = orderId;
 
-// Handle form submission and Order ID generation
-document.getElementById("checkout-form").addEventListener("submit", function(e) {
-    e.preventDefault();
-    const email = document.getElementById("email").value.trim().toLowerCase();
-    if (!email) return alert("Please enter your email.");
+        // Scroll to track order section
+        setTimeout(() => {
+            document.querySelector(".track-order-section").scrollIntoView({ behavior: "smooth" });
+        }, 500);
 
-    const orderId = generateOrderId();
-    const shippingInfo = {
-        firstName: document.getElementById("firstName").value,
-        lastName: document.getElementById("lastName").value,
-        email: email,
-        phone: document.getElementById("phone").value,
-        address: document.getElementById("address").value,
-        city: document.getElementById("city").value,
-        zipCode: document.getElementById("zipCode").value,
-        country: document.getElementById("country").value
-    };
-
-    // Save order to localStorage as a demo backend
-    let orders = JSON.parse(localStorage.getItem("orders")) || [];
-    orders.push({ 
-        orderId, 
-        email, 
-        shippingInfo,
-        items: JSON.parse(localStorage.getItem("cart") || "[]"), 
-        status:"Processing",
-        createdAt: new Date().toISOString()
+        // Clear cart
+        localStorage.removeItem("cart");
+        renderCheckoutItems();
+        errorDiv.style.display = "none";
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Complete Order";
     });
-    localStorage.setItem("orders", JSON.stringify(orders));
 
-    const displayDiv = document.getElementById("order-id-display");
-    displayDiv.innerHTML = `
-        <div>
-            <strong>✓ Order Placed Successfully!</strong><br>
-            Your Order ID: <span style="font-size:1.2em; color:#0d6efd;">${orderId}</span><br>
-            <small>Save this ID to track your order. A confirmation email has been sent to ${email}</small>
-        </div>
-    `;
+    // Update shipping when country changes
+    document.getElementById("country").addEventListener("change", renderCheckoutItems);
 
-    // Populate track order field
-    document.getElementById("track-order-id").value = orderId;
-
-    // Scroll to track order section
-    setTimeout(() => {
-        document.querySelector(".track-order-section").scrollIntoView({ behavior: "smooth" });
-    }, 500);
-
-    // Clear cart
-    localStorage.removeItem("cart");
     renderCheckoutItems();
-});
-
-renderCheckoutItems();
 </script>
 
 </body>
