@@ -1,50 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <!-- Homepage -->
   <url>
     <loc>https://tawanametatronnzombe-star.github.io/gosie-kartel/</loc>
     <priority>1.0</priority>
+    <changefreq>weekly</changefreq>
   </url>
 
-  <!-- Products pages (auto-generated for each product) -->
+  <!-- Main pages -->
   <url>
-    <loc>https://tawanametatronnzombe-star.github.io/gosie-kartel/product1.html</loc>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://tawanametatronnzombe-star.github.io/gosie-kartel/product2.html</loc>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://tawanametatronnzombe-star.github.io/gosie-kartel/product3.html</loc>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://tawanametatronnzombe-star.github.io/gosie-kartel/product4.html</loc>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://tawanametatronnzombe-star.github.io/gosie-kartel/product5.html</loc>
-    <priority>0.9</priority>
+    <loc>https://tawanametatronnzombe-star.github.io/gosie-kartel/index.html</loc>
+    <priority>1.0</priority>
+    <changefreq>weekly</changefreq>
   </url>
 
-  <!-- Features page -->
   <url>
     <loc>https://tawanametatronnzombe-star.github.io/gosie-kartel/features.html</loc>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
+    <changefreq>monthly</changefreq>
   </url>
 
-  <!-- Payment page -->
+  <url>
+    <loc>https://tawanametatronnzombe-star.github.io/gosie-kartel/products.html</loc>
+    <priority>0.9</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+
   <url>
     <loc>https://tawanametatronnzombe-star.github.io/gosie-kartel/payment.html</loc>
     <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
   </url>
 
-  <!-- Contact page -->
   <url>
     <loc>https://tawanametatronnzombe-star.github.io/gosie-kartel/contact.html</loc>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
   </url>
 
 </urlset>
