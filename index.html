@@ -40,7 +40,7 @@
           "https://www.instagram.com/metatron8788"
         ]
       },
-      "description": "Metatron878 (Tawananyasha Nzombe) – Solo music producer, beat maker, entrepreneur, and founder of Gosie Kartel. Creates hip-hop and trap beats, produces original tracks, manages brand identity, and grows online presence across TikTok, Instagram, YouTube. Specializes in music production, beat making, trap and hip-hop sound design, branding, and digital marketing for music.",
+      "description": "Metatron878 (Tawananyasha Nzombe) – Solo music producer, beat maker, entrepreneur, and founder of Gosie Kartel. Creates hip-hop and trap beats, produces original tracks, manage[...]
       "knowsAbout": ["Hip-Hop", "Trap Music", "Music Production", "Beat Making", "Sound Design", "Entrepreneurship", "Branding", "Online Marketing", "Digital Content Creation"],
       "hasOccupation": {
         "@type": "Occupation",
@@ -542,134 +542,6 @@
         line-height: 1.7;
       }
       
-      /* Payment Section */
-      .payment-section{
-        padding: 100px 20px;
-        background: linear-gradient(135deg, #0a0e27 0%, #111a3a 100%);
-        color: #fff;
-      }
-
-      .payment-subtitle{
-        text-align: center;
-        color: var(--text-secondary);
-        margin-bottom: 50px;
-        font-size: 1.1em;
-        letter-spacing: 0.5px;
-      }
-
-      .payment-grid{
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-        gap: 25px;
-        margin-bottom: 60px;
-      }
-
-      .payment-card{
-        background: #111a3a;
-        border: 2px solid var(--border-subtle);
-        padding: 30px;
-        border-radius: 12px;
-        text-align: center;
-        cursor: pointer;
-        transition: all 0.4s ease;
-      }
-
-      .payment-card:hover{
-        transform: translateY(-8px);
-        border-color: var(--accent-secondary);
-        box-shadow: 0 15px 40px rgba(61, 184, 255, 0.2);
-      }
-
-      .payment-card.active{
-        border-color: var(--accent-primary);
-        background: rgba(0, 168, 255, 0.05);
-        box-shadow: 0 15px 40px rgba(0, 168, 255, 0.2);
-      }
-
-      .payment-icon{
-        font-size: 3em;
-        margin-bottom: 15px;
-      }
-
-      .payment-form-box{
-        max-width: 500px;
-        margin: auto;
-        background: #111a3a;
-        padding: 40px;
-        border-radius: 12px;
-        box-shadow: 0 0 40px rgba(0, 168, 255, 0.15);
-        border: 2px solid var(--border-subtle);
-      }
-
-      .payment-form-box h3{
-        margin-bottom: 30px;
-        text-align: center;
-        font-size: 1.3em;
-        color: var(--accent-primary);
-      }
-
-      .payment-form-box input{
-        width: 100%;
-        padding: 15px;
-        margin-bottom: 15px;
-        border: 2px solid var(--border-subtle);
-        border-radius: 8px;
-        background: #1e2e5e;
-        color: #fff;
-        font-size: 1rem;
-        box-sizing: border-box;
-        transition: all 0.3s ease;
-      }
-
-      .payment-form-box input:focus{
-        outline: none;
-        border-color: var(--accent-primary);
-        box-shadow: 0 0 20px rgba(0, 168, 255, 0.3);
-      }
-
-      .payment-row{
-        display: flex;
-        gap: 15px;
-      }
-
-      .pay-btn{
-        width: 100%;
-        padding: 15px;
-        border: none;
-        border-radius: 8px;
-        background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-        color: #0a0e27;
-        font-size: 1rem;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-      }
-
-      .pay-btn:hover{
-        transform: translateY(-3px);
-        box-shadow: 0 15px 40px rgba(0, 168, 255, 0.4);
-      }
-
-      #payment-success{
-        display: none;
-        margin-top: 20px;
-        background: rgba(0, 100, 200, 0.2);
-        color: #7dffff;
-        padding: 20px;
-        border-radius: 10px;
-        text-align: center;
-        font-weight: 700;
-        border: 2px solid #7dffff;
-      }
-
-      @media(max-width: 600px){
-        .payment-row{
-          flex-direction: column;
-        }
-      }
-      
       /* Footer */
       .footer { 
         background: var(--dark-bg);
@@ -885,82 +757,6 @@
       </div>
     </section>
 
-    <!-- PAYMENT SECTION -->
-    <section class="payment-section">
-      <div class="container">
-        <h2 class="section-title">Secure <span>Checkout</span></h2>
-        <p class="payment-subtitle">
-          Fast, secure and worldwide payment options.
-        </p>
-
-        <div class="payment-grid">
-
-          <div class="payment-card active" onclick="selectPayment(this, 'Visa / Mastercard')">
-            <div class="payment-icon">💳</div>
-            <h3>Visa / Mastercard</h3>
-            <p>Pay securely using your debit or credit card.</p>
-          </div>
-
-          <div class="payment-card" onclick="selectPayment(this, 'PayPal')">
-            <div class="payment-icon">🅿️</div>
-            <h3>PayPal</h3>
-            <p>Fast global checkout with PayPal protection.</p>
-          </div>
-
-          <div class="payment-card" onclick="selectPayment(this, 'Apple Pay')">
-            <div class="payment-icon">📱</div>
-            <h3>Apple Pay</h3>
-            <p>Quick tap payments from your Apple device.</p>
-          </div>
-
-          <div class="payment-card" onclick="selectPayment(this, 'Google Pay')">
-            <div class="payment-icon">🤖</div>
-            <h3>Google Pay</h3>
-            <p>Simple and secure Android payments.</p>
-          </div>
-
-          <div class="payment-card" onclick="selectPayment(this, 'Crypto')">
-            <div class="payment-icon">₿</div>
-            <h3>Crypto</h3>
-            <p>Accept Bitcoin and other crypto payments.</p>
-          </div>
-
-        </div>
-
-        <!-- PAYMENT FORM -->
-        <div class="payment-form-box">
-
-          <h3 id="selected-payment">Selected: Visa / Mastercard</h3>
-
-          <form id="payment-form">
-
-            <input type="text" placeholder="Cardholder Name" required>
-
-            <input type="text" id="card-number"
-              placeholder="Card Number"
-              maxlength="19"
-              required>
-
-            <div class="payment-row">
-              <input type="text" placeholder="MM/YY" maxlength="5" required>
-              <input type="password" placeholder="CVV" maxlength="4" required>
-            </div>
-
-            <button type="submit" class="pay-btn">
-              Complete Secure Payment
-            </button>
-
-          </form>
-
-          <div id="payment-success">
-            ✅ Payment Successful!<br>
-            Order confirmed successfully.
-          </div>
-
-        </div>
-      </div>
-    </section>
-
     <section class="features">
       <div class="container">
         <div class="features-grid">
@@ -1002,59 +798,22 @@
           <div class="footer-links">
             <h4>Quick Links</h4>
             <ul>
+              <li><a href="index.html">Home</a></li>
               <li><a href="shop.html">Shop</a></li>
               <li><a href="about.html">About</a></li>
-              <li><a href="orders.html">Track Order</a></li>
-              <li><a href="feedback.html">Feedback</a></li>
+              <li><a href="contact.html">Contact</a></li>
             </ul>
           </div>
           <div class="footer-contact">
             <h4>Contact</h4>
-            <p>tawanametatronnzombe@gmail.com</p>
-            <p>📱 @Metatron8788</p>
+            <p>Email: <a href="mailto:info@gosiekartel.com">info@gosiekartel.com</a></p>
+            <p>Follow us on social media for exclusive drops and updates.</p>
           </div>
         </div>
         <div class="footer-bottom">
-          <p>&copy; 2026 Gosie Kartel. All rights reserved.</p>
+          <p>&copy; 2026 Gosie Kartel. All rights reserved. | Premium Winter Streetwear</p>
         </div>
       </div>
     </footer>
-
-    <script>
-
-    function selectPayment(card, method){
-
-      document.querySelectorAll('.payment-card')
-        .forEach(c => c.classList.remove('active'));
-
-      card.classList.add('active');
-
-      document.getElementById('selected-payment')
-        .innerText = "Selected: " + method;
-    }
-
-    document.getElementById('card-number')
-    .addEventListener('input', function(e){
-
-      let value = e.target.value.replace(/\D/g,'');
-
-      value = value.replace(/(.{4})/g, '$1 ').trim();
-
-      e.target.value = value;
-    });
-
-    document.getElementById('payment-form')
-    .addEventListener('submit', function(e){
-
-      e.preventDefault();
-
-      document.getElementById('payment-success')
-        .style.display = 'block';
-
-      setTimeout(() => {
-        window.location.href = "orders.html";
-      }, 2500);
-    });
-    </script>
   </body>
 </html>
