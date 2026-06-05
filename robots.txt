@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://tawanametatronnzombe-star.github.io/gosie-kartel/sitemap.xml
