@@ -232,6 +232,107 @@
         resultContainer.innerHTML = html;
     }
 
+    // ZIP / Postal Code validation by country
+    const countrySelect = document.getElementById("country");
+    const zipInput = document.getElementById("zipCode");
+
+    const zipRules = {
+
+        US: {
+            name: "United States",
+            placeholder: "ZIP Code (12345 or 12345-6789)",
+            regex: /^\d{5}(-\d{4})?$/
+        },
+
+        UK: {
+            name: "United Kingdom",
+            placeholder: "Postcode (SW1A 1AA)",
+            regex: /^[A-Z]{1,2}\d[A-Z\d]?\s?\d[A-Z]{2}$/i
+        },
+
+        CA: {
+            name: "Canada",
+            placeholder: "Postal Code (A1A 1A1)",
+            regex: /^[A-Z]\d[A-Z]\s?\d[A-Z]\d$/i
+        },
+
+        AU: {
+            name: "Australia",
+            placeholder: "Postcode (2000)",
+            regex: /^\d{4}$/
+        },
+
+        OTHER: {
+            name: "Other",
+            placeholder: "ZIP / Postal Code",
+            regex: /^.+$/
+        }
+
+    };
+
+
+    // When country changes
+    countrySelect.addEventListener("change", function(){
+
+        const selectedCountry = this.value;
+
+
+        if(zipRules[selectedCountry]){
+
+            zipInput.disabled = false;
+
+            zipInput.value = "";
+
+            zipInput.placeholder =
+                zipRules[selectedCountry].placeholder;
+
+        } else {
+
+            zipInput.disabled = true;
+
+            zipInput.value = "";
+
+            zipInput.placeholder =
+                "Select country first";
+
+        }
+
+        // Also update shipping totals when country changes
+        renderCheckoutItems();
+
+    });
+
+
+    // Check ZIP before checkout submits
+    document.getElementById("checkout-form")
+    .addEventListener("submit", function(e){
+
+        const country = countrySelect.value;
+        const zip = zipInput.value.trim();
+
+
+        if(zipRules[country]){
+
+            if(!zipRules[country].regex.test(zip)){
+
+                e.preventDefault();
+
+                alert(
+                    "Invalid postal code for " +
+                    zipRules[country].name +
+                    ". Please check your ZIP/postal code."
+                );
+
+                zipInput.focus();
+
+                return false;
+            }
+
+        }
+
+    });
+
+
     // Handle form submission and Order ID generation
     document.getElementById("checkout-form").addEventListener("submit", async function(e) {
         e.preventDefault();
@@ -253,8 +354,18 @@
             return;
         }
 
-        const orderId = generateOrderId();
         const country = document.getElementById("country").value;
+        const zip = document.getElementById("zipCode").value.trim();
+
+        // ZIP validation
+        if (zipRules[country] && !zipRules[country].regex.test(zip)) {
+            errorDiv.textContent = "Invalid postal code for " + zipRules[country].name + ". Please check your ZIP/postal code.";
+            errorDiv.style.display = "block";
+            document.getElementById("zipCode").focus();
+            return;
+        }
+
+        const orderId = generateOrderId();
         let subtotal = 0;
         cartItems.forEach(item => subtotal += item.price);
         const shipping = calculateShipping(subtotal, country);
