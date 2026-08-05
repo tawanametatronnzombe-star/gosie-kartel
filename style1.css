@@ -108,3 +108,34 @@ img, video, iframe { max-width:100%; height:auto; display:block }
 
 /* Safety: remove any horizontal overflow */
 html,body{overflow-x:hidden}
+
+/* ===== Gentle color overrides for hero "New Drop" badge and Shop Now button to avoid bright/neon colors ===== */
+.hero-badge{
+  background:#214a56 !important; /* muted teal */
+  color:#e6f7f7 !important;
+  box-shadow:none !important;
+}
+
+/* Shop Now button inside hero: use a muted gradient */
+.hero .btn-primary{
+  background:linear-gradient(135deg,#2a6f74,#4a7f8f) !important;
+  color:#f1fbfb !important;
+  border-color:transparent !important;
+}
+
+.hero .btn-primary:hover{
+  filter:brightness(1.03) !important;
+  background:linear-gradient(135deg,#377f84,#5b93a0) !important;
+}
+
+/* Tone down hero title gradient to be less neon */
+.hero-title{
+  background:linear-gradient(135deg,#6aa3b1,#7d6fa8) !important;
+  -webkit-background-clip:text !important;
+  -webkit-text-fill-color:transparent !important;
+}
+
+/* Make hero buttons outlines/subtle so they don't appear too bright */
+.hero .btn{
+  border-color:rgba(255,255,255,0.12) !important;
+}
