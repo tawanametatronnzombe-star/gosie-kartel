@@ -6,7 +6,7 @@
 
     <!-- Supabase configuration -->
     <meta name="supabase-url" content="https://tnlktzagziuwjjzgrrna.supabase.co">
-    <meta name="supabase-anon-key" content="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRubGt0emFneml1d2pqemdycm5hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU5MjA5MzIsImV4cCI6MjEwMTQ5NjkzMn0.uuj1wWwG8DfhCK8bqvzoGIaxuhDwlrNIxXwAL9jkd2c">
+    <meta name="supabase-anon-key" content="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRubGt0emFneml1d2pqemdycm5hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU5MjA5MzIsImV4cCI6MjEw[...]">
     <title>Checkout | Gosie Kartel</title>
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
@@ -24,11 +24,13 @@
         .status-text { flex:1; }
         .checkout-grid { display:flex; flex-wrap:wrap; gap:20px; }
         .checkout-left, .checkout-right { flex:1; min-width:250px; }
-        .checkout-left input, .checkout-left select { width:100%; padding:10px; margin-bottom:10px; border-radius:5px; border:1px solid #ccc; }
+        .checkout-left input, .checkout-left select, .checkout-left textarea { width:100%; padding:10px; margin-bottom:10px; border-radius:5px; border:1px solid #ccc; }
         .checkout-right .checkout-total { margin-top:20px; }
         .checkout-right .total-row { display:flex; justify-content:space-between; font-weight:bold; padding:5px 0; }
         .checkout-right button { width:100%; padding:12px; background:#0d6efd; color:#fff; border:none; border-radius:5px; cursor:pointer; margin-top:10px; font-size:1em; }
         .error-message { color: red; background: #ffe0e0; padding: 10px; border-radius: 5px; margin-bottom: 15px; display: none; }
+        .success-box { background: #e8f5e9; padding:15px; border-radius:8px; margin-top:15px; text-align:center; }
+        .small { font-size:0.9em; color:#555; }
     </style>
 </head>
 <body>
@@ -41,26 +43,29 @@
 
 <section class="checkout-section">
     <h1>Checkout</h1>
-    <form id="checkout-form" class="checkout-form">
-        <div class="error-message" id="error-message"></div>
+    <form id="checkout-form" class="checkout-form" novalidate>
+        <div class="error-message" id="error-message" role="alert" aria-live="assertive"></div>
         <div class="checkout-grid">
             <div class="checkout-left">
                 <h3>Shipping Information</h3>
-                <input type="text" id="firstName" placeholder="First Name *" required>
-                <input type="text" id="lastName" placeholder="Last Name *" required>
+                <input type="text" id="fullName" placeholder="Full name *" required>
                 <input type="email" id="email" placeholder="Email *" required>
                 <input type="tel" id="phone" placeholder="Phone *" required>
-                <input type="text" id="address" placeholder="Address *" required>
-                <input type="text" id="city" placeholder="City *" required>
-                <input type="text" id="zipCode" placeholder="ZIP Code *" required>
                 <select id="country" required>
                     <option value="">Select Country *</option>
                     <option value="US">United States</option>
                     <option value="UK">United Kingdom</option>
                     <option value="CA">Canada</option>
                     <option value="AU">Australia</option>
+                    <option value="DE">Germany</option>
+                    <option value="FR">France</option>
+                    <option value="ZA">South Africa</option>
                     <option value="OTHER">Other</option>
                 </select>
+                <input type="text" id="city" placeholder="City *" required>
+                <input type="text" id="address" placeholder="Address *" required>
+                <input type="text" id="postalCode" placeholder="Postal / ZIP code" style="display:none;">
+                <textarea id="orderNotes" placeholder="Order notes (optional)" rows="3"></textarea>
             </div>
             <div class="checkout-right">
                 <h3>Order Summary</h3>
@@ -70,11 +75,11 @@
                     <div class="total-row"><span>Shipping:</span><span id="checkout-shipping">$0.00</span></div>
                     <div class="total-row"><strong>Total:</strong><strong id="checkout-total">$0.00</strong></div>
                 </div>
-                <button type="submit" id="submit-btn">Complete Order</button>
+                <button type="submit" id="submit-btn" aria-live="polite">Complete Order</button>
             </div>
         </div>
     </form>
-    <div id="order-id-display"></div>
+    <div id="order-id-display" aria-live="polite"></div>
 
     <!-- Track Order Section -->
     <div class="track-order-section">
@@ -82,109 +87,20 @@
         <p>Enter your Order ID to track your shipment status</p>
         <div style="margin-top:15px;">
             <input type="text" id="track-order-id" placeholder="Enter your Order ID">
-            <button type="button" onclick="trackOrder()">Track Order</button>
+            <button type="button" id="track-btn">Track Order</button>
         </div>
         <div id="order-tracking-result"></div>
     </div>
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
 
 <script src="js/supabase.js"></script>
-
 <script src="js/products.js"></script>
 <script src="js/cart.js"></script>
+<script src="js/email.js"></script>
+<script src="js/checkout.js"></script>
 
-<script>
-    function generateOrderId() {
-        return "ORD-" + Date.now().toString();
-    }
-
-    // Calculate shipping cost
-    function calculateShipping(subtotal, country) {
-        if (subtotal > 100) return 0;
-        const rates = {
-            "US": 10,
-            "UK": 15,
-            "CA": 12,
-            "AU": 20,
-            "OTHER": 25
-        };
-        return rates[country] || 25;
-    }
-
-    // Update checkout items and total
-    function renderCheckoutItems() {
-        const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
-        const container = document.getElementById("checkout-items");
-        const subtotalEl = document.getElementById("checkout-subtotal");
-        const shippingEl = document.getElementById("checkout-shipping");
-        const totalEl = document.getElementById("checkout-total");
-        
-        container.innerHTML = "";
-        let subtotal = 0;
-
-        if (cartItems.length === 0) {
-            container.innerHTML = '<p style="color: #999;">Your cart is empty. <a href="shop.html">Continue shopping</a></p>';
-            subtotalEl.textContent = "$0.00";
-            shippingEl.textContent = "$0.00";
-            totalEl.textContent = "$0.00";
-            return;
-        }
-
-        cartItems.forEach(item => {
-            const div = document.createElement("div");
-            div.style.cssText = "display: flex; justify-content: space-between; margin-bottom: 10px;";
-            div.innerHTML = `
-                <span>${item.name}</span>
-                <span>$${item.price.toFixed(2)}</span>
-            `;
-            container.appendChild(div);
-            subtotal += item.price;
-        });
-
-        const country = document.getElementById("country").value || "US";
-        const shipping = calculateShipping(subtotal, country);
-        const total = subtotal + shipping;
-
-        subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
-        shippingEl.textContent = shipping === 0 ? "FREE" : `$${shipping.toFixed(2)}`;
-        totalEl.textContent = `$${total.toFixed(2)}`;
-    }
-
-    // Get order status based on order age
-    function getOrderStatus(orderId) {
-        const orders = JSON.parse(localStorage.getItem("orders")) || [];
-        const order = orders.find(o => o.orderId === orderId);
-        
-        if (!order) {
-            return null;
-        }
-
-        const orderTime = new Date(order.createdAt).getTime();
-        const now = Date.now();
-        const daysSinceOrder = Math.floor((now - orderTime) / (1000 * 60 * 60 * 24));
-
-        let status = "Processing";
-        let progress = 1;
-        
-        if (daysSinceOrder >= 7) {
-            status = "Delivered";
-            progress = 4;
-        } else if (daysSinceOrder >= 5) {
-            status = "Out for Delivery";
-            progress = 3;
-        } else if (daysSinceOrder >= 2) {
-            status = "In Transit";
-            progress = 2;
-        }
-
-        return { ...order, status, progress, daysSinceOrder };
-    }
-
-    // Track order function
-    function trackOrder() {
-        const orderId = document.getElementById("track-order-id").value.trim();
-        const resultContainer = document.getElementById("order-tracking-result");
-        resultContainer.innerHTML = "";
-
+</body>
+</html>
