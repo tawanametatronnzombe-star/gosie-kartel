@@ -35,7 +35,7 @@ img, video, iframe { max-width:100%; height:auto; display:block }
 .hero-content{position:relative;z-index:2;max-width:1200px;width:100%;padding:2rem}
 .hero-badge{display:inline-block;padding:.5rem 1.5rem;border-radius:40px;background:var(--c);color:var(--b);font-weight:800;margin-bottom:1rem}
 .hero-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(2.4rem,6vw,4.5rem);font-weight:800;text-transform:uppercase;line-height:1;margin:0;background:linear-gradient(135deg,var(--c),var(--m));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero-subtitle{font-size:clamp(1rem,2.2vw,1.25rem);color:var(--text-secondary);margin:1rem 0 1.5rem}
+.hero-subtitle{font-size:clamp(1rem,2.2vw,1.25rem);margin:1rem 0 1.5rem}
 .hero-buttons{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
 /* Navigation responsive */
 .navbar{position:relative}
@@ -81,3 +81,30 @@ img, video, iframe { max-width:100%; height:auto; display:block }
   .hero-content{padding:1rem}
   .hero-subtitle{margin:0.75rem 0 1rem}
 }
+
+/* ===== Additional rules to force hero and sections to be truly full-bleed and remove inner boxed background on mobile ===== */
+/* Make navbar full-width edge-to-edge */
+.navbar{width:100vw;left:50%;margin-left:-50vw;margin-right:-50vw;position:relative}
+
+/* Force hero to be full-bleed */
+.hero{width:100vw;left:50%;margin-left:-50vw;margin-right:-50vw;padding-top:calc(var(--vh,1vh)*6);padding-bottom:calc(var(--vh,1vh)*6);}
+
+/* Ensure hero inner container doesn't constrain width on small screens */
+.hero .container, .hero .hero-content{max-width:100%;width:100%;padding-left:1rem;padding-right:1rem}
+
+/* If any inner box is present (some templates wrap hero content in a card), make it transparent and full width on mobile */
+.hero .card, .hero .hero-box, .hero .hero-panel { background: transparent !important; box-shadow: none !important; border: none !important; width:100% !important }
+
+/* Place hero background media behind content and make it cover */
+.hero .hero-media, .hero .main-image { position: absolute; inset: 0; width:100%; height:100%; z-index:1 }
+.hero .hero-media img, .hero .main-image img { width:100%; height:100%; object-fit:cover; display:block }
+
+/* On very small screens reduce side padding to make content fill more space */
+@media (max-width:420px){
+  .hero{padding-left:0.5rem;padding-right:0.5rem}
+  .hero-content{padding-left:0.5rem;padding-right:0.5rem}
+  .nav-container{padding-left:0.75rem;padding-right:0.75rem}
+}
+
+/* Safety: remove any horizontal overflow */
+html,body{overflow-x:hidden}
