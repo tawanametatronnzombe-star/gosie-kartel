@@ -9,9 +9,11 @@
     <style>
         .orders-section { padding: 40px 20px; text-align: center; }
         .order-lookup { margin-top: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
-        .order-lookup input { padding: 10px; width: 250px; border-radius: 5px; border: 1px solid #ccc; }
+        .order-lookup input { padding: 10px; width: 280px; border-radius: 5px; border: 1px solid #ccc; }
         .order-lookup button { padding: 10px 20px; border-radius: 5px; border: none; background-color: #0d6efd; color: white; cursor: pointer; }
-        #tracking-result { margin-top: 20px; font-weight: bold; font-size: 1.1em; color: var(--text-secondary); }
+        #result { margin-top: 20px; font-weight: bold; font-size: 1.05em; color: var(--text-secondary); text-align: left; display: inline-block; max-width:560px; }
+        #result h3{ margin-bottom:8px; color:var(--accent-primary); }
+        .small-note{ font-size:0.9em; color:#99a5d0; margin-top:8px }
     </style>
 </head>
 <body>
@@ -30,31 +32,80 @@
         <div class="container">
             <h1>Track Your Order</h1>
             <div class="order-lookup">
-                <input type="text" id="order-id" placeholder="Enter Order ID">
-                <input type="email" id="order-email" placeholder="Enter Your Email (optional)">
+                <input type="text" id="orderID" placeholder="Enter Order ID">
                 <button class="btn btn-primary" onclick="trackOrder()">Track Order</button>
             </div>
-            <div id="tracking-result"></div>
+            <div id="result"></div>
+            <div class="small-note">If the order was placed on this device, the tracker will look locally; otherwise it will query the Supabase Orders table.</div>
         </div>
     </section>
 
     <script>
-    function trackOrder(){
-      const searchID = document.getElementById("order-id").value.trim();
-      const orders = JSON.parse(localStorage.getItem("orders")) || [];
-      const order = orders.find(o => o.id === searchID || o.orderId === searchID);
+    async function trackOrder(){
+      const orderID = document.getElementById('orderID').value.trim();
+      const resultEl = document.getElementById('result');
+      resultEl.innerHTML = '';
+      if (!orderID) {
+        resultEl.textContent = 'Please enter an Order ID.';
+        return;
+      }
 
-      if(order){
-        document.getElementById("tracking-result").innerHTML = `
-          <h3>Order Found</h3>
-          <p>Order ID: ${order.id || order.orderId}</p>
-          <p>Status: ${order.status}</p>
-          <p>Date: ${new Date(order.date || order.createdAt).toLocaleDateString()}</p>
-        `;
+      // Try Supabase first if client is available
+      if (window.supabaseClient) {
+        try {
+          const { data, error } = await window.supabaseClient
+            .from('Orders')
+            .select('*')
+            .eq('order_id', orderID)
+            .single();
+
+          if (error || !data) {
+            // fallback to localStorage
+            // console.warn('Supabase lookup failed or not found', error);
+          } else {
+            resultEl.innerHTML = `\
+              <h3>Order: ${escapeHtml(data.order_id)}</h3>\
+              <p>Status: ${escapeHtml((data.status || 'processing'))}</p>\
+              <p>Tracking: ${escapeHtml(data.tracking_number || 'Not available yet')}</p>\
+              <p>Carrier: ${escapeHtml(data.carrier || 'Pending')}</p>\
+            `;
+            return;
+          }
+        } catch (err) {
+          console.warn('Supabase query error', err);
+          // continue to local fallback
+        }
       }
-      else{
-        document.getElementById("tracking-result").innerHTML = "Order not found.";
+
+      // Local fallback (orders saved in localStorage)
+      try {
+        const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+        const order = orders.find(o => (o.id === orderID) || (o.orderId === orderID));
+        if (order) {
+          resultEl.innerHTML = `\
+            <h3>Order: ${escapeHtml(order.id || order.orderId)}</h3>\
+            <p>Status: ${escapeHtml(order.status || 'Processing')}</p>\
+            <p>Tracking: ${escapeHtml(order.tracking_number || order.trackingNumber || 'Not available yet')}</p>\
+            <p>Carrier: ${escapeHtml(order.carrier || 'Pending')}</p>\
+          `;
+          return;
+        }
+      } catch (err) {
+        console.warn('Error reading local orders', err);
       }
+
+      resultEl.textContent = 'Order not found';
+    }
+
+    // Simple helper to avoid inserting raw HTML; keeps it minimal
+    function escapeHtml(str){
+      if (!str && str !== 0) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
     }
     </script>
 </body>
