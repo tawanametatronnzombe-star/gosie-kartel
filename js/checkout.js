@@ -1,6 +1,6 @@
 // js/checkout.js
 // Handles checkout form submission, local order storage, immediate sync attempt,
-// country/postal-code visibility & requirement logic, and server submission.
+// country/postal-code visibility & requirement logic, and server submission to Supabase.
 
 (function() {
   function $(id) { return document.getElementById(id); }
@@ -97,7 +97,7 @@
     return `GK-${first}-${second}`;
   }
 
-  // Try to submit order to server endpoint; if it fails, return null
+  // Try to submit order to server endpoint; if it fails, return null (fallback)
   async function submitOrderToServer(orderPayload) {
     try {
       const resp = await fetch('/api/create-order', {
@@ -119,13 +119,13 @@
   }
 
   document.addEventListener('DOMContentLoaded', function() {
-    // country/postal initialization lives earlier in this file (or is handled elsewhere)
+    // country/postal initialization handled elsewhere
     const form = $('checkout-form');
     const postalInput = $('postalCode');
     const countrySelect = $('country');
     renderCart();
 
-    // Track-order quick handler
+    // Track-order quick handler (keeps existing simple tracker)
     const trackBtn = $('track-btn');
     if (trackBtn) {
       trackBtn.addEventListener('click', function() {
@@ -174,7 +174,7 @@
       // Build detailed order object used for local storage and sync
       const detailedOrder = {
         orderId: orderId,
-        id: orderId,                 // duplicate id for orders.html compatibility
+        id: orderId,
         email: email || null,
         items: cart,
         products: cart,
@@ -183,9 +183,8 @@
         total: total,
         status: 'Processing',
         createdAt: createdAt,
-        date: createdAt,            // duplicate date for orders.html compatibility
+        date: createdAt,
         synced: false,
-        // shippingInfo shape used by syncLocalOrders
         shippingInfo: {
           firstName: fullName,
           lastName: '',
@@ -199,10 +198,7 @@
         notes: orderNotes || null
       };
 
-      // Also save a simple summary so orders.html can display minimal info (keeps same 'orders' array structure)
-      // Note: detailedOrder already contains id/date/total/items/status so orders.html will work when reading 'orders'
-
-      // Try server submission first
+      // Build server payload (for API fallback)
       const serverPayload = {
         fullName: fullName,
         email: email,
@@ -218,55 +214,139 @@
         notes: orderNotes || null
       };
 
-      const serverResp = await submitOrderToServer(serverPayload);
-
       const display = $('order-id-display');
 
-      if (serverResp && serverResp.ok && serverResp.orderId) {
-        // Server accepted the order
-        // Save detailed order with server order id if different
-        detailedOrder.orderId = serverResp.orderId || detailedOrder.orderId;
-        detailedOrder.id = serverResp.orderId || detailedOrder.id;
-        localStorage.setItem('orders', JSON.stringify((JSON.parse(localStorage.getItem('orders')||'[]')).concat([detailedOrder])));
+      // Attempt direct Supabase insert first (client-side anon key)
+      let savedToServer = false;
+      if (window.supabaseClient) {
+        try {
+          const orderData = {
+            order_id: detailedOrder.orderId,
+            customer_name: (detailedOrder.shippingInfo && ((detailedOrder.shippingInfo.firstName || '') + ' ' + (detailedOrder.shippingInfo.lastName || ''))).trim(),
+            email: detailedOrder.email || (detailedOrder.shippingInfo && detailedOrder.shippingInfo.email) || null,
+            phone: (detailedOrder.shippingInfo && detailedOrder.shippingInfo.phone) || null,
+            address: (detailedOrder.shippingInfo && detailedOrder.shippingInfo.address) || null,
+            city: (detailedOrder.shippingInfo && detailedOrder.shippingInfo.city) || null,
+            country: (detailedOrder.shippingInfo && detailedOrder.shippingInfo.country) || null,
+            zip_code: detailedOrder.shippingInfo && detailedOrder.shippingInfo.postalCode ? detailedOrder.shippingInfo.postalCode : null,
+            products: detailedOrder.items || detailedOrder.products || [],
+            subtotal: detailedOrder.subtotal || 0,
+            shipping: detailedOrder.shipping || 0,
+            total: detailedOrder.total || 0,
+            status: detailedOrder.status || 'processing'
+          };
 
-        if (display) display.textContent = 'Order placed! Your Order ID: ' + (serverResp.orderId || orderId);
+          const { data, error } = await window.supabaseClient
+            .from('orders')
+            .insert([orderData])
+            .select();
 
-        // Optionally send email confirmation (server could handle this)
-        if (typeof sendOrderConfirmation === 'function') {
-          try {
-            sendOrderConfirmation({
-              customer_name: fullName,
-              order_id: serverResp.orderId || orderId,
-              items: cart,
-              total_price: total,
-              status: 'Processing',
-              tracking_link: serverResp.trackingUrl || ''
-            });
-          } catch (err) { console.warn('Email send failed', err); }
+          if (error) {
+            console.warn('Supabase insert error:', error);
+          } else {
+            savedToServer = true;
+            const returned = Array.isArray(data) && data[0] ? data[0] : null;
+            const serverOrderId = returned && (returned.order_id || returned.id) ? (returned.order_id || returned.id) : null;
+
+            // Merge/mark local storage
+            try {
+              let stored = JSON.parse(localStorage.getItem('orders') || '[]');
+              // add or update
+              const idx = stored.findIndex(o => (o.id === detailedOrder.id) || (o.orderId === detailedOrder.orderId));
+              if (idx !== -1) {
+                stored[idx] = Object.assign({}, stored[idx], detailedOrder);
+                if (serverOrderId) { stored[idx].id = serverOrderId; stored[idx].orderId = serverOrderId; }
+                stored[idx].synced = true;
+                stored[idx].syncedAt = new Date().toISOString();
+              } else {
+                const toStore = Object.assign({}, detailedOrder);
+                if (serverOrderId) { toStore.id = serverOrderId; toStore.orderId = serverOrderId; }
+                toStore.synced = true;
+                toStore.syncedAt = new Date().toISOString();
+                stored.push(toStore);
+              }
+              localStorage.setItem('orders', JSON.stringify(stored));
+            } catch (err) {
+              console.warn('Failed to update local orders after server insert', err);
+            }
+
+            if (display) display.textContent = 'Order placed! Your Order ID: ' + (serverOrderId || detailedOrder.orderId);
+
+            // Optional email confirmation
+            if (typeof sendOrderConfirmation === 'function') {
+              try {
+                sendOrderConfirmation({
+                  customer_name: fullName,
+                  order_id: serverOrderId || detailedOrder.orderId,
+                  items: cart,
+                  total_price: total,
+                  status: 'Processing',
+                  tracking_link: returned && returned.tracking_url ? returned.tracking_url : ''
+                });
+              } catch (err) { console.warn('Email send failed', err); }
+            }
+          }
+
+        } catch (err) {
+          console.error('Unexpected error during Supabase insert', err);
         }
+      }
 
-      } else {
-        // Fallback: save detailed order locally and attempt background sync
-        saveLocalOrder(detailedOrder);
+      // If not saved to server via supabaseClient, try your API endpoint fallback
+      if (!savedToServer) {
+        const serverResp = await submitOrderToServer(serverPayload);
 
-        if (window.syncLocalOrders) {
-          try { window.syncLocalOrders(); } catch (err) { console.warn('Immediate sync failed', err); }
-        }
-
-        if (display) display.textContent = 'Order saved locally. Will sync when online. Order ID: ' + orderId;
-
-        // Send email if possible (best-effort)
-        if (typeof sendOrderConfirmation === 'function') {
+        if (serverResp && serverResp.ok && serverResp.orderId) {
+          // Server accepted -- save merged record locally as synced
+          const serverId = serverResp.orderId;
           try {
-            sendOrderConfirmation({
-              customer_name: fullName,
-              order_id: orderId,
-              items: cart,
-              total_price: total,
-              status: 'Pending Sync',
-              tracking_link: ''
-            });
-          } catch (err) { console.warn('Email send failed', err); }
+            let stored = JSON.parse(localStorage.getItem('orders') || '[]');
+            detailedOrder.id = serverId;
+            detailedOrder.orderId = serverId;
+            detailedOrder.synced = true;
+            detailedOrder.syncedAt = new Date().toISOString();
+            stored.push(detailedOrder);
+            localStorage.setItem('orders', JSON.stringify(stored));
+          } catch (err) { console.warn('Failed to persist order after API response', err); }
+
+          if (display) display.textContent = 'Order placed! Your Order ID: ' + serverResp.orderId;
+
+          if (typeof sendOrderConfirmation === 'function') {
+            try {
+              sendOrderConfirmation({
+                customer_name: fullName,
+                order_id: serverResp.orderId,
+                items: cart,
+                total_price: total,
+                status: 'Processing',
+                tracking_link: serverResp.trackingUrl || ''
+              });
+            } catch (err) { console.warn('Email send failed', err); }
+          }
+
+        } else {
+          // Fallback: save detailed order locally and attempt background sync
+          saveLocalOrder(detailedOrder);
+
+          if (window.syncLocalOrders) {
+            try { window.syncLocalOrders(); } catch (err) { console.warn('Immediate sync failed', err); }
+          }
+
+          if (display) display.textContent = 'Order saved locally. Will sync when online. Order ID: ' + detailedOrder.orderId;
+
+          // Send email if possible (best-effort)
+          if (typeof sendOrderConfirmation === 'function') {
+            try {
+              sendOrderConfirmation({
+                customer_name: fullName,
+                order_id: detailedOrder.orderId,
+                items: cart,
+                total_price: total,
+                status: 'Pending Sync',
+                tracking_link: ''
+              });
+            } catch (err) { console.warn('Email send failed', err); }
+          }
         }
       }
 
