@@ -11,7 +11,7 @@
         .order-lookup { margin-top: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
         .order-lookup input { padding: 10px; width: 250px; border-radius: 5px; border: 1px solid #ccc; }
         .order-lookup button { padding: 10px 20px; border-radius: 5px; border: none; background-color: #0d6efd; color: white; cursor: pointer; }
-        #order-status { margin-top: 20px; font-weight: bold; font-size: 1.1em; }
+        #tracking-result { margin-top: 20px; font-weight: bold; font-size: 1.1em; color: var(--text-secondary); }
     </style>
 </head>
 <body>
@@ -31,42 +31,31 @@
             <h1>Track Your Order</h1>
             <div class="order-lookup">
                 <input type="text" id="order-id" placeholder="Enter Order ID">
-                <input type="email" id="order-email" placeholder="Enter Your Email">
+                <input type="email" id="order-email" placeholder="Enter Your Email (optional)">
                 <button class="btn btn-primary" onclick="trackOrder()">Track Order</button>
             </div>
-            <div id="order-status"></div>
+            <div id="tracking-result"></div>
         </div>
     </section>
 
     <script>
-        // Dummy orders for testing
-        const orders = [
-            { orderId: "1001", email: "customer1@example.com", status: "Processing" },
-            { orderId: "1002", email: "customer2@example.com", status: "Shipped" },
-            { orderId: "1003", email: "customer3@example.com", status: "Delivered" }
-        ];
+    function trackOrder(){
+      const searchID = document.getElementById("order-id").value.trim();
+      const orders = JSON.parse(localStorage.getItem("orders")) || [];
+      const order = orders.find(o => o.id === searchID || o.orderId === searchID);
 
-        function trackOrder() {
-            const orderId = document.getElementById("order-id").value.trim();
-            const email = document.getElementById("order-email").value.trim().toLowerCase();
-            const statusDiv = document.getElementById("order-status");
-
-            if (!orderId || !email) {
-                statusDiv.textContent = "Please enter both Order ID and Email.";
-                statusDiv.style.color = "red";
-                return;
-            }
-
-            const order = orders.find(o => o.orderId === orderId && o.email.toLowerCase() === email);
-
-            if (order) {
-                statusDiv.textContent = `Order Found! Status: ${order.status}`;
-                statusDiv.style.color = "green";
-            } else {
-                statusDiv.textContent = "Order not found. Please check your Order ID and Email.";
-                statusDiv.style.color = "red";
-            }
-        }
+      if(order){
+        document.getElementById("tracking-result").innerHTML = `
+          <h3>Order Found</h3>
+          <p>Order ID: ${order.id || order.orderId}</p>
+          <p>Status: ${order.status}</p>
+          <p>Date: ${new Date(order.date || order.createdAt).toLocaleDateString()}</p>
+        `;
+      }
+      else{
+        document.getElementById("tracking-result").innerHTML = "Order not found.";
+      }
+    }
     </script>
 </body>
 </html>
