@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Supabase configuration -->
     <meta name="supabase-url" content="https://tnlktzagziuwjjzgrrna.supabase.co">
     <meta name="supabase-anon-key" content="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRubGt0emFneml1d2pqemdycm5hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU5MjA5MzIsImV4cCI6MjEw[..]">
 
@@ -34,13 +33,45 @@
       .checkout-left{flex:1;min-width:320px}
       .checkout-right{width:360px}
       .checkout-left h3,.checkout-right h3{margin-bottom:12px;color:var(--accent-secondary)}
-      .checkout-left input,.checkout-left select,.checkout-left textarea{width:100%;padding:10px;margin-bottom:10px;border-radius:6px;border:1px solid var(--border-subtle);background:transparent;color:var(--text-secondary)}
+      .checkout-left input,.checkout-left select,.checkout-left textarea{width:100%;padding:10px;margin-bottom:10px;border-radius:6px;border:1px solid var(--border-subtle);background:transparent;color:var(--text-secondary);box-sizing:border-box}
       .checkout-right .checkout-total{margin-top:12px}
       .total-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,0.02)}
-      button#submit-btn{width:100%;padding:12px;background:var(--accent-primary);border:none;border-radius:8px;color:#fff;font-weight:700;cursor:pointer}
+      button#submit-btn{width:100%;padding:12px;background:var(--accent-primary);border:none;border-radius:8px;color:#fff;font-weight:700;cursor:pointer;margin-top:15px}
       .small{font-size:0.9em;color:var(--text-secondary)}
       .error-message{display:none;background:#ffebee;color:#b00020;padding:10px;border-radius:6px;margin-bottom:10px}
-      #order-id-display{margin-top:16px;padding:12px;background:linear-gradient(90deg,#07203a,#063248);border-radius:8px;text-align:center;color:var(--accent-light)}
+      #order-id-display{margin-top:16px;padding:12px;background:linear-gradient(90deg,#07203a,#063248);border-radius:8px;text-align:center;color:var(--accent-secondary);font-weight:700}
+
+      /* Payment Options Styling */
+      .payment-options {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 15px;
+      }
+      .payment-option {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        padding: 8px 12px;
+        border: 1px solid var(--border-subtle);
+        border-radius: 6px;
+      }
+      .payment-option input[type="radio"] {
+        width: auto;
+        margin: 0;
+      }
+      .card-details-box {
+        background: rgba(0, 0, 0, 0.2);
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid var(--border-subtle);
+        margin-top: 10px;
+      }
+      .card-row {
+        display: flex;
+        gap: 10px;
+      }
 
       @media(max-width:800px){
         .checkout-right{width:100%}
@@ -68,10 +99,12 @@
     <div class="error-message" id="error-message" role="alert" aria-live="assertive"></div>
     <div class="checkout-grid">
       <div class="checkout-left">
-        <h3>Shipping Information</h3>
+        <h3>Customer Information</h3>
         <input type="text" id="fullName" placeholder="Full name *" required maxlength="200">
         <input type="email" id="email" placeholder="Email *" required maxlength="254">
         <input type="tel" id="phone" placeholder="Phone *" required maxlength="30">
+
+        <h3 style="margin-top: 20px;">Shipping Address</h3>
         <select id="country" required>
           <option value="">Select Country *</option>
           <option value="AF">Afghanistan</option>
@@ -328,6 +361,31 @@
         <input type="text" id="address" placeholder="Address *" required maxlength="500">
         <input type="text" id="postalCode" placeholder="Postal / ZIP code">
         <textarea id="orderNotes" placeholder="Order notes (optional)" rows="3" maxlength="1000"></textarea>
+
+        <h3 style="margin-top: 20px;">Payment Method</h3>
+        <div class="payment-options">
+          <label class="payment-option">
+            <input type="radio" name="paymentMethod" value="card" checked id="pay-card">
+            <span>Credit / Debit Card</span>
+          </label>
+          <label class="payment-option">
+            <input type="radio" name="paymentMethod" value="paypal" id="pay-paypal">
+            <span>PayPal</span>
+          </label>
+          <label class="payment-option">
+            <input type="radio" name="paymentMethod" value="stripe" id="pay-stripe">
+            <span>Stripe</span>
+          </label>
+        </div>
+
+        <div id="card-fields" class="card-details-box">
+          <input type="text" id="cardHolder" placeholder="Cardholder Full Name">
+          <input type="text" id="cardNumber" placeholder="Card Number (0000 0000 0000 0000)" maxlength="19">
+          <div class="card-row">
+            <input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="5">
+            <input type="text" id="cardCvv" placeholder="CVV" maxlength="4">
+          </div>
+        </div>
       </div>
 
       <div class="checkout-right">
@@ -355,16 +413,57 @@
 
 </section>
 
-<!-- Load libraries -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
-<!-- App scripts -->
 <script src="js/supabase.js"></script>
 <script src="js/products.js"></script>
 <script src="js/cart.js"></script>
 <script src="js/email.js"></script>
 <script src="js/checkout.js"></script>
+
+<script>
+  // Dynamic ZIP Code hide/show logic based on selection
+  const noZipCountries = ['AE', 'QA', 'BH', 'OM', 'KW', 'SA', 'IE', 'HK', 'MO', 'AO', 'AG', 'AW', 'BS', 'BJ', 'BW', 'BF', 'BI', 'CM', 'CF', 'TD', 'KM', 'CG', 'CD', 'DJ', 'DM', 'GQ', 'ER', 'FJ', 'GA', 'GM', 'GH', 'GD', 'GN', 'GW', 'GY', 'CI', 'JM', 'KE', 'KI', 'LS', 'LR', 'LY', 'MW', 'ML', 'MR', 'MU', 'NR', 'NE', 'NG', 'NU', 'RW', 'KN', 'LC', 'VC', 'WS', 'ST', 'SN', 'SC', 'SL', 'SB', 'SS', 'SR', 'SY', 'TZ', 'TG', 'TO', 'TT', 'TV', 'UG', 'VU', 'YE', 'ZM', 'ZW'];
+
+  const countrySelect = document.getElementById('country');
+  const postalInput = document.getElementById('postalCode');
+
+  countrySelect.addEventListener('change', function() {
+    if (noZipCountries.includes(this.value)) {
+      postalInput.style.display = 'none';
+      postalInput.value = '';
+    } else {
+      postalInput.style.display = 'block';
+    }
+  });
+
+  // Toggle Card Details view based on payment method selected
+  const paymentRadios = document.querySelectorAll('input[name="paymentMethod"]');
+  const cardFields = document.getElementById('card-fields');
+
+  paymentRadios.forEach(radio => {
+    radio.addEventListener('change', (e) => {
+      if (e.target.value === 'card') {
+        cardFields.style.display = 'block';
+      } else {
+        cardFields.style.display = 'none';
+      }
+    });
+  });
+
+  // Order ID pattern generator and submit handler
+  document.getElementById('checkout-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    // Generate Order ID in GK-XXXXXXXXXX-XX format
+    const randomChars = Math.random().toString(36).substring(2, 12).toUpperCase();
+    const randomSuffix = Math.random().toString(36).substring(2, 4).toUpperCase();
+    const generatedID = `GK-${randomChars}-${randomSuffix}`;
+
+    document.getElementById('order-id-display').innerText = `Order Placed! Order ID: ${generatedID}`;
+  });
+</script>
 
 </body>
 </html>
