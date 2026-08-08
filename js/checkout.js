@@ -18,7 +18,6 @@
   }
 
   function renderCart() {
-  function renderCart() {
 
     const itemsEl = $('checkout-items');
     const summaryItemsEl = $('summary-items');
@@ -26,40 +25,41 @@
     const subtotalEl = $('checkout-subtotal') || $('summary-subtotal');
     const shippingEl = $('checkout-shipping') || $('summary-shipping');
     const totalEl = $('checkout-total') || $('summary-total');
-
+    const itemCountEl = $('item-count');
 
     const cart = loadCart();
-
 
     if(itemsEl) itemsEl.innerHTML = '';
     if(summaryItemsEl) summaryItemsEl.innerHTML = '';
 
-
     let subtotal = 0;
+    let itemCount = 0;
 
 
-    if (!cart.length) {
+    if(cart.length === 0){
 
         if(itemsEl)
-            itemsEl.textContent = 'No items in cart.';
+            itemsEl.innerHTML = "No items in cart.";
 
         if(summaryItemsEl)
-            summaryItemsEl.textContent = 'No items in cart.';
+            summaryItemsEl.innerHTML = "No items in cart.";
 
     } else {
 
 
         cart.forEach(item => {
 
+            const name = item.name || item.title || "Product";
 
-            const name = item.name || item.title || 'Item';
-
-            const qty = Number(item.quantity || item.qty || 1);
+            const qty = Number(
+                item.quantity ||
+                item.qty ||
+                1
+            );
 
             const price = Number(
                 item.price ||
                 item.unit_price ||
-                item.total ||
                 0
             );
 
@@ -67,61 +67,89 @@
             const lineTotal = price * qty;
 
             subtotal += lineTotal;
+            itemCount += qty;
 
 
+            const row = document.createElement("div");
 
-            const row = document.createElement('div');
-
-            row.className = 'order-item';
-
+            row.className = "order-item";
 
 
             row.innerHTML = `
 
-                <img class="order-img"
-                src="${item.image || 'images/product-placeholder.png'}"
-                alt="${name}">
+            <img class="order-img"
+            src="${item.image || 'images/product-placeholder.png'}"
+            alt="${name}">
 
 
-                <div class="order-item-info">
+            <div class="order-item-info">
 
-                    <div class="order-item-name">
-                        ${name}
-                    </div>
-
-
-                    <div class="order-item-variant">
-                        ${item.variant || ''}
-                    </div>
-
-
-                    <span class="order-item-qty">
-                        Qty: ${qty}
-                    </span>
-
+                <div class="order-item-name">
+                    ${name}
                 </div>
 
-
-                <div class="order-item-price">
-                    ${formatCurrency(lineTotal)}
+                <div class="order-item-variant">
+                    ${item.variant || ''}
                 </div>
+
+                <span class="order-item-qty">
+                    Qty: ${qty}
+                </span>
+
+            </div>
+
+
+            <div class="order-item-price">
+                ${formatCurrency(lineTotal)}
+            </div>
 
             `;
 
 
+            if(summaryItemsEl)
+                summaryItemsEl.appendChild(row);
+
 
             if(itemsEl)
                 itemsEl.appendChild(row.cloneNode(true));
-
-
-            if(summaryItemsEl)
-                summaryItemsEl.appendChild(row);
 
         });
 
     }
 
 
+    // Change shipping logic here later when POD is connected
+    const shipping = 0;
+
+
+    const total = subtotal + shipping;
+
+
+
+    if(subtotalEl)
+        subtotalEl.textContent = formatCurrency(subtotal);
+
+
+    if(shippingEl)
+        shippingEl.textContent = formatCurrency(shipping);
+
+
+    if(totalEl)
+        totalEl.textContent = formatCurrency(total);
+
+
+    if(itemCountEl)
+        itemCountEl.textContent = itemCount;
+
+
+
+    return {
+        cart,
+        subtotal,
+        shipping,
+        total
+    };
+  }
 
     // Shipping calculation
     const shipping = subtotal > 0 ? 0 : 0;
