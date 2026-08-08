@@ -650,21 +650,28 @@ footer a:hover{color:var(--gold)}
 </div>
 
         <!-- Totals -->
-        <div class="summary-totals">
-          <div class="total-row">
-            <span class="total-label">Subtotal (2 items)</span>
-            <span class="total-val">$244.00</span>
-          </div>
-          <div class="total-row">
-            <span class="total-label">Shipping</span>
-            <span class="total-val">$25.00</span>
-          </div>
-          <hr class="summary-divider"/>
-          <div class="total-row grand">
-            <span class="total-label">Total</span>
-            <span class="total-val">$269.00</span>
-          </div>
-        </div>
+<div class="summary-totals">
+
+  <div class="total-row">
+    <span class="total-label">
+      Subtotal (<span id="item-count">0</span> items)
+    </span>
+    <span class="total-val" id="summary-subtotal">$0.00</span>
+  </div>
+
+  <div class="total-row">
+    <span class="total-label">Shipping</span>
+    <span class="total-val" id="summary-shipping">$0.00</span>
+  </div>
+
+  <hr class="summary-divider"/>
+
+  <div class="total-row grand">
+    <span class="total-label">Total</span>
+    <span class="total-val" id="summary-total">$0.00</span>
+  </div>
+
+</div>
 
         <!-- Trust -->
         <div class="summary-trust">
