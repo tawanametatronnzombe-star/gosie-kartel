@@ -18,31 +18,139 @@
   }
 
   function renderCart() {
+  function renderCart() {
+
     const itemsEl = $('checkout-items');
-    const subtotalEl = $('checkout-subtotal');
-    const shippingEl = $('checkout-shipping');
-    const totalEl = $('checkout-total');
+    const summaryItemsEl = $('summary-items');
+
+    const subtotalEl = $('checkout-subtotal') || $('summary-subtotal');
+    const shippingEl = $('checkout-shipping') || $('summary-shipping');
+    const totalEl = $('checkout-total') || $('summary-total');
+
 
     const cart = loadCart();
-    itemsEl.innerHTML = '';
+
+
+    if(itemsEl) itemsEl.innerHTML = '';
+    if(summaryItemsEl) summaryItemsEl.innerHTML = '';
+
 
     let subtotal = 0;
+
+
     if (!cart.length) {
-      itemsEl.textContent = 'No items in cart.';
+
+        if(itemsEl)
+            itemsEl.textContent = 'No items in cart.';
+
+        if(summaryItemsEl)
+            summaryItemsEl.textContent = 'No items in cart.';
+
     } else {
-      cart.forEach(item => {
-        const row = document.createElement('div');
-        row.className = 'checkout-item small';
-        const name = item.name || item.title || 'Item';
-        const qty = item.quantity || item.qty || 1;
-        const price = Number(item.price || item.unit_price || item.total || 0);
-        const lineTotal = price * qty;
-        subtotal += lineTotal;
-        row.textContent = `${name} x${qty} — ${formatCurrency(lineTotal)}`;
-        itemsEl.appendChild(row);
-      });
+
+
+        cart.forEach(item => {
+
+
+            const name = item.name || item.title || 'Item';
+
+            const qty = Number(item.quantity || item.qty || 1);
+
+            const price = Number(
+                item.price ||
+                item.unit_price ||
+                item.total ||
+                0
+            );
+
+
+            const lineTotal = price * qty;
+
+            subtotal += lineTotal;
+
+
+
+            const row = document.createElement('div');
+
+            row.className = 'order-item';
+
+
+
+            row.innerHTML = `
+
+                <img class="order-img"
+                src="${item.image || 'images/product-placeholder.png'}"
+                alt="${name}">
+
+
+                <div class="order-item-info">
+
+                    <div class="order-item-name">
+                        ${name}
+                    </div>
+
+
+                    <div class="order-item-variant">
+                        ${item.variant || ''}
+                    </div>
+
+
+                    <span class="order-item-qty">
+                        Qty: ${qty}
+                    </span>
+
+                </div>
+
+
+                <div class="order-item-price">
+                    ${formatCurrency(lineTotal)}
+                </div>
+
+            `;
+
+
+
+            if(itemsEl)
+                itemsEl.appendChild(row.cloneNode(true));
+
+
+            if(summaryItemsEl)
+                summaryItemsEl.appendChild(row);
+
+        });
+
     }
 
+
+
+    // Shipping calculation
+    const shipping = subtotal > 0 ? 0 : 0;
+
+
+    const total = subtotal + shipping;
+
+
+
+    if(subtotalEl)
+        subtotalEl.textContent = formatCurrency(subtotal);
+
+
+    if(shippingEl)
+        shippingEl.textContent = formatCurrency(shipping);
+
+
+    if(totalEl)
+        totalEl.textContent = formatCurrency(total);
+
+
+
+    return {
+        cart,
+        subtotal,
+        shipping,
+        total
+    };
+  }
     // Simple shipping calculation (free for now)
     const shipping = 0;
     const total = subtotal + shipping;
