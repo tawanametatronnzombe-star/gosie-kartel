@@ -625,30 +625,29 @@ footer a:hover{color:var(--gold)}
         </div>
 
         <!-- Items -->
-        <div class="summary-items">
-          <div class="order-item">
-            <img class="order-img"
-              src="https://images.unsplash.com/photo-1556821840-3a63f15732ce?w=136&h=136&fit=crop&auto=format"
-              alt="GK Signature Hoodie"/>
-            <div class="order-item-info">
-              <div class="order-item-name">GK Signature Hoodie</div>
-              <div class="order-item-variant">Phantom Black · Size M</div>
-              <span class="order-item-qty">Qty: 1</span>
-            </div>
-            <div class="order-item-price">$159.00</div>
-          </div>
-          <div class="order-item">
-            <img class="order-img"
-              src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=136&h=136&fit=crop&auto=format"
-              alt="GK Oversized Tee"/>
-            <div class="order-item-info">
-              <div class="order-item-name">GK Oversized Tee</div>
-              <div class="order-item-variant">Washed Onyx · Size L</div>
-              <span class="order-item-qty">Qty: 1</span>
-            </div>
-            <div class="order-item-price">$85.00</div>
-          </div>
-        </div>
+<div class="summary-items" id="summary-items">
+  <!-- Cart items load here -->
+</div>
+
+<!-- Totals -->
+<div class="summary-totals">
+  <div class="total-row">
+    <span class="total-label">Subtotal</span>
+    <span class="total-val" id="summary-subtotal">$0.00</span>
+  </div>
+
+  <div class="total-row">
+    <span class="total-label">Shipping</span>
+    <span class="total-val" id="summary-shipping">$0.00</span>
+  </div>
+
+  <hr class="summary-divider"/>
+
+  <div class="total-row grand">
+    <span class="total-label">Total</span>
+    <span class="total-val" id="summary-total">$0.00</span>
+  </div>
+</div>
 
         <!-- Totals -->
         <div class="summary-totals">
