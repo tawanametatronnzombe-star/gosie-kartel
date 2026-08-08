@@ -38,12 +38,10 @@ body{
   -webkit-font-smoothing:antialiased;
 }
 
-/* ── SCROLLBAR ── */
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
 
-/* ── HEADER ── */
 header{
   position:sticky;top:0;z-index:100;
   background:rgba(6,6,6,.92);
@@ -88,17 +86,14 @@ nav a.active{color:var(--gold)}
 }
 .header-secure svg{color:var(--success)}
 
-/* ── MAIN ── */
 main{max-width:1160px;margin:0 auto;padding:40px 28px 80px}
 .checkout-grid{
   display:grid;grid-template-columns:1fr 380px;gap:28px;align-items:start;
 }
 @media(max-width:900px){.checkout-grid{grid-template-columns:1fr}}
 
-/* ── LEFT COLUMN ── */
 .left-col{display:flex;flex-direction:column;gap:20px}
 
-/* ── CARD ── */
 .card{
   background:var(--card);
   border:1px solid var(--border);
@@ -123,7 +118,6 @@ main{max-width:1160px;margin:0 auto;padding:40px 28px 80px}
 }
 .card-body{padding:24px}
 
-/* ── FORM ── */
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
 .form-row.triple{grid-template-columns:1fr 1fr 1fr}
 .form-row.single{grid-template-columns:1fr}
@@ -147,8 +141,18 @@ input:focus,select:focus{
   box-shadow:0 0 0 3px var(--gold-glow);
 }
 input.error,select.error{border-color:var(--error)!important;box-shadow:0 0 0 3px rgba(207,79,79,.12)!important}
-.field-error{font-size:11px;color:var(--error);display:none;margin-top:-2px}
-.field-error.show{display:block}
+
+#error-message{
+  display:none;
+  background:rgba(207,79,79,.1);
+  border:1px solid var(--error);
+  color:var(--error);
+  padding:12px 16px;
+  border-radius:var(--rs);
+  font-size:13px;
+  margin-bottom:18px;
+}
+
 select{
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236a6a6a' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:calc(100% - 14px) center;
@@ -156,10 +160,8 @@ select{
   color:var(--white);
 }
 select option{background:#111;color:var(--white)}
-/* Mono inputs for card */
 .mono{font-family:'DM Mono',monospace!important;letter-spacing:.06em}
 
-/* ── PAYMENT METHODS ── */
 .pay-methods{display:flex;flex-direction:column;gap:10px}
 .pay-option{
   display:flex;align-items:center;gap:14px;
@@ -186,14 +188,14 @@ select option{background:#111;color:var(--white)}
 .pay-name{font-size:14px;font-weight:600;color:var(--white)}
 .pay-sub{font-size:11px;color:var(--gray);margin-top:2px}
 .pay-icon{display:flex;align-items:center;flex-shrink:0}
-/* Card payment fields */
+
 #card-fields{
   margin-top:18px;padding-top:18px;
   border-top:1px solid var(--border);
   display:none;flex-direction:column;gap:14px;
 }
 #card-fields.show{display:flex}
-/* PayPal/Stripe info */
+
 .pay-info{
   margin-top:18px;padding:14px 16px;
   background:var(--card2);border:1px solid var(--border);border-radius:var(--rs);
@@ -203,7 +205,6 @@ select option{background:#111;color:var(--white)}
 .pay-info.show{display:flex}
 .pay-info svg{flex-shrink:0;color:var(--gold)}
 
-/* ── CTA BUTTON ── */
 .cta-wrap{margin-top:4px}
 .cta-btn{
   width:100%;height:56px;
@@ -224,15 +225,7 @@ select option{background:#111;color:var(--white)}
 .cta-btn:hover::before{opacity:1}
 .cta-btn:active{transform:translateY(0)}
 .cta-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
-.cta-btn.loading{color:transparent;pointer-events:none}
-.cta-btn.loading::after{
-  content:'';position:absolute;
-  width:20px;height:20px;
-  border:2.5px solid rgba(0,0,0,.25);
-  border-top-color:#060606;
-  border-radius:50%;
-  animation:spin .7s linear infinite;
-}
+
 .cta-note{
   text-align:center;font-size:11px;color:var(--gray);
   margin-top:12px;letter-spacing:.04em;
@@ -240,7 +233,6 @@ select option{background:#111;color:var(--white)}
 }
 .cta-note svg{color:var(--success)}
 
-/* ── ORDER SUMMARY ── */
 .summary-sticky{position:sticky;top:80px}
 .summary-items{padding:20px 22px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:18px}
 .order-item{display:flex;gap:14px;align-items:center}
@@ -258,7 +250,6 @@ select option{background:#111;color:var(--white)}
 }
 .order-item-price{font-family:'DM Mono',monospace;font-size:14px;font-weight:500;color:var(--white);flex-shrink:0}
 
-/* Totals */
 .summary-totals{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:10px}
 .total-row{display:flex;justify-content:space-between;align-items:center}
 .total-label{font-size:12px;color:var(--gray);letter-spacing:.06em}
@@ -270,7 +261,6 @@ select option{background:#111;color:var(--white)}
 .total-row.grand .total-val{font-size:18px;color:var(--gold);font-weight:500}
 hr.summary-divider{border:none;border-top:1px solid var(--border);margin:2px 0}
 
-/* Trust badges */
 .summary-trust{
   padding:14px 22px;
   display:flex;align-items:center;justify-content:center;gap:20px;
@@ -278,7 +268,6 @@ hr.summary-divider{border:none;border-top:1px solid var(--border);margin:2px 0}
 .trust-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--gray);letter-spacing:.06em;text-transform:uppercase}
 .trust-item svg{flex-shrink:0}
 
-/* ── SUCCESS MODAL ── */
 .modal-overlay{
   position:fixed;inset:0;z-index:200;
   background:rgba(4,4,4,.96);
@@ -331,27 +320,6 @@ hr.summary-divider{border:none;border-top:1px solid var(--border);margin:2px 0}
   font-size:13px;color:var(--gray);text-align:center;line-height:1.6;margin-bottom:22px;
 }
 .modal-message strong{color:var(--white2)}
-.modal-items{
-  border:1px solid var(--border);border-radius:var(--rs);overflow:hidden;margin-bottom:20px;
-}
-.modal-item{
-  display:flex;justify-content:space-between;
-  padding:10px 16px;font-size:12px;
-}
-.modal-item:not(:last-child){border-bottom:1px solid var(--border)}
-.modal-item-name{color:var(--white2)}
-.modal-item-price{font-family:'DM Mono',monospace;color:var(--gold)}
-.modal-totals{
-  padding:0 4px;display:flex;flex-direction:column;gap:8px;margin-bottom:24px;
-}
-.modal-total-row{display:flex;justify-content:space-between;font-size:12px}
-.modal-total-row .ml{color:var(--gray)}
-.modal-total-row .mr{font-family:'DM Mono',monospace;color:var(--white2)}
-.modal-total-row.grand .ml{
-  font-family:'Oswald',sans-serif;font-weight:700;font-size:14px;
-  letter-spacing:.12em;text-transform:uppercase;color:var(--white);
-}
-.modal-total-row.grand .mr{font-size:18px;color:var(--gold)}
 .modal-cta{
   width:100%;height:50px;
   background:var(--gold);color:#060606;border:none;border-radius:var(--rs);
@@ -366,7 +334,6 @@ hr.summary-divider{border:none;border-top:1px solid var(--border);margin:2px 0}
   text-align:center;font-size:11px;color:var(--gray);margin-top:12px;letter-spacing:.04em;
 }
 
-/* ── FOOTER ── */
 footer{
   border-top:1px solid var(--border);
   padding:24px 28px;text-align:center;
@@ -376,14 +343,10 @@ footer{
 footer a{color:var(--gray);text-decoration:none;transition:color .2s}
 footer a:hover{color:var(--gold)}
 
-/* ── ANIMATIONS ── */
-@keyframes spin{to{transform:rotate(360deg)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 @keyframes checkPulse{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
-@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-4px)}40%,80%{transform:translateX(4px)}}
 
-/* ── RESPONSIVE ── */
 @media(max-width:600px){
   .header-inner{padding:0 16px}
   nav{gap:18px}
@@ -395,27 +358,21 @@ footer a:hover{color:var(--gold)}
   .form-row.triple{grid-template-columns:1fr 1fr}
   .logo-name{font-size:14px;letter-spacing:.12em}
 }
-@media(max-width:420px){
-  .form-row.triple{grid-template-columns:1fr}
-  nav{gap:12px}
-  .header-secure span{display:none}
-}
 </style>
 </head>
 <body>
 
-<!-- ── HEADER ────────────────────────────────────────── -->
 <header>
   <div class="header-inner">
-    <a class="logo" href="https://tawanametatronnzombe-star.github.io/gosie-kartel/">
+    <a class="logo" href="#">
       <div class="logo-mark">GK</div>
       <span class="logo-name">Gosie Kartel</span>
     </a>
     <nav>
-      <a href="https://tawanametatronnzombe-star.github.io/gosie-kartel/">Home</a>
-      <a href="https://tawanametatronnzombe-star.github.io/gosie-kartel/shop">Shop</a>
-      <a href="https://tawanametatronnzombe-star.github.io/gosie-kartel/about">About</a>
-      <a href="https://tawanametatronnzombe-star.github.io/gosie-kartel/contact">Contact</a>
+      <a href="#">Home</a>
+      <a href="#">Shop</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
     </nav>
     <div class="header-secure">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -424,281 +381,142 @@ footer a:hover{color:var(--gold)}
   </div>
 </header>
 
-<!-- ── MAIN ──────────────────────────────────────────── -->
 <main>
-  <div class="checkout-grid">
+  <div id="error-message"></div>
 
-    <!-- LEFT COLUMN -->
-    <div class="left-col">
+  <form id="checkout-form">
+    <div class="checkout-grid">
 
-      <!-- 1. Customer Information -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-header-num">1</div>
-          <span class="card-title">Customer Information</span>
-        </div>
-        <div class="card-body">
-          <div class="form-row single">
-            <div class="field">
-              <label for="full-name">Full Name</label>
-              <input type="text" id="full-name" placeholder="Your full name" autocomplete="name"/>
-              <span class="field-error" id="err-name">Please enter your full name.</span>
-            </div>
+      <div class="left-col">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-header-num">1</div>
+            <span class="card-title">Customer Information</span>
           </div>
-          <div class="form-row">
-            <div class="field">
-              <label for="email">Email Address</label>
-              <input type="email" id="email" placeholder="you@example.com" autocomplete="email"/>
-              <span class="field-error" id="err-email">Please enter a valid email.</span>
-            </div>
-            <div class="field">
-              <label for="phone">Phone Number</label>
-              <input type="tel" id="phone" placeholder="+1 (000) 000-0000" autocomplete="tel"/>
-              <span class="field-error" id="err-phone">Please enter your phone number.</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 2. Shipping Information -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-header-num">2</div>
-          <span class="card-title">Shipping</span>
-        </div>
-        <div class="card-body">
-          <div class="form-row single">
-            <div class="field">
-              <label for="country">Country</label>
-              <select id="country">
-                <option value="" disabled selected>Select your country</option>
-              </select>
-              <span class="field-error" id="err-country">Please select your country.</span>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="field">
-              <label for="city">City</label>
-              <input type="text" id="city" placeholder="Your city" autocomplete="address-level2"/>
-              <span class="field-error" id="err-city">Please enter your city.</span>
-            </div>
-            <div class="field">
-              <label for="zip">ZIP / Postal Code</label>
-              <input type="text" id="zip" placeholder="Postal code" autocomplete="postal-code"/>
-              <span class="field-error" id="err-zip">Please enter your postal code.</span>
-            </div>
-          </div>
-          <div class="form-row single">
-            <div class="field">
-              <label for="address">Street Address</label>
-              <input type="text" id="address" placeholder="Street, apartment, building…" autocomplete="street-address"/>
-              <span class="field-error" id="err-address">Please enter your address.</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 3. Payment -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-header-num">3</div>
-          <span class="card-title">Payment</span>
-        </div>
-        <div class="card-body">
-          <div class="pay-methods">
-
-            <!-- Card -->
-            <div class="pay-option selected" id="opt-card" onclick="selectPay('card')">
-              <div class="pay-radio"><div class="pay-radio-dot"></div></div>
-              <div class="pay-label-wrap">
-                <div class="pay-name">Credit / Debit Card</div>
-                <div class="pay-sub">Visa, Mastercard, Amex accepted</div>
-              </div>
-              <div class="pay-icon">
-                <!-- Card icon set -->
-                <svg width="80" height="24" viewBox="0 0 80 24" fill="none">
-                  <!-- Visa -->
-                  <rect x="0" y="2" width="24" height="16" rx="3" fill="#1A1F71"/>
-                  <text x="12" y="14" text-anchor="middle" font-size="8" fill="#FFFFFF" font-weight="bold" font-family="Arial">VISA</text>
-                  <!-- MC -->
-                  <rect x="28" y="2" width="24" height="16" rx="3" fill="#252525" stroke="#333" stroke-width="1"/>
-                  <circle cx="38" cy="10" r="5" fill="#EB001B"/>
-                  <circle cx="44" cy="10" r="5" fill="#F79E1B"/>
-                  <path d="M41 6.5a5 5 0 0 1 0 7 5 5 0 0 1 0-7z" fill="#FF5F00"/>
-                  <!-- Amex -->
-                  <rect x="56" y="2" width="24" height="16" rx="3" fill="#2E77BC"/>
-                  <text x="68" y="14" text-anchor="middle" font-size="6.5" fill="#FFFFFF" font-weight="bold" font-family="Arial">AMEX</text>
-                </svg>
+          <div class="card-body">
+            <div class="form-row single">
+              <div class="field">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" placeholder="Your full name" autocomplete="name"/>
               </div>
             </div>
-
-            <!-- Card fields -->
-            <div id="card-fields" class="show">
-              <div class="form-row single">
-                <div class="field">
-                  <label for="card-num">Card Number</label>
-                  <input type="text" id="card-num" class="mono" placeholder="0000  0000  0000  0000" maxlength="19" oninput="fmtCard(this)"/>
-                  <span class="field-error" id="err-card-num">Please enter a valid 16-digit card number.</span>
-                </div>
+            <div class="form-row">
+              <div class="field">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="you@example.com" autocomplete="email"/>
               </div>
-              <div class="form-row">
-                <div class="field">
-                  <label for="card-exp">Expiry Date</label>
-                  <input type="text" id="card-exp" class="mono" placeholder="MM / YY" maxlength="7" oninput="fmtExp(this)"/>
-                  <span class="field-error" id="err-card-exp">Please enter a valid expiry.</span>
-                </div>
-                <div class="field">
-                  <label for="card-cvv">CVV / CVC</label>
-                  <input type="password" id="card-cvv" class="mono" placeholder="•••" maxlength="4" oninput="this.value=this.value.replace(/\D/g,'')"/>
-                  <span class="field-error" id="err-card-cvv">Please enter your CVV.</span>
+              <div class="field">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" placeholder="+1 (000) 000-0000" autocomplete="tel"/>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-header-num">2</div>
+            <span class="card-title">Shipping</span>
+          </div>
+          <div class="card-body">
+            <div class="form-row single">
+              <div class="field">
+                <label for="country">Country</label>
+                <select id="country">
+                  <option value="" disabled selected>Select your country</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label for="city">City</label>
+                <input type="text" id="city" placeholder="Your city" autocomplete="address-level2"/>
+              </div>
+              <div class="field">
+                <label for="postalCode">ZIP / Postal Code</label>
+                <input type="text" id="postalCode" placeholder="Postal code" autocomplete="postal-code"/>
+              </div>
+            </div>
+            <div class="form-row single">
+              <div class="field">
+                <label for="address">Street Address</label>
+                <input type="text" id="address" placeholder="Street, apartment, building…" autocomplete="street-address"/>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-header-num">3</div>
+            <span class="card-title">Payment</span>
+          </div>
+          <div class="card-body">
+            <div class="pay-methods">
+              <div class="pay-option selected" id="opt-card">
+                <div class="pay-radio"><div class="pay-radio-dot"></div></div>
+                <div class="pay-label-wrap">
+                  <div class="pay-name">Credit / Debit Card</div>
+                  <div class="pay-sub">Visa, Mastercard, Amex accepted</div>
                 </div>
               </div>
             </div>
 
-            <!-- PayPal -->
-            <div class="pay-option" id="opt-paypal" onclick="selectPay('paypal')">
-              <div class="pay-radio"><div class="pay-radio-dot"></div></div>
-              <div class="pay-label-wrap">
-                <div class="pay-name">PayPal</div>
-                <div class="pay-sub">Redirect to PayPal to complete payment</div>
-              </div>
-              <div class="pay-icon">
-                <svg viewBox="0 0 60 20" height="20" fill="none">
-                  <path d="M8 1.5C5.5 1.5 3.5 3.2 3.2 5.7L1 16h3.5l.7-4.2h2.1c3.9 0 6.3-2.3 6.8-6.1.25-1.77-.01-3.15-.72-4.12C12.7 2.1 10.7 1.5 8 1.5zm1 2.6h1.8c1.12 0 1.86.29 2.2.79.32.49.4 1.28.22 2.45C12.78 9.97 11.4 10.3 9.4 10.3H7.8l1.2-6.2z" fill="#003087"/>
-                  <path d="M21 1.5c-2.5 0-4.5 1.7-4.8 4.2L14 16h3.5l.7-4.2h2.1c3.9 0 6.3-2.3 6.8-6.1.25-1.77-.01-3.15-.72-4.12C25.7 2.1 23.7 1.5 21 1.5zm1 2.6h1.8c1.12 0 1.86.29 2.2.79.32.49.4 1.28.22 2.45C25.78 9.97 24.4 10.3 22.4 10.3H20.8l1.2-6.2z" fill="#009CDE"/>
-                </svg>
-              </div>
+            <div class="cta-wrap" style="margin-top:24px">
+              <button class="cta-btn" type="submit" id="complete-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Complete Order
+              </button>
+              <p class="cta-note">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                256-bit SSL · PCI compliant · Encrypted
+              </p>
             </div>
-
-            <!-- PayPal info -->
-            <div class="pay-info" id="info-paypal">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-              You will be securely redirected to <strong>&nbsp;PayPal&nbsp;</strong> to authorize payment. After completing, you'll return here automatically.
-            </div>
-
-            <!-- Stripe -->
-            <div class="pay-option" id="opt-stripe" onclick="selectPay('stripe')">
-              <div class="pay-radio"><div class="pay-radio-dot"></div></div>
-              <div class="pay-label-wrap">
-                <div class="pay-name">Stripe</div>
-                <div class="pay-sub">Powered by Stripe — industry-leading security</div>
-              </div>
-              <div class="pay-icon">
-                <svg viewBox="0 0 60 25" height="20" fill="none">
-                  <path d="M6.72 8.8c0-.96.78-1.33 2.06-1.33 1.84 0 4.16.56 6 1.56V4.04A16 16 0 0 0 8.78 3C4.38 3 1.42 5.27 1.42 9c0 5.63 7.74 4.72 7.74 7.14 0 1.14-.99 1.5-2.35 1.5-2.04 0-4.64-.85-6.7-2v5.07c2.28 1 4.58 1.4 6.7 1.4 4.52 0 7.64-2.24 7.64-6.02C14.45 10.32 6.72 11.4 6.72 8.8zm16.66-5.1-3.5.76V7.7l3.5-.76V3.7zm-3.5 4.76h3.5V21h-3.5V8.46zm11.3-.52c-1.4 0-2.3.66-2.8 1.12l-.18-.89h-3.12V24.6l3.54-.76.01-4.1c.52.38 1.28.92 2.54.92 2.56 0 4.9-2.07 4.9-6.62-.01-4.17-2.37-6.1-4.89-6.1zm-.86 9.38c-.84 0-1.34-.3-1.69-.67l-.02-5.28c.38-.42.9-.7 1.71-.7 1.3 0 2.2 1.47 2.2 3.32 0 1.9-.88 3.33-2.2 3.33zM46 7.94c-3.86 0-6.2 3.25-6.2 6.58 0 4.34 2.46 6.56 6.4 6.56 1.83 0 3.22-.42 4.27-1.13v-2.98c-1.05.7-2.26 1.1-3.8 1.1-1.5 0-2.84-.53-3.01-2.36h7.56c.02-.2.04-.98.04-1.34 0-3.3-1.68-6.43-5.26-6.43zm-2.37 5.28c0-1.75.88-2.48 1.9-2.48 1.02 0 1.84.74 1.84 2.48h-3.74z" fill="#635BFF"/>
-                </svg>
-              </div>
-            </div>
-
-            <!-- Stripe info -->
-            <div class="pay-info" id="info-stripe">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-              You will be securely redirected to <strong>&nbsp;Stripe&nbsp;</strong> to enter your payment details. PCI-DSS compliant. Redirect back is automatic.
-            </div>
-
           </div>
-
-          <!-- Complete Order -->
-          <div class="cta-wrap" style="margin-top:24px">
-            <button class="cta-btn" id="complete-btn" onclick="submitOrder()">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-              Complete Order
-            </button>
-            <p class="cta-note">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-              256-bit SSL · PCI compliant · Encrypted
-            </p>
-          </div>
-
         </div>
       </div>
-    </div><!-- /left col -->
 
-    <!-- RIGHT COLUMN — Order Summary -->
-    <aside class="summary-sticky">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-header-num" style="border-color:var(--gold);color:var(--gold)">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <aside class="summary-sticky">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-header-num">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            </div>
+            <span class="card-title">Order Summary</span>
           </div>
-          <span class="card-title">Order Summary</span>
-        </div>
 
-        <!-- Items -->
-<div class="summary-items" id="summary-items">
-  <!-- Cart items load here -->
-</div>
+          <div class="summary-items" id="summary-items"></div>
 
-<!-- Totals -->
-<div class="summary-totals">
-  <div class="total-row">
-    <span class="total-label">Subtotal</span>
-    <span class="total-val" id="summary-subtotal">$0.00</span>
-  </div>
-
-  <div class="total-row">
-    <span class="total-label">Shipping</span>
-    <span class="total-val" id="summary-shipping">$0.00</span>
-  </div>
-
-  <hr class="summary-divider"/>
-
-  <div class="total-row grand">
-    <span class="total-label">Total</span>
-    <span class="total-val" id="summary-total">$0.00</span>
-  </div>
-</div>
-
-        <!-- Totals -->
-<div class="summary-totals">
-
-  <div class="total-row">
-    <span class="total-label">
-      Subtotal (<span id="item-count">0</span> items)
-    </span>
-    <span class="total-val" id="summary-subtotal">$0.00</span>
-  </div>
-
-  <div class="total-row">
-    <span class="total-label">Shipping</span>
-    <span class="total-val" id="summary-shipping">$0.00</span>
-  </div>
-
-  <hr class="summary-divider"/>
-
-  <div class="total-row grand">
-    <span class="total-label">Total</span>
-    <span class="total-val" id="summary-total">$0.00</span>
-  </div>
-
-</div>
-
-        <!-- Trust -->
-        <div class="summary-trust">
-          <div class="trust-item">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#4caf7a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            Buyer Protection
+          <div class="summary-totals">
+            <div class="total-row">
+              <span class="total-label">Subtotal (<span id="item-count">0</span> items)</span>
+              <span class="total-val" id="summary-subtotal">$0.00</span>
+            </div>
+            <div class="total-row">
+              <span class="total-label">Shipping</span>
+              <span class="total-val" id="summary-shipping">$0.00</span>
+            </div>
+            <hr class="summary-divider"/>
+            <div class="total-row grand">
+              <span class="total-label">Total</span>
+              <span class="total-val" id="summary-total">$0.00</span>
+            </div>
           </div>
-          <div class="trust-item">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            Secure Pay
-          </div>
-          <div class="trust-item">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6a9ef5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-            Free Returns
+
+          <div class="summary-trust">
+            <div class="trust-item">Buyer Protection</div>
+            <div class="trust-item">Secure Pay</div>
+            <div class="trust-item">Free Returns</div>
           </div>
         </div>
+      </aside>
 
-      </div>
-    </aside>
-
-  </div><!-- /grid -->
+    </div>
+  </form>
 </main>
 
-<!-- ── SUCCESS MODAL ──────────────────────────────────── -->
 <div class="modal-overlay" id="success-modal">
   <div class="modal-card">
-    <!-- Gold top line via ::before -->
     <div class="modal-check">
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
     </div>
@@ -711,199 +529,19 @@ footer a:hover{color:var(--gold)}
     </div>
 
     <p class="modal-message">
-      A confirmation has been sent to <strong id="modal-email">your email</strong>.<br/>
+      A confirmation email has been sent.<br/>
       Your drop ships within 3–5 business days.
     </p>
 
-    <div class="modal-items">
-      <div class="modal-item">
-        <span class="modal-item-name">GK Signature Hoodie — Phantom Black</span>
-        <span class="modal-item-price">$159.00</span>
-      </div>
-      <div class="modal-item">
-        <span class="modal-item-name">GK Oversized Tee — Washed Onyx</span>
-        <span class="modal-item-price">$85.00</span>
-      </div>
-    </div>
-
-    <div class="modal-totals">
-      <div class="modal-total-row"><span class="ml">Subtotal</span><span class="mr">$244.00</span></div>
-      <div class="modal-total-row"><span class="ml">Shipping</span><span class="mr">$25.00</span></div>
-      <div class="modal-total-row grand" style="margin-top:4px;padding-top:10px;border-top:1px solid var(--border)">
-        <span class="ml">Total</span><span class="mr">$269.00</span>
-      </div>
-    </div>
-
-    <a class="modal-cta" href="https://tawanametatronnzombe-star.github.io/gosie-kartel/">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      Continue Shopping
-    </a>
+    <a class="modal-cta" href="#">Continue Shopping</a>
     <p class="modal-cta-sub">© 2026 Gosie Kartel — Premium Streetwear</p>
   </div>
 </div>
 
-<!-- ── FOOTER ─────────────────────────────────────────── -->
 <footer>
-  © 2026 Gosie Kartel · <a href="https://tawanametatronnzombe-star.github.io/gosie-kartel/">gosiekartel.com</a> · All rights reserved · Stay warm, stay cold.
+  © 2026 Gosie Kartel · GK · All rights reserved
 </footer>
 
-<!-- ── SCRIPT ─────────────────────────────────────────── -->
-<script>
-/* ── Country list ── */
-const COUNTRIES=[
-  "Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda",
-  "Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain",
-  "Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan",
-  "Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria",
-  "Burkina Faso","Burundi","Cabo Verde","Cambodia","Cameroon","Canada",
-  "Central African Republic","Chad","Chile","China","Colombia","Comoros",
-  "Congo, Dem. Republic","Congo, Republic","Costa Rica","Croatia","Cuba",
-  "Cyprus","Czech Republic","Denmark","Djibouti","Dominica",
-  "Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea",
-  "Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France",
-  "Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada",
-  "Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras",
-  "Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel",
-  "Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati",
-  "Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia",
-  "Libya","Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi",
-  "Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania",
-  "Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia",
-  "Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal",
-  "Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Korea",
-  "North Macedonia","Norway","Oman","Pakistan","Palau","Palestine","Panama",
-  "Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal",
-  "Qatar","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia",
-  "Saint Vincent and the Grenadines","Samoa","San Marino",
-  "São Tomé and Príncipe","Saudi Arabia","Senegal","Serbia","Seychelles",
-  "Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands",
-  "Somalia","South Africa","South Korea","South Sudan","Spain","Sri Lanka",
-  "Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan",
-  "Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago",
-  "Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine",
-  "United Arab Emirates","United Kingdom","United States","Uruguay",
-  "Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen",
-  "Zambia","Zimbabwe"
-];
-(function populateCountries(){
-  const sel=document.getElementById('country');
-  COUNTRIES.forEach(c=>{
-    const o=document.createElement('option');
-    o.value=c; o.textContent=c; sel.appendChild(o);
-  });
-})();
-
-/* ── Payment method toggle ── */
-let currentPay='card';
-function selectPay(method){
-  currentPay=method;
-  ['card','paypal','stripe'].forEach(m=>{
-    document.getElementById('opt-'+m).classList.toggle('selected',m===method);
-  });
-  // card fields
-  document.getElementById('card-fields').classList.toggle('show',method==='card');
-  // info banners
-  document.getElementById('info-paypal').classList.toggle('show',method==='paypal');
-  document.getElementById('info-stripe').classList.toggle('show',method==='stripe');
-}
-
-/* ── Card number formatter ── */
-function fmtCard(el){
-  let v=el.value.replace(/\D/g,'').slice(0,16);
-  el.value=v.replace(/(.{4})/g,'$1  ').trim();
-}
-
-/* ── Expiry formatter ── */
-function fmtExp(el){
-  let v=el.value.replace(/\D/g,'').slice(0,4);
-  if(v.length>=3) v=v.slice(0,2)+' / '+v.slice(2);
-  el.value=v;
-}
-
-/* ── Order ID generator ── */
-function genOrderId(){
-  const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let mid='';
-  for(let i=0;i<9;i++) mid+=chars[Math.floor(Math.random()*chars.length)];
-  const suf=String(Math.floor(Math.random()*90)+10);
-  return 'GK-'+mid+'-'+suf;
-}
-
-/* ── Validation helpers ── */
-function showErr(id,show){
-  const el=document.getElementById(id);
-  if(el) el.classList.toggle('show',show);
-}
-function markField(fieldId,valid){
-  const el=document.getElementById(fieldId);
-  if(!el) return;
-  el.classList.toggle('error',!valid);
-}
-function isEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
-
-/* ── Submit ── */
-function submitOrder(){
-  let ok=true;
-
-  // Helper
-  function check(fieldId,errId,cond){
-    const valid=cond;
-    markField(fieldId,valid);
-    showErr(errId,!valid);
-    if(!valid) ok=false;
-  }
-
-  // Customer
-  check('full-name','err-name', document.getElementById('full-name').value.trim().length>=2);
-  check('email','err-email', isEmail(document.getElementById('email').value.trim()));
-  check('phone','err-phone', document.getElementById('phone').value.trim().length>=6);
-
-  // Shipping
-  check('country','err-country', document.getElementById('country').value!=='');
-  check('city','err-city', document.getElementById('city').value.trim().length>=1);
-  check('address','err-address', document.getElementById('address').value.trim().length>=3);
-  check('zip','err-zip', document.getElementById('zip').value.trim().length>=2);
-
-  // Card fields
-  if(currentPay==='card'){
-    const raw=document.getElementById('card-num').value.replace(/\s/g,'');
-    check('card-num','err-card-num', raw.length===16);
-    const exp=document.getElementById('card-exp').value.replace(/\s/g,'');
-    check('card-exp','err-card-exp', /^\d{2}\/\d{2}$/.test(exp));
-    check('card-cvv','err-card-cvv', document.getElementById('card-cvv').value.length>=3);
-  }
-
-  if(!ok){
-    // Scroll to first error
-    const firstErr=document.querySelector('.error');
-    if(firstErr) firstErr.scrollIntoView({behavior:'smooth',block:'center'});
-    // Shake button
-    const btn=document.getElementById('complete-btn');
-    btn.style.animation='shake .35s ease';
-    setTimeout(()=>btn.style.animation='',400);
-    return;
-  }
-
-  // Loading state
-  const btn=document.getElementById('complete-btn');
-  btn.classList.add('loading');
-  btn.disabled=true;
-
-  setTimeout(()=>{
-    const orderId=genOrderId();
-    const email=document.getElementById('email').value.trim();
-    document.getElementById('order-id-display').textContent=orderId;
-    document.getElementById('modal-email').textContent=email||'your email';
-    document.getElementById('success-modal').classList.add('show');
-    btn.classList.remove('loading');
-    btn.disabled=false;
-  }, 1600);
-}
-
-/* ── Close modal on bg click ── */
-document.getElementById('success-modal').addEventListener('click',function(e){
-  if(e.target===this) this.classList.remove('show');
-});
-</script>
+<script src="checkout.js"></script>
 </body>
 </html>
