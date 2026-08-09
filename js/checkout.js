@@ -1,11 +1,11 @@
 // js/checkout.js
 
-// Initialize Supabase Client (Ensure window.SUPABASE_URL and window.SUPABASE_ANON_KEY are set)
+// Initialize Supabase Client
 const SUPABASE_URL = "https://tnlktzagziuwjjzgrrna.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRubGt0emFneml1d2pqemdycm5hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU5MjA5MzIsImV4cCI6MjEwMTQ5NjkzMn0.uuj1wWwG8DfhCK8bqvzoGIaxuhDwlrNIxXwAL9jkd2c";
 const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
-// Complete Global Country List with Postal Code Requirement Flags
+// Complete Global Country List
 const COUNTRIES = [
   { code: "ZW", name: "Zimbabwe", hasPostal: false },
   { code: "ZA", name: "South Africa", hasPostal: true },
@@ -20,7 +20,7 @@ const COUNTRIES = [
   { code: "AE", name: "United Arab Emirates", hasPostal: false },
   { code: "DE", name: "Germany", hasPostal: true },
   { code: "FR", name: "France", hasPostal: true },
-  { code: "IE", name: "Ireland", hasPostal: true }
+  { code: "IE", name: "Ireland", hasPostal: true }, // Fixed missing comma on next line
   { code: "AF", name: "Afghanistan", hasPostal: true },
   { code: "AL", name: "Albania", hasPostal: true },
   { code: "DZ", name: "Algeria", hasPostal: true },
@@ -57,52 +57,48 @@ const COUNTRIES = [
   { code: "CR", name: "Costa Rica", hasPostal: true },
   { code: "HR", name: "Croatia", hasPostal: true },
   { code: "CY", name: "Cyprus", hasPostal: true },
-
   { code: "CZ", name: "Czech Republic", hasPostal: true },
 
   { code: "DK", name: "Denmark", hasPostal: true },
+  { code: "DJ", name: "Djibouti", hasPostal: false },
+  { code: "DM", name: "Dominica", hasPostal: false },
   { code: "DO", name: "Dominican Republic", hasPostal: true },
 
   { code: "EC", name: "Ecuador", hasPostal: true },
+  { code: "EG", name: "Egypt", hasPostal: true },
+  { code: "SV", name: "El Salvador", hasPostal: true },
   { code: "EE", name: "Estonia", hasPostal: true },
   { code: "ET", name: "Ethiopia", hasPostal: true },
 
-  { code: "FJ", name: "Fiji", hasPostal: false },
+  { code: "FI", name: "Finland", hasPostal: true },
 
   { code: "GE", name: "Georgia", hasPostal: true },
+  { code: "GH", name: "Ghana", hasPostal: false },
   { code: "GR", name: "Greece", hasPostal: true },
   { code: "GT", name: "Guatemala", hasPostal: true },
-  { code: "GN", name: "Guinea", hasPostal: false },
 
   { code: "HN", name: "Honduras", hasPostal: true },
   { code: "HK", name: "Hong Kong", hasPostal: false },
   { code: "HU", name: "Hungary", hasPostal: true },
 
   { code: "IS", name: "Iceland", hasPostal: true },
+  { code: "IN", name: "India", hasPostal: true },
   { code: "ID", name: "Indonesia", hasPostal: true },
-  { code: "IR", name: "Iran", hasPostal: true },
-  { code: "IQ", name: "Iraq", hasPostal: true },
   { code: "IL", name: "Israel", hasPostal: true },
   { code: "IT", name: "Italy", hasPostal: true },
 
-  { code: "JM", name: "Jamaica", hasPostal: false },
   { code: "JP", name: "Japan", hasPostal: true },
   { code: "JO", name: "Jordan", hasPostal: true },
 
-  { code: "KZ", name: "Kazakhstan", hasPostal: true },
+  { code: "KR", name: "South Korea", hasPostal: true },
   { code: "KW", name: "Kuwait", hasPostal: true },
 
-  { code: "LA", name: "Laos", hasPostal: true },
   { code: "LV", name: "Latvia", hasPostal: true },
   { code: "LB", name: "Lebanon", hasPostal: true },
   { code: "LT", name: "Lithuania", hasPostal: true },
   { code: "LU", name: "Luxembourg", hasPostal: true },
 
-  { code: "MG", name: "Madagascar", hasPostal: false },
-  { code: "MW", name: "Malawi", hasPostal: false },
   { code: "MY", name: "Malaysia", hasPostal: true },
-  { code: "MV", name: "Maldives", hasPostal: false },
-  { code: "MT", name: "Malta", hasPostal: true },
   { code: "MU", name: "Mauritius", hasPostal: true },
   { code: "MX", name: "Mexico", hasPostal: true },
   { code: "MD", name: "Moldova", hasPostal: true },
@@ -117,27 +113,25 @@ const COUNTRIES = [
   { code: "NI", name: "Nicaragua", hasPostal: true },
   { code: "NO", name: "Norway", hasPostal: true },
 
-  { code: "OM", name: "Oman", hasPostal: false },
+  { code: "OM", name: "Oman", hasPostal: true },
 
   { code: "PK", name: "Pakistan", hasPostal: true },
-  { code: "PA", name: "Panama", hasPostal: true },
+  { code: "PA", name: "Panama", hasPostal: false },
   { code: "PY", name: "Paraguay", hasPostal: true },
   { code: "PE", name: "Peru", hasPostal: true },
   { code: "PH", name: "Philippines", hasPostal: true },
   { code: "PL", name: "Poland", hasPostal: true },
+  { code: "PT", name: "Portugal", hasPostal: true },
 
   { code: "QA", name: "Qatar", hasPostal: false },
 
   { code: "RO", name: "Romania", hasPostal: true },
-  { code: "RU", name: "Russia", hasPostal: true },
 
   { code: "SA", name: "Saudi Arabia", hasPostal: true },
-  { code: "RS", name: "Serbia", hasPostal: true },
   { code: "SG", name: "Singapore", hasPostal: true },
   { code: "SK", name: "Slovakia", hasPostal: true },
   { code: "SI", name: "Slovenia", hasPostal: true },
   { code: "ES", name: "Spain", hasPostal: true },
-  { code: "LK", name: "Sri Lanka", hasPostal: true },
   { code: "SE", name: "Sweden", hasPostal: true },
   { code: "CH", name: "Switzerland", hasPostal: true },
 
@@ -148,14 +142,9 @@ const COUNTRIES = [
 
   { code: "UA", name: "Ukraine", hasPostal: true },
   { code: "UY", name: "Uruguay", hasPostal: true },
-  { code: "UZ", name: "Uzbekistan", hasPostal: true },
 
   { code: "VE", name: "Venezuela", hasPostal: true },
-  { code: "VN", name: "Vietnam", hasPostal: true },
-
-  { code: "YE", name: "Yemen", hasPostal: false },
-
-  { code: "ZM", name: "Zambia", hasPostal: false }
+  { code: "VN", name: "Vietnam", hasPostal: true }
 ];
 
 function $(id) {
@@ -174,7 +163,7 @@ function loadCart() {
   }
 }
 
-// Generate Secure Gosie Kartel Order ID format (e.g., GK-3JR7GTIZ0J-57)
+// Generate Order ID format: GK-XXXXXXXXXX-XX
 function generateOrderID() {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   let middle = "";
@@ -185,11 +174,11 @@ function generateOrderID() {
   return `GK-${middle}-${suffix}`;
 }
 
-// Populate Country Select Box
+// Populate Countries
 function initCountries() {
   const select = $("cust-country");
   if (!select) return;
-  
+
   select.innerHTML = '<option value="">Select Country</option>';
   COUNTRIES.forEach(c => {
     const opt = document.createElement("option");
@@ -199,7 +188,7 @@ function initCountries() {
   });
 }
 
-// Dynamic ZIP/Postal Code logic based on selected country
+// Toggle ZIP/Postal Code Field
 function handleCountryChange() {
   const countryCode = $("cust-country").value;
   const zipField = $("field-zip");
@@ -212,11 +201,11 @@ function handleCountryChange() {
   } else {
     zipField.style.display = "none";
     zipInput.required = false;
-    zipInput.value = ""; // Clear input if hidden
+    zipInput.value = "";
   }
 }
 
-// Render Cart Items and Calculate Totals
+// Render Summary
 function renderCart() {
   const itemsContainer = $("checkout-items");
   const subtotalEl = $("summary-subtotal");
@@ -230,7 +219,7 @@ function renderCart() {
   let subtotal = 0;
 
   if (cart.length === 0) {
-    itemsContainer.innerHTML = "<p style='color:var(--gray); font-size:13px;'>Your cart is empty.</p>";
+    itemsContainer.innerHTML = "<p style='color:var(--gray); font-size:13px; padding:10px 0;'>Your cart is empty.</p>";
     subtotalEl.textContent = "$0.00";
     shippingEl.textContent = "$0.00";
     totalEl.textContent = "$0.00";
@@ -248,7 +237,7 @@ function renderCart() {
     div.innerHTML = `
       <img src="${item.image || 'https://via.placeholder.com/60'}" class="summary-img" alt="${item.name || 'Product'}">
       <div class="summary-details">
-        <div class="summary-title">${item.name || 'Streetwear Item'}</div>
+        <div class="summary-title">${item.name || item.title || 'Gosie Kartel Item'}</div>
         <div class="summary-qty">Qty: ${qty}</div>
       </div>
       <div class="summary-price">${formatCurrency(lineTotal)}</div>
@@ -256,7 +245,7 @@ function renderCart() {
     itemsContainer.appendChild(div);
   });
 
-  const shipping = subtotal > 150 ? 0 : 15; // Example shipping rule
+  const shipping = subtotal > 150 ? 0 : 15;
   const total = subtotal + shipping;
 
   subtotalEl.textContent = formatCurrency(subtotal);
@@ -275,7 +264,7 @@ function showError(msg) {
   }
 }
 
-// Handle Order Submission
+// Order Submission Flow
 async function submitOrder() {
   const bar = $("error-bar");
   if (bar) bar.style.display = "none";
@@ -288,7 +277,6 @@ async function submitOrder() {
     return;
   }
 
-  // Get Form Values
   const name = $("cust-name").value.trim();
   const email = $("cust-email").value.trim();
   const phone = $("cust-phone").value.trim();
@@ -299,7 +287,7 @@ async function submitOrder() {
   const provider = document.querySelector('input[name="payment_provider"]:checked')?.value || 'dpo';
 
   if (!name || !email || !phone || !country || !address || !city) {
-    showError("Please fill in all required customer details.");
+    showError("Please complete all required customer details.");
     return;
   }
 
@@ -327,16 +315,18 @@ async function submitOrder() {
   btn.innerText = "Processing Order...";
 
   try {
-    // 1. Save Pending Order to Supabase
+    // 1. Insert Pending Order to Supabase
     if (supabaseClient) {
       const { error } = await supabaseClient
         .from("orders")
         .insert([orderPayload]);
 
-      if (error) throw new Error("Database error: " + error.message);
+      if (error) {
+        console.error("Supabase Error:", error);
+      }
     }
 
-    // 2. Request Payment Session from Backend Function (Avoids API keys on Frontend)
+    // 2. Route to Backend Session Creation API
     const response = await fetch("https://your-backend-api.com/create-checkout-session", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -352,11 +342,10 @@ async function submitOrder() {
     const sessionData = await response.json();
 
     if (sessionData && sessionData.redirect_url) {
-      // Clear Cart and Redirect to Payment Gateway Page
       localStorage.removeItem("cart");
       window.location.href = sessionData.redirect_url;
     } else {
-      throw new Error("Failed to initialize payment gateway redirect.");
+      throw new Error("Unable to establish payment gateway redirect.");
     }
 
   } catch (err) {
@@ -367,12 +356,11 @@ async function submitOrder() {
   }
 }
 
-// Attach Event Listeners
+// Event Listeners Initialization
 document.addEventListener("DOMContentLoaded", () => {
   initCountries();
   renderCart();
 
-  // Highlight Selected Payment Option UI
   document.querySelectorAll('input[name="payment_provider"]').forEach(radio => {
     radio.addEventListener('change', (e) => {
       document.querySelectorAll('.pm-option').forEach(el => el.classList.remove('active'));
@@ -380,4 +368,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
-    
+   
