@@ -7,7 +7,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -38,6 +40,11 @@ body{
   min-height:100vh;
   -webkit-font-smoothing:antialiased;
 }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
 
 /* ── HEADER ── */
 header{
@@ -94,9 +101,6 @@ main{max-width:1160px;margin:32px auto 80px;padding:0 28px}
 }
 .field input:focus, .field select:focus{border-color:var(--gold)}
 .field select option{background:var(--bg2);color:var(--white)}
-.field-error{color:var(--error);font-size:11px;display:none;margin-top:2px}
-.field.error input, .field.error select{border-color:var(--error)}
-.field.error .field-error{display:block}
 
 /* Order Summary Items */
 .summary-item{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--border)}
@@ -109,7 +113,7 @@ main{max-width:1160px;margin:32px auto 80px;padding:0 28px}
 .summary-row{display:flex;justify-content:space-between;padding:8px 0;font-size:13px;color:var(--white2)}
 .summary-row.total{border-top:1px solid var(--border2);margin-top:12px;padding-top:12px;font-size:16px;font-weight:700;color:var(--white)}
 
-/* Payment Method Selection */
+/* Payment Methods */
 .payment-methods{display:flex;flex-direction:column;gap:10px}
 .pm-option{
   display:flex;align-items:center;justify-content:space-between;
@@ -156,24 +160,21 @@ main{max-width:1160px;margin:32px auto 80px;padding:0 28px}
         <div class="card">
           <div class="card-header">
             <div class="card-header-num">1</div>
-            <span class="card-title">Customer Details</span>
+            <span class="card-title">Customer Information</span>
           </div>
           <div class="form-grid">
-            <div class="field" id="field-name">
+            <div class="field">
               <label for="cust-name">Full Name *</label>
               <input type="text" id="cust-name" placeholder="John Doe" required />
-              <span class="field-error">Please enter your full name.</span>
             </div>
-            <div class="field" id="field-email">
+            <div class="field">
               <label for="cust-email">Email Address *</label>
               <input type="email" id="cust-email" placeholder="john@example.com" required />
-              <span class="field-error">Please enter a valid email address.</span>
             </div>
           </div>
-          <div class="field" id="field-phone">
+          <div class="field">
             <label for="cust-phone">Phone Number *</label>
             <input type="tel" id="cust-phone" placeholder="+263 77 123 4567" required />
-            <span class="field-error">Please enter a valid phone number.</span>
           </div>
         </div>
 
@@ -182,31 +183,27 @@ main{max-width:1160px;margin:32px auto 80px;padding:0 28px}
             <div class="card-header-num">2</div>
             <span class="card-title">Shipping Address</span>
           </div>
-          <div class="field" id="field-country">
+          <div class="field">
             <label for="cust-country">Country / Region *</label>
             <select id="cust-country" required onchange="handleCountryChange()">
               <option value="">Select Country</option>
             </select>
-            <span class="field-error">Please select a country.</span>
           </div>
 
-          <div class="field" id="field-address">
+          <div class="field">
             <label for="cust-address">Street Address *</label>
             <input type="text" id="cust-address" placeholder="123 Samora Machel Ave" required />
-            <span class="field-error">Please enter your street address.</span>
           </div>
 
           <div class="form-grid">
-            <div class="field" id="field-city">
+            <div class="field">
               <label for="cust-city">City *</label>
               <input type="text" id="cust-city" placeholder="Harare" required />
-              <span class="field-error">Please enter your city.</span>
             </div>
             
             <div class="field" id="field-zip">
               <label for="cust-zip" id="zip-label">ZIP / Postal Code *</label>
               <input type="text" id="cust-zip" placeholder="00263" />
-              <span class="field-error">Please enter a valid postal code.</span>
             </div>
           </div>
         </div>
@@ -276,4 +273,4 @@ main{max-width:1160px;margin:32px auto 80px;padding:0 28px}
 <script src="js/checkout.js"></script>
 </body>
                 </html>
-                                                                                                        
+              
