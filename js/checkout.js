@@ -21,6 +21,141 @@ const COUNTRIES = [
   { code: "DE", name: "Germany", hasPostal: true },
   { code: "FR", name: "France", hasPostal: true },
   { code: "IE", name: "Ireland", hasPostal: true }
+  { code: "AF", name: "Afghanistan", hasPostal: true },
+  { code: "AL", name: "Albania", hasPostal: true },
+  { code: "DZ", name: "Algeria", hasPostal: true },
+  { code: "AD", name: "Andorra", hasPostal: true },
+  { code: "AO", name: "Angola", hasPostal: false },
+  { code: "AG", name: "Antigua and Barbuda", hasPostal: false },
+  { code: "AR", name: "Argentina", hasPostal: true },
+  { code: "AM", name: "Armenia", hasPostal: true },
+  { code: "AT", name: "Austria", hasPostal: true },
+  { code: "AZ", name: "Azerbaijan", hasPostal: true },
+
+  { code: "BS", name: "Bahamas", hasPostal: false },
+  { code: "BH", name: "Bahrain", hasPostal: true },
+  { code: "BD", name: "Bangladesh", hasPostal: true },
+  { code: "BB", name: "Barbados", hasPostal: true },
+  { code: "BY", name: "Belarus", hasPostal: true },
+  { code: "BE", name: "Belgium", hasPostal: true },
+  { code: "BZ", name: "Belize", hasPostal: false },
+  { code: "BJ", name: "Benin", hasPostal: false },
+  { code: "BT", name: "Bhutan", hasPostal: true },
+  { code: "BO", name: "Bolivia", hasPostal: true },
+  { code: "BA", name: "Bosnia and Herzegovina", hasPostal: true },
+  { code: "BR", name: "Brazil", hasPostal: true },
+  { code: "BN", name: "Brunei", hasPostal: true },
+  { code: "BG", name: "Bulgaria", hasPostal: true },
+  { code: "BF", name: "Burkina Faso", hasPostal: false },
+  { code: "BI", name: "Burundi", hasPostal: false },
+
+  { code: "KH", name: "Cambodia", hasPostal: true },
+  { code: "CM", name: "Cameroon", hasPostal: false },
+  { code: "CL", name: "Chile", hasPostal: true },
+  { code: "CN", name: "China", hasPostal: true },
+  { code: "CO", name: "Colombia", hasPostal: true },
+  { code: "CR", name: "Costa Rica", hasPostal: true },
+  { code: "HR", name: "Croatia", hasPostal: true },
+  { code: "CY", name: "Cyprus", hasPostal: true },
+
+  { code: "CZ", name: "Czech Republic", hasPostal: true },
+
+  { code: "DK", name: "Denmark", hasPostal: true },
+  { code: "DO", name: "Dominican Republic", hasPostal: true },
+
+  { code: "EC", name: "Ecuador", hasPostal: true },
+  { code: "EE", name: "Estonia", hasPostal: true },
+  { code: "ET", name: "Ethiopia", hasPostal: true },
+
+  { code: "FJ", name: "Fiji", hasPostal: false },
+
+  { code: "GE", name: "Georgia", hasPostal: true },
+  { code: "GR", name: "Greece", hasPostal: true },
+  { code: "GT", name: "Guatemala", hasPostal: true },
+  { code: "GN", name: "Guinea", hasPostal: false },
+
+  { code: "HN", name: "Honduras", hasPostal: true },
+  { code: "HK", name: "Hong Kong", hasPostal: false },
+  { code: "HU", name: "Hungary", hasPostal: true },
+
+  { code: "IS", name: "Iceland", hasPostal: true },
+  { code: "ID", name: "Indonesia", hasPostal: true },
+  { code: "IR", name: "Iran", hasPostal: true },
+  { code: "IQ", name: "Iraq", hasPostal: true },
+  { code: "IL", name: "Israel", hasPostal: true },
+  { code: "IT", name: "Italy", hasPostal: true },
+
+  { code: "JM", name: "Jamaica", hasPostal: false },
+  { code: "JP", name: "Japan", hasPostal: true },
+  { code: "JO", name: "Jordan", hasPostal: true },
+
+  { code: "KZ", name: "Kazakhstan", hasPostal: true },
+  { code: "KW", name: "Kuwait", hasPostal: true },
+
+  { code: "LA", name: "Laos", hasPostal: true },
+  { code: "LV", name: "Latvia", hasPostal: true },
+  { code: "LB", name: "Lebanon", hasPostal: true },
+  { code: "LT", name: "Lithuania", hasPostal: true },
+  { code: "LU", name: "Luxembourg", hasPostal: true },
+
+  { code: "MG", name: "Madagascar", hasPostal: false },
+  { code: "MW", name: "Malawi", hasPostal: false },
+  { code: "MY", name: "Malaysia", hasPostal: true },
+  { code: "MV", name: "Maldives", hasPostal: false },
+  { code: "MT", name: "Malta", hasPostal: true },
+  { code: "MU", name: "Mauritius", hasPostal: true },
+  { code: "MX", name: "Mexico", hasPostal: true },
+  { code: "MD", name: "Moldova", hasPostal: true },
+  { code: "MC", name: "Monaco", hasPostal: true },
+  { code: "MN", name: "Mongolia", hasPostal: true },
+  { code: "MA", name: "Morocco", hasPostal: true },
+  { code: "MZ", name: "Mozambique", hasPostal: false },
+
+  { code: "NP", name: "Nepal", hasPostal: true },
+  { code: "NL", name: "Netherlands", hasPostal: true },
+  { code: "NZ", name: "New Zealand", hasPostal: true },
+  { code: "NI", name: "Nicaragua", hasPostal: true },
+  { code: "NO", name: "Norway", hasPostal: true },
+
+  { code: "OM", name: "Oman", hasPostal: false },
+
+  { code: "PK", name: "Pakistan", hasPostal: true },
+  { code: "PA", name: "Panama", hasPostal: true },
+  { code: "PY", name: "Paraguay", hasPostal: true },
+  { code: "PE", name: "Peru", hasPostal: true },
+  { code: "PH", name: "Philippines", hasPostal: true },
+  { code: "PL", name: "Poland", hasPostal: true },
+
+  { code: "QA", name: "Qatar", hasPostal: false },
+
+  { code: "RO", name: "Romania", hasPostal: true },
+  { code: "RU", name: "Russia", hasPostal: true },
+
+  { code: "SA", name: "Saudi Arabia", hasPostal: true },
+  { code: "RS", name: "Serbia", hasPostal: true },
+  { code: "SG", name: "Singapore", hasPostal: true },
+  { code: "SK", name: "Slovakia", hasPostal: true },
+  { code: "SI", name: "Slovenia", hasPostal: true },
+  { code: "ES", name: "Spain", hasPostal: true },
+  { code: "LK", name: "Sri Lanka", hasPostal: true },
+  { code: "SE", name: "Sweden", hasPostal: true },
+  { code: "CH", name: "Switzerland", hasPostal: true },
+
+  { code: "TW", name: "Taiwan", hasPostal: true },
+  { code: "TH", name: "Thailand", hasPostal: true },
+  { code: "TN", name: "Tunisia", hasPostal: true },
+  { code: "TR", name: "Turkey", hasPostal: true },
+
+  { code: "UA", name: "Ukraine", hasPostal: true },
+  { code: "UY", name: "Uruguay", hasPostal: true },
+  { code: "UZ", name: "Uzbekistan", hasPostal: true },
+
+  { code: "VE", name: "Venezuela", hasPostal: true },
+  { code: "VN", name: "Vietnam", hasPostal: true },
+
+  { code: "YE", name: "Yemen", hasPostal: false },
+
+  { code: "ZM", name: "Zambia", hasPostal: false }
 ];
 
 function $(id) {
