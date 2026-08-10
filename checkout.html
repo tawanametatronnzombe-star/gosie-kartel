@@ -153,7 +153,7 @@ main{max-width:1160px;margin:32px auto 80px;padding:0 28px}
 
 <main>
   <div id="error-bar"></div>
-  <form id="checkout-form" onsubmit="event.preventDefault(); submitOrder();">
+  <form id="checkout-form">
     <div class="checkout-grid">
       
       <div class="left-col">
@@ -242,8 +242,7 @@ main{max-width:1160px;margin:32px auto 80px;padding:0 28px}
             <span class="card-title">Order Summary</span>
           </div>
 
-          <div id="checkout-items">
-            </div>
+          <div id="checkout-items"></div>
 
           <div class="summary-row" style="margin-top:16px;">
             <span>Subtotal</span>
@@ -271,6 +270,32 @@ main{max-width:1160px;margin:32px auto 80px;padding:0 28px}
 </main>
 
 <script src="js/checkout.js"></script>
+<script src="js/payment-gateway.js"></script>
+
+<script>
+// Attach form listener
+document.getElementById("checkout-form").addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const customer = {
+    name: document.getElementById("cust-name").value.trim(),
+    email: document.getElementById("cust-email").value.trim(),
+    phone: document.getElementById("cust-phone").value.trim(),
+    country: document.getElementById("cust-country").value,
+    city: document.getElementById("cust-city").value.trim(),
+    address: document.getElementById("cust-address").value.trim(),
+    zip: document.getElementById("cust-zip") ? document.getElementById("cust-zip").value.trim() : ""
+  };
+
+  const provider = document.querySelector('input[name="payment_provider"]:checked')?.value || 'dpo';
+
+  try {
+    // Triggers payment gateway redirect with user details & cart attached
+    await window.GosiePaymentGateway.executePaymentRedirect(customer, provider);
+  } catch (err) {
+    alert(err.message || "An error occurred during payment processing.");
+  }
+});
+</script>
 </body>
-                </html>
-              
+</html>
