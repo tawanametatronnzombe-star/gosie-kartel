@@ -1,157 +1,437 @@
 /**
- * Gosie Kartel — Unified Payment Gateway v2
+ * Gosie Kartel — Unified Payment Gateway v3
+ * Single File Payment Handler
+ *
  * Handles:
  * - Order creation
- * - Payment redirects
  * - Supabase Orders tracking
+ * - Payment redirects
  * - Payment completion updates
  */
 
 (function () {
-  "use strict";
 
-  const SUPABASE_URL = "https://tnlktzagziuwjjzgrrna.supabase.co";
-  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRubGt0emFneml1d2pqemdycm5hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU5MjA5MzIsImV4cCI6MjEwMTQ5NjkzMn0.uuj1wWwG8DfhCK8bqvzoGIaxuhDwlrNIxXwAL9jkd2c";
+"use strict";
 
-  const supabaseClient = window.supabase
-    ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-    : null;
 
-  const BASE_URL = "https://tawanametatronnzombe-star.github.io/gosie-kartel";
-  const SUCCESS_URL = `${BASE_URL}/order-success.html`;
-  const CANCEL_URL = `${BASE_URL}/checkout.html`;
+const SUPABASE_URL =
+"https://tnlktzagziuwjjzgrrna.supabase.co";
 
-  // Generate Gosie Kartel Order ID
-  function generateOrderID() {
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    let code = "";
 
-    for (let i = 0; i < 10; i++) {
-      code += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
+const SUPABASE_ANON_KEY =
+"YOUR_SUPABASE_ANON_KEY";
 
-    const number = Math.floor(10 + Math.random() * 90);
-    return `GK-${code}-${number}`;
-  }
 
-  // Get cart
-  function getCart() {
-    try {
-      return JSON.parse(localStorage.getItem("cart") || "[]");
-    } catch (e) {
-      return [];
-    }
-  }
+const supabaseClient =
+window.supabase
+?
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_ANON_KEY
+)
+:
+null;
 
-  // Calculate total
-  function calculateTotal(cart) {
-    let total = 0;
 
-    cart.forEach((item) => {
-      const qty = Number(item.quantity || item.qty || 1);
-      const price = Number(item.price || 0);
-      total += price * qty;
-    });
 
-    return total;
-  }
+const BASE_URL =
+"https://tawanametatronnzombe-star.github.io/gosie-kartel";
 
-  // Create pending order
-  async function createOrder(customer, paymentMethod) {
-    const cart = getCart();
 
-    if (!cart || cart.length === 0) {
-      throw new Error("Cart is empty");
-    }
+const SUCCESS_URL =
+`${BASE_URL}/order-success.html`;
 
-    const orderID = generateOrderID();
-    const total = calculateTotal(cart);
 
-    const order = {
-      order_id: orderID,
-      customer_name: customer.name,
-      email: customer.email,
-      phone: customer.phone,
-      address: customer.address,
-      country: customer.country,
-      zip_code: customer.zip || null,
-      products: cart,
-      total: total,
-      status: "Awaiting Payment",
-      tracking_number: null,
-      carrier: null,
-      pod_order_id: null,
-      created_at: new Date().toISOString()
-    };
+const CANCEL_URL =
+`${BASE_URL}/checkout.html`;
 
-    if (supabaseClient) {
-      try {
-        const { error } = await supabaseClient
-          .from("Orders")
-          .insert([order]);
 
-        if (error) {
-          console.error("Order Save Error:", error.message);
-        }
-      } catch (err) {
-        console.warn("Supabase record error:", err);
-      }
-    }
 
-    return {
-      orderID,
-      total
-    };
-  }
 
-  // Redirect customer to payment
-  async function executePaymentRedirect(customer, provider) {
-    const order = await createOrder(customer, provider);
 
-    const success = encodeURIComponent(`${SUCCESS_URL}?order_id=${order.orderID}`);
-    const cancel = encodeURIComponent(CANCEL_URL);
+function generateOrderID(){
 
-    let url;
+const chars =
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-    switch (provider) {
-      case "paynow":
-        url = `https://www.paynow.co.zw/Payment/BillPaymentLink/?amount=${order.total}&reference=${order.orderID}&returnurl=${success}`;
-        break;
+let code="";
 
-      case "flutterwave":
-        url = `https://checkout.flutterwave.com/v3/hosted/pay?tx_ref=${order.orderID}&amount=${order.total}&currency=USD&redirect_url=${success}&customer_email=${encodeURIComponent(customer.email)}`;
-        break;
 
-      default:
-        url = `https://secure.3gdirectpay.com/payv3.asp?id=${order.orderID}&amount=${order.total}&returnurl=${success}&backurl=${cancel}`;
-        break;
-    }
+for(let i=0;i<10;i++){
 
-    localStorage.removeItem("cart");
-    window.location.href = url;
-  }
+code += chars.charAt(
+Math.floor(Math.random()*chars.length)
+);
 
-  // Called after successful payment
-  async function confirmPayment(orderID, paymentID = null) {
-    if (!supabaseClient) return;
+}
 
-    try {
-      await supabaseClient
-        .from("Orders")
-        .update({ status: "Paid" })
-        .eq("order_id", orderID);
-    } catch (err) {
-      console.warn("Confirm Payment error:", err);
-    }
 
-    localStorage.removeItem("cart");
-  }
+const number =
+Math.floor(10+Math.random()*90);
 
-  window.GosiePaymentGateway = {
-    executePaymentRedirect,
-    generateOrderID,
-    confirmPayment,
-    calculateTotal
-  };
+
+return `GK-${code}-${number}`;
+
+}
+
+
+
+
+
+function getCart(){
+
+try{
+
+return JSON.parse(
+localStorage.getItem("cart") || "[]"
+);
+
+}
+catch{
+
+return [];
+
+}
+
+}
+
+
+
+
+
+function calculateTotal(cart){
+
+let total=0;
+
+
+cart.forEach(item=>{
+
+const qty =
+Number(
+item.quantity ||
+item.qty ||
+1
+);
+
+
+const price =
+Number(
+item.price ||
+0
+);
+
+
+total += qty * price;
+
+
+});
+
+
+return total;
+
+}
+
+
+
+
+
+
+
+async function createOrder(customer,provider){
+
+
+const cart =
+getCart();
+
+
+
+if(cart.length===0){
+
+throw new Error(
+"Cart is empty"
+);
+
+}
+
+
+
+const orderID =
+generateOrderID();
+
+
+
+const total =
+calculateTotal(cart);
+
+
+
+const order = {
+
+
+order_id:
+orderID,
+
+
+customer_name:
+customer.name,
+
+
+email:
+customer.email,
+
+
+phone:
+customer.phone,
+
+
+address:
+customer.address,
+
+
+country:
+customer.country,
+
+
+zip_code:
+customer.zip || null,
+
+
+products:
+cart,
+
+
+total:
+total,
+
+
+status:
+"Awaiting Payment",
+
+
+tracking_number:
+null,
+
+
+carrier:
+null,
+
+
+pod_order_id:
+null,
+
+
+created_at:
+new Date().toISOString()
+
+};
+
+
+
+
+if(supabaseClient){
+
+
+const {error}=
+
+await supabaseClient
+
+.from('"Orders"')
+
+.insert([order]);
+
+
+
+if(error){
+
+console.error(
+"Order error:",
+error.message
+);
+
+}
+
+
+}
+
+
+
+return {
+
+orderID,
+
+total
+
+};
+
+
+}
+
+
+
+
+
+
+
+async function executePaymentRedirect(
+customer,
+provider
+){
+
+
+const order =
+await createOrder(
+customer,
+provider
+);
+
+
+
+const success =
+encodeURIComponent(
+`${SUCCESS_URL}?order_id=${order.orderID}`
+);
+
+
+
+const cancel =
+encodeURIComponent(
+CANCEL_URL
+);
+
+
+
+let paymentURL;
+
+
+
+switch(provider){
+
+
+
+case "paynow":
+
+
+paymentURL =
+
+`https://www.paynow.co.zw/Payment/BillPaymentLink/?amount=${order.total}&reference=${order.orderID}&returnurl=${success}`;
+
+
+break;
+
+
+
+
+case "flutterwave":
+
+
+paymentURL =
+
+`https://checkout.flutterwave.com/v3/hosted/pay?tx_ref=${order.orderID}&amount=${order.total}&currency=USD&redirect_url=${success}&customer_email=${encodeURIComponent(customer.email)}`;
+
+
+break;
+
+
+
+
+case "dpo":
+
+
+default:
+
+
+paymentURL =
+
+`https://secure.3gdirectpay.com/payv3.asp?id=${order.orderID}&amount=${order.total}&returnurl=${success}&backurl=${cancel}`;
+
+
+break;
+
+
+}
+
+
+
+window.location.href =
+paymentURL;
+
+
+}
+
+
+
+
+
+
+
+async function confirmPayment(orderID){
+
+
+if(!supabaseClient)
+return;
+
+
+
+const {error}=
+
+await supabaseClient
+
+.from('"Orders"')
+
+.update({
+
+status:
+"Paid"
+
+})
+
+.eq(
+
+"order_id",
+
+orderID
+
+);
+
+
+
+if(error){
+
+console.warn(
+"Payment confirmation error:",
+error.message
+);
+
+}
+
+
+
+localStorage.removeItem(
+"cart"
+);
+
+
+}
+
+
+
+
+
+
+
+window.GosiePaymentGateway = {
+
+
+executePaymentRedirect,
+
+confirmPayment,
+
+generateOrderID,
+
+calculateTotal
+
+};
+
+
+
 })();
-            
