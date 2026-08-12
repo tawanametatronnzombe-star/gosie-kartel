@@ -5,202 +5,124 @@ const SUPABASE_URL = "https://tnlktzagziuwjjzgrrna.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRubGt0emFneml1d2pqemdycm5hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU5MjA5MzIsImV4cCI6MjEwMTQ5NjkzMn0.uuj1wWwG8DfhCK8bqvzoGIaxuhDwlrNIxXwAL9jkd2c";
 const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
-// Complete Global Country List
+// Complete Global Country List with Postal Code Flags
 const COUNTRIES = [
-  { code: "AF", name: "Afghanistan" },
-  { code: "AL", name: "Albania" },
-  { code: "DZ", name: "Algeria" },
-  { code: "AD", name: "Andorra" },
-  { code: "AO", name: "Angola" },
-  { code: "AG", name: "Antigua and Barbuda" },
-  { code: "AR", name: "Argentina" },
-  { code: "AM", name: "Armenia" },
-  { code: "AU", name: "Australia" },
-  { code: "AT", name: "Austria" },
-  { code: "AZ", name: "Azerbaijan" },
-  { code: "BS", name: "Bahamas" },
-  { code: "BH", name: "Bahrain" },
-  { code: "BD", name: "Bangladesh" },
-  { code: "BB", name: "Barbados" },
-  { code: "BY", name: "Belarus" },
-  { code: "BE", name: "Belgium" },
-  { code: "BZ", name: "Belize" },
-  { code: "BJ", name: "Benin" },
-  { code: "BT", name: "Bhutan" },
-  { code: "BO", name: "Bolivia" },
-  { code: "BA", name: "Bosnia and Herzegovina" },
-  { code: "BW", name: "Botswana" },
-  { code: "BR", name: "Brazil" },
-  { code: "BN", name: "Brunei" },
-  { code: "BG", name: "Bulgaria" },
-  { code: "BF", name: "Burkina Faso" },
-  { code: "BI", name: "Burundi" },
-  { code: "CV", name: "Cabo Verde" },
-  { code: "KH", name: "Cambodia" },
-  { code: "CM", name: "Cameroon" },
-  { code: "CA", name: "Canada" },
-  { code: "CF", name: "Central African Republic" },
-  { code: "TD", name: "Chad" },
-  { code: "CL", name: "Chile" },
-  { code: "CN", name: "China" },
-  { code: "CO", name: "Colombia" },
-  { code: "KM", name: "Comoros" },
-  { code: "CG", name: "Congo" },
-  { code: "CD", name: "Congo (DRC)" },
-  { code: "CR", name: "Costa Rica" },
-  { code: "HR", name: "Croatia" },
-  { code: "CU", name: "Cuba" },
-  { code: "CY", name: "Cyprus" },
-  { code: "CZ", name: "Czech Republic" },
-  { code: "DK", name: "Denmark" },
-  { code: "DJ", name: "Djibouti" },
-  { code: "DM", name: "Dominica" },
-  { code: "DO", name: "Dominican Republic" },
-  { code: "EC", name: "Ecuador" },
-  { code: "EG", name: "Egypt" },
-  { code: "SV", name: "El Salvador" },
-  { code: "GQ", name: "Equatorial Guinea" },
-  { code: "ER", name: "Eritrea" },
-  { code: "EE", name: "Estonia" },
-  { code: "SZ", name: "Eswatini" },
-  { code: "ET", name: "Ethiopia" },
-  { code: "FJ", name: "Fiji" },
-  { code: "FI", name: "Finland" },
-  { code: "FR", name: "France" },
-  { code: "GA", name: "Gabon" },
-  { code: "GM", name: "Gambia" },
-  { code: "GE", name: "Georgia" },
-  { code: "DE", name: "Germany" },
-  { code: "GH", name: "Ghana" },
-  { code: "GR", name: "Greece" },
-  { code: "GD", name: "Grenada" },
-  { code: "GT", name: "Guatemala" },
-  { code: "GN", name: "Guinea" },
-  { code: "GW", name: "Guinea-Bissau" },
-  { code: "GY", name: "Guyana" },
-  { code: "HT", name: "Haiti" },
-  { code: "HN", name: "Honduras" },
-  { code: "HU", name: "Hungary" },
-  { code: "IS", name: "Iceland" },
-  { code: "IN", name: "India" },
-  { code: "ID", name: "Indonesia" },
-  { code: "IR", name: "Iran" },
-  { code: "IQ", name: "Iraq" },
-  { code: "IE", name: "Ireland" },
-  { code: "IL", name: "Israel" },
-  { code: "IT", name: "Italy" },
-  { code: "JM", name: "Jamaica" },
-  { code: "JP", name: "Japan" },
-  { code: "JO", name: "Jordan" },
-  { code: "KZ", name: "Kazakhstan" },
-  { code: "KE", name: "Kenya" },
-  { code: "KI", name: "Kiribati" },
-  { code: "KP", name: "North Korea" },
-  { code: "KR", name: "South Korea" },
-  { code: "KW", name: "Kuwait" },
-  { code: "KG", name: "Kyrgyzstan" },
-  { code: "LA", name: "Laos" },
-  { code: "LV", name: "Latvia" },
-  { code: "LB", name: "Lebanon" },
-  { code: "LS", name: "Lesotho" },
-  { code: "LR", name: "Liberia" },
-  { code: "LY", name: "Libya" },
-  { code: "LI", name: "Liechtenstein" },
-  { code: "LT", name: "Lithuania" },
-  { code: "LU", name: "Luxembourg" },
-  { code: "MG", name: "Madagascar" },
-  { code: "MW", name: "Malawi" },
-  { code: "MY", name: "Malaysia" },
-  { code: "MV", name: "Maldives" },
-  { code: "ML", name: "Mali" },
-  { code: "MT", name: "Malta" },
-  { code: "MH", name: "Marshall Islands" },
-  { code: "MR", name: "Mauritania" },
-  { code: "MU", name: "Mauritius" },
-  { code: "MX", name: "Mexico" },
-  { code: "FM", name: "Micronesia" },
-  { code: "MD", name: "Moldova" },
-  { code: "MC", name: "Monaco" },
-  { code: "MN", name: "Mongolia" },
-  { code: "ME", name: "Montenegro" },
-  { code: "MA", name: "Morocco" },
-  { code: "MZ", name: "Mozambique" },
-  { code: "MM", name: "Myanmar" },
-  { code: "NA", name: "Namibia" },
-  { code: "NR", name: "Nauru" },
-  { code: "NP", name: "Nepal" },
-  { code: "NL", name: "Netherlands" },
-  { code: "NZ", name: "New Zealand" },
-  { code: "NI", name: "Nicaragua" },
-  { code: "NE", name: "Niger" },
-  { code: "NG", name: "Nigeria" },
-  { code: "MK", name: "North Macedonia" },
-  { code: "NO", name: "Norway" },
-  { code: "OM", name: "Oman" },
-  { code: "PK", name: "Pakistan" },
-  { code: "PW", name: "Palau" },
-  { code: "PA", name: "Panama" },
-  { code: "PG", name: "Papua New Guinea" },
-  { code: "PY", name: "Paraguay" },
-  { code: "PE", name: "Peru" },
-  { code: "PH", name: "Philippines" },
-  { code: "PL", name: "Poland" },
-  { code: "PT", name: "Portugal" },
-  { code: "QA", name: "Qatar" },
-  { code: "RO", name: "Romania" },
-  { code: "RU", name: "Russia" },
-  { code: "RW", name: "Rwanda" },
-  { code: "KN", name: "Saint Kitts and Nevis" },
-  { code: "LC", name: "Saint Lucia" },
-  { code: "VC", name: "Saint Vincent and the Grenadines" },
-  { code: "WS", name: "Samoa" },
-  { code: "SM", name: "San Marino" },
-  { code: "ST", name: "Sao Tome and Principe" },
-  { code: "SA", name: "Saudi Arabia" },
-  { code: "SN", name: "Senegal" },
-  { code: "RS", name: "Serbia" },
-  { code: "SC", name: "Seychelles" },
-  { code: "SL", name: "Sierra Leone" },
-  { code: "SG", name: "Singapore" },
-  { code: "SK", name: "Slovakia" },
-  { code: "SI", name: "Slovenia" },
-  { code: "SB", name: "Solomon Islands" },
-  { code: "SO", name: "Somalia" },
-  { code: "ZA", name: "South Africa" },
-  { code: "SS", name: "South Sudan" },
-  { code: "ES", name: "Spain" },
-  { code: "LK", name: "Sri Lanka" },
-  { code: "SD", name: "Sudan" },
-  { code: "SR", name: "Suriname" },
-  { code: "SE", name: "Sweden" },
-  { code: "CH", name: "Switzerland" },
-  { code: "SY", name: "Syria" },
-  { code: "TW", name: "Taiwan" },
-  { code: "TJ", name: "Tajikistan" },
-  { code: "TZ", name: "Tanzania" },
-  { code: "TH", name: "Thailand" },
-  { code: "TL", name: "Timor-Leste" },
-  { code: "TG", name: "Togo" },
-  { code: "TO", name: "Tonga" },
-  { code: "TT", name: "Trinidad and Tobago" },
-  { code: "TN", name: "Tunisia" },
-  { code: "TR", name: "Turkey" },
-  { code: "TM", name: "Turkmenistan" },
-  { code: "TV", name: "Tuvalu" },
-  { code: "UG", name: "Uganda" },
-  { code: "UA", name: "Ukraine" },
-  { code: "AE", name: "United Arab Emirates" },
-  { code: "GB", name: "United Kingdom" },
-  { code: "US", name: "United States" },
-  { code: "UY", name: "Uruguay" },
-  { code: "UZ", name: "Uzbekistan" },
-  { code: "VU", name: "Vanuatu" },
-  { code: "VA", name: "Vatican City" },
-  { code: "VE", name: "Venezuela" },
-  { code: "VN", name: "Vietnam" },
-  { code: "YE", name: "Yemen" },
-  { code: "ZM", name: "Zambia" },
-  { code: "ZW", name: "Zimbabwe" }
+  { code: "ZW", name: "Zimbabwe", hasPostal: false },
+  { code: "ZA", name: "South Africa", hasPostal: true },
+  { code: "US", name: "United States", hasPostal: true },
+  { code: "GB", name: "United Kingdom", hasPostal: true },
+  { code: "CA", name: "Canada", hasPostal: true },
+  { code: "AU", name: "Australia", hasPostal: true },
+  { code: "BW", name: "Botswana", hasPostal: false },
+  { code: "ZM", name: "Zambia", hasPostal: false },
+  { code: "KE", name: "Kenya", hasPostal: true },
+  { code: "NG", name: "Nigeria", hasPostal: true },
+  { code: "AE", name: "United Arab Emirates", hasPostal: false },
+  { code: "DE", name: "Germany", hasPostal: true },
+  { code: "FR", name: "France", hasPostal: true },
+  { code: "IE", name: "Ireland", hasPostal: true },
+  { code: "AF", name: "Afghanistan", hasPostal: true },
+  { code: "AL", name: "Albania", hasPostal: true },
+  { code: "DZ", name: "Algeria", hasPostal: true },
+  { code: "AD", name: "Andorra", hasPostal: true },
+  { code: "AO", name: "Angola", hasPostal: false },
+  { code: "AG", name: "Antigua and Barbuda", hasPostal: false },
+  { code: "AR", name: "Argentina", hasPostal: true },
+  { code: "AM", name: "Armenia", hasPostal: true },
+  { code: "AT", name: "Austria", hasPostal: true },
+  { code: "AZ", name: "Azerbaijan", hasPostal: true },
+  { code: "BS", name: "Bahamas", hasPostal: false },
+  { code: "BH", name: "Bahrain", hasPostal: true },
+  { code: "BD", name: "Bangladesh", hasPostal: true },
+  { code: "BB", name: "Barbados", hasPostal: true },
+  { code: "BY", name: "Belarus", hasPostal: true },
+  { code: "BE", name: "Belgium", hasPostal: true },
+  { code: "BZ", name: "Belize", hasPostal: false },
+  { code: "BJ", name: "Benin", hasPostal: false },
+  { code: "BT", name: "Bhutan", hasPostal: true },
+  { code: "BO", name: "Bolivia", hasPostal: true },
+  { code: "BA", name: "Bosnia and Herzegovina", hasPostal: true },
+  { code: "BR", name: "Brazil", hasPostal: true },
+  { code: "BN", name: "Brunei", hasPostal: true },
+  { code: "BG", name: "Bulgaria", hasPostal: true },
+  { code: "BF", name: "Burkina Faso", hasPostal: false },
+  { code: "BI", name: "Burundi", hasPostal: false },
+  { code: "KH", name: "Cambodia", hasPostal: true },
+  { code: "CM", name: "Cameroon", hasPostal: false },
+  { code: "CL", name: "Chile", hasPostal: true },
+  { code: "CN", name: "China", hasPostal: true },
+  { code: "CO", name: "Colombia", hasPostal: true },
+  { code: "CR", name: "Costa Rica", hasPostal: true },
+  { code: "HR", name: "Croatia", hasPostal: true },
+  { code: "CY", name: "Cyprus", hasPostal: true },
+  { code: "CZ", name: "Czech Republic", hasPostal: true },
+  { code: "DK", name: "Denmark", hasPostal: true },
+  { code: "DJ", name: "Djibouti", hasPostal: false },
+  { code: "DM", name: "Dominica", hasPostal: false },
+  { code: "DO", name: "Dominican Republic", hasPostal: true },
+  { code: "EC", name: "Ecuador", hasPostal: true },
+  { code: "EG", name: "Egypt", hasPostal: true },
+  { code: "SV", name: "El Salvador", hasPostal: true },
+  { code: "EE", name: "Estonia", hasPostal: true },
+  { code: "ET", name: "Ethiopia", hasPostal: true },
+  { code: "FI", name: "Finland", hasPostal: true },
+  { code: "GE", name: "Georgia", hasPostal: true },
+  { code: "GH", name: "Ghana", hasPostal: false },
+  { code: "GR", name: "Greece", hasPostal: true },
+  { code: "GT", name: "Guatemala", hasPostal: true },
+  { code: "HN", name: "Honduras", hasPostal: true },
+  { code: "HK", name: "Hong Kong", hasPostal: false },
+  { code: "HU", name: "Hungary", hasPostal: true },
+  { code: "IS", name: "Iceland", hasPostal: true },
+  { code: "IN", name: "India", hasPostal: true },
+  { code: "ID", name: "Indonesia", hasPostal: true },
+  { code: "IL", name: "Israel", hasPostal: true },
+  { code: "IT", name: "Italy", hasPostal: true },
+  { code: "JP", name: "Japan", hasPostal: true },
+  { code: "JO", name: "Jordan", hasPostal: true },
+  { code: "KR", name: "South Korea", hasPostal: true },
+  { code: "KW", name: "Kuwait", hasPostal: true },
+  { code: "LV", name: "Latvia", hasPostal: true },
+  { code: "LB", name: "Lebanon", hasPostal: true },
+  { code: "LT", name: "Lithuania", hasPostal: true },
+  { code: "LU", name: "Luxembourg", hasPostal: true },
+  { code: "MY", name: "Malaysia", hasPostal: true },
+  { code: "MU", name: "Mauritius", hasPostal: true },
+  { code: "MX", name: "Mexico", hasPostal: true },
+  { code: "MD", name: "Moldova", hasPostal: true },
+  { code: "MC", name: "Monaco", hasPostal: true },
+  { code: "MN", name: "Mongolia", hasPostal: true },
+  { code: "MA", name: "Morocco", hasPostal: true },
+  { code: "MZ", name: "Mozambique", hasPostal: false },
+  { code: "NP", name: "Nepal", hasPostal: true },
+  { code: "NL", name: "Netherlands", hasPostal: true },
+  { code: "NZ", name: "New Zealand", hasPostal: true },
+  { code: "NI", name: "Nicaragua", hasPostal: true },
+  { code: "NO", name: "Norway", hasPostal: true },
+  { code: "OM", name: "Oman", hasPostal: true },
+  { code: "PK", name: "Pakistan", hasPostal: true },
+  { code: "PA", name: "Panama", hasPostal: false },
+  { code: "PY", name: "Paraguay", hasPostal: true },
+  { code: "PE", name: "Peru", hasPostal: true },
+  { code: "PH", name: "Philippines", hasPostal: true },
+  { code: "PL", name: "Poland", hasPostal: true },
+  { code: "PT", name: "Portugal", hasPostal: true },
+  { code: "QA", name: "Qatar", hasPostal: false },
+  { code: "RO", name: "Romania", hasPostal: true },
+  { code: "SA", name: "Saudi Arabia", hasPostal: true },
+  { code: "SG", name: "Singapore", hasPostal: true },
+  { code: "SK", name: "Slovakia", hasPostal: true },
+  { code: "SI", name: "Slovenia", hasPostal: true },
+  { code: "ES", name: "Spain", hasPostal: true },
+  { code: "SE", name: "Sweden", hasPostal: true },
+  { code: "CH", name: "Switzerland", hasPostal: true },
+  { code: "TW", name: "Taiwan", hasPostal: true },
+  { code: "TH", name: "Thailand", hasPostal: true },
+  { code: "TR", name: "Turkey", hasPostal: true },
+  { code: "UA", name: "Ukraine", hasPostal: true },
+  { code: "UY", name: "Uruguay", hasPostal: true },
+  { code: "VE", name: "Venezuela", hasPostal: true },
+  { code: "VN", name: "Vietnam", hasPostal: true }
 ];
 
 function loadCart() {
@@ -215,6 +137,7 @@ function formatCurrency(val) {
   return "$" + Number(val || 0).toFixed(2);
 }
 
+// Render SHEIN-Style Order Summary Items
 function renderCart() {
   const checkoutItems = document.getElementById("checkout-items");
   const subtotalEl = document.getElementById("summary-subtotal");
@@ -226,7 +149,9 @@ function renderCart() {
   if (checkoutItems) checkoutItems.innerHTML = "";
 
   if (!cart || cart.length === 0) {
-    if (checkoutItems) checkoutItems.innerHTML = `<div style="padding:12px; text-align:center; color:#888;">Your cart is empty.</div>`;
+    if (checkoutItems) {
+      checkoutItems.innerHTML = `<div style="padding:16px; text-align:center; color:#888; font-size:13px;">Your cart is empty.</div>`;
+    }
     if (subtotalEl) subtotalEl.innerText = "$0.00";
     if (shippingEl) shippingEl.innerText = "$0.00";
     if (totalEl) totalEl.innerText = "$0.00";
@@ -239,19 +164,32 @@ function renderCart() {
     const name = product.name || product.title || "Product";
     const qty = Number(product.quantity || product.qty || 1);
     const price = Number(product.price || 0);
-    const lineTotal = price * qty;
+    const image = product.image || product.img || product.photo || "https://via.placeholder.com/70x90/111/fff?text=Item";
+    const size = product.size || product.selectedSize || "";
+    const color = product.color || product.selectedColor || "";
+    const details = [size ? `Size: ${size}` : "", color ? `Color: ${color}` : ""].filter(Boolean).join(" | ");
 
+    const lineTotal = price * qty;
     subtotal += lineTotal;
 
     if (checkoutItems) {
-      const itemRow = document.createElement("div");
-      itemRow.className = "summary-row";
-      itemRow.style.marginBottom = "8px";
-      itemRow.innerHTML = `
-        <span style="font-size:0.9rem; color:#ccc;">${name} (x${qty})</span>
-        <span style="font-size:0.9rem; font-family:'DM Mono',monospace;">${formatCurrency(lineTotal)}</span>
+      const itemCard = document.createElement("div");
+      itemCard.className = "shein-cart-item";
+      itemCard.innerHTML = `
+        <div class="shein-item-img-wrap">
+          <img src="${image}" alt="${name}" class="shein-item-img" />
+          <span class="shein-qty-badge">x${qty}</span>
+        </div>
+        <div class="shein-item-info">
+          <div class="shein-item-name">${name}</div>
+          ${details ? `<div class="shein-item-attr">${details}</div>` : ""}
+          <div class="shein-item-price-row">
+            <span class="shein-unit-price">${formatCurrency(price)}</span>
+            <span class="shein-line-price">${formatCurrency(lineTotal)}</span>
+          </div>
+        </div>
       `;
-      checkoutItems.appendChild(itemRow);
+      checkoutItems.appendChild(itemCard);
     }
   });
 
@@ -265,13 +203,13 @@ function renderCart() {
   return { cart, subtotal, shipping, total };
 }
 
-// Populate dropdown options
+// Populate Country Options
 function populateCountryOptions(filterText = "") {
   const countrySelect = document.getElementById("cust-country");
   if (!countrySelect) return;
 
-  const selectedValue = countrySelect.value;
-  countrySelect.innerHTML = `<option value="" disabled ${!selectedValue ? "selected" : ""}>Select Country</option>`;
+  const currentVal = countrySelect.value;
+  countrySelect.innerHTML = `<option value="" disabled ${!currentVal ? "selected" : ""}>-- Select Country --</option>`;
 
   const filtered = COUNTRIES.filter((c) =>
     c.name.toLowerCase().includes(filterText.toLowerCase())
@@ -281,35 +219,61 @@ function populateCountryOptions(filterText = "") {
     const opt = document.createElement("option");
     opt.value = c.code;
     opt.innerText = c.name;
-    if (c.code === selectedValue) {
-      opt.selected = true;
-    }
+    if (c.code === currentVal) opt.selected = true;
     countrySelect.appendChild(opt);
   });
 }
 
-// Initialize Country Selector + Search Bar
+// Update Postal/ZIP field visibility depending on country requirement
+function handleCountryPostalToggle(countryCode) {
+  const zipField = document.getElementById("field-zip");
+  const zipInput = document.getElementById("cust-zip");
+  if (!zipField || !zipInput) return;
+
+  const countryObj = COUNTRIES.find((c) => c.code === countryCode);
+
+  // If country explicitly does NOT use postal codes (e.g., ZW, BW, AE, AO, etc.)
+  if (countryObj && countryObj.hasPostal === false) {
+    zipField.style.display = "none";
+    zipInput.required = false;
+    zipInput.value = "";
+  } else {
+    zipField.style.display = "flex";
+    zipInput.required = true;
+  }
+}
+
+// Initialize Country Selector with Integrated Search Box
 function initCountries() {
   const countrySelect = document.getElementById("cust-country");
   if (!countrySelect) return;
 
-  // Insert search bar directly before country selector dropdown
-  if (!document.getElementById("country-search-input")) {
+  // Render quick search bar inside the select block
+  const parent = countrySelect.parentNode;
+  if (parent && !document.getElementById("country-search-input")) {
+    const searchWrap = document.createElement("div");
+    searchWrap.style.marginBottom = "8px";
+
     const searchInput = document.createElement("input");
     searchInput.type = "text";
     searchInput.id = "country-search-input";
-    searchInput.placeholder = "🔍 Search country...";
-    searchInput.className = "input";
-    searchInput.style.marginBottom = "8px";
-
-    countrySelect.parentNode.insertBefore(searchInput, countrySelect);
+    searchInput.placeholder = "🔍 Search country here...";
+    searchInput.style.cssText = "width:100%; padding:10px 12px; background:var(--bg2); border:1px solid var(--border2); border-radius:var(--rs); color:var(--white); font-size:13px; outline:none;";
 
     searchInput.addEventListener("input", (e) => {
       populateCountryOptions(e.target.value);
     });
+
+    searchWrap.appendChild(searchInput);
+    parent.insertBefore(searchWrap, countrySelect);
   }
 
   populateCountryOptions();
+
+  // Listen to country selection change
+  countrySelect.addEventListener("change", (e) => {
+    handleCountryPostalToggle(e.target.value);
+  });
 }
 
 function showError(msg) {
