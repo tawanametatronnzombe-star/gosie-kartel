@@ -183,7 +183,7 @@ main{max-width:1160px;margin:32px auto 80px;padding:0 28px}
           </div>
           <div class="field">
             <label for="cust-country">Country / Region *</label>
-            <select id="cust-country" required onchange="handleCountryChange()">
+            <select id="cust-country" required>
               <option value="">Select Country</option>
             </select>
           </div>
@@ -290,7 +290,7 @@ document.getElementById("checkout-form").addEventListener("submit", async functi
   try {
     await window.GosiePaymentGateway.executePaymentRedirect(customer, provider);
   } catch (err) {
-    alert(err.message || "An error occurred during payment processing.");
+    alert(err.message || "Something went wrong.");
   }
 });
 </script>
