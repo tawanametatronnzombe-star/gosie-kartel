@@ -137,7 +137,7 @@ function formatCurrency(val) {
   return "$" + Number(val || 0).toFixed(2);
 }
 
-// Render SHEIN-Style Order Summary Items
+// Render Compact Order Summary Items
 function renderCart() {
   const checkoutItems = document.getElementById("checkout-items");
   const subtotalEl = document.getElementById("summary-subtotal");
@@ -164,7 +164,7 @@ function renderCart() {
     const name = product.name || product.title || "Product";
     const qty = Number(product.quantity || product.qty || 1);
     const price = Number(product.price || 0);
-    const image = product.image || product.img || product.photo || "https://via.placeholder.com/70x90/111/fff?text=Item";
+    const image = product.image || product.img || product.photo || "https://via.placeholder.com/60x60/111/fff?text=Item";
     const size = product.size || product.selectedSize || "";
     const color = product.color || product.selectedColor || "";
     const details = [size ? `Size: ${size}` : "", color ? `Color: ${color}` : ""].filter(Boolean).join(" | ");
@@ -204,18 +204,14 @@ function renderCart() {
 }
 
 // Populate Country Options
-function populateCountryOptions(filterText = "") {
+function populateCountryOptions() {
   const countrySelect = document.getElementById("cust-country");
   if (!countrySelect) return;
 
   const currentVal = countrySelect.value;
   countrySelect.innerHTML = `<option value="" disabled ${!currentVal ? "selected" : ""}>-- Select Country --</option>`;
 
-  const filtered = COUNTRIES.filter((c) =>
-    c.name.toLowerCase().includes(filterText.toLowerCase())
-  );
-
-  filtered.forEach((c) => {
+  COUNTRIES.forEach((c) => {
     const opt = document.createElement("option");
     opt.value = c.code;
     opt.innerText = c.name;
@@ -243,17 +239,10 @@ function handleCountryPostalToggle(countryCode) {
   }
 }
 
-// Initialize Country Selector with Integrated Search Box
+// Initialize Country Selector
 function initCountries() {
   const countrySelect = document.getElementById("cust-country");
   if (!countrySelect) return;
-    searchInput.addEventListener("input", (e) => {
-      populateCountryOptions(e.target.value);
-    });
-
-    searchWrap.appendChild(searchInput);
-    parent.insertBefore(searchWrap, countrySelect);
-  }
 
   populateCountryOptions();
 
@@ -281,4 +270,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
-   
+    
