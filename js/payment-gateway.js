@@ -1,12 +1,11 @@
 /**
- * Gosie Kartel — Unified Payment Gateway (ZB Bank Smile&Pay Integration)
+ * Gosie Kartel — Unified Payment Gateway (ZB Bank Integration)
  * Site: https://tawanametatronnzombe-star.github.io/gosie-kartel/
  */
 
 (function () {
   "use strict";
 
-  // 1. SUPABASE CLIENT
   const SUPABASE_URL = "https://tnlktzagziuwjjzgrrna.supabase.co";
   const SUPABASE_ANON_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRubGt0emFneml1d2pqemdycm5hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU5MjA5MzIsImV4cCI6MjEwMTQ5NjkzMn0.uuj1wWwG8DfhCK8bqvzoGIaxuhDwlrNIxXwAL9jkd2c";
@@ -15,7 +14,6 @@
     ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
     : null;
 
-  // 2. ORDER ID GENERATOR
   function generateOrderID() {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     let code = "";
@@ -26,7 +24,6 @@
     return `GK-${code}-${number}`;
   }
 
-  // 3. READ LOCAL CART
   function getCart() {
     try {
       return JSON.parse(localStorage.getItem("cart") || "[]");
@@ -35,7 +32,6 @@
     }
   }
 
-  // 4. CALCULATE CART TOTALS
   function calculateCartTotals(cart) {
     let subtotal = 0;
     cart.forEach((item) => {
@@ -52,7 +48,6 @@
     };
   }
 
-  // 5. CREATE PENDING ORDER RECORD IN SUPABASE
   async function createOrderRecord(customer, cart, totals, orderID) {
     const orderPayload = {
       order_id: orderID,
@@ -84,7 +79,6 @@
     return orderPayload;
   }
 
-  // 6. MAIN PAYMENT REDIRECT (ZB Smile&Pay via Supabase Edge Function)
   async function executePaymentRedirect(customer, providerChoice) {
     const cart = getCart();
 
@@ -95,15 +89,18 @@
     const orderID = generateOrderID();
     const totals = calculateCartTotals(cart);
 
-    // Save pending record to Supabase "Orders" table first
+    // 1. Save pending order to Supabase
     await createOrderRecord(customer, cart, totals, orderID);
 
-    // Securely invoke serverless function to request ZB Smile&Pay session
+    // 2. Call live Supabase Edge Function to generate checkout redirect
     const response = await fetch(
       `${SUPABASE_URL}/functions/v1/create-zb-session`,
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
+        },
         body: JSON.stringify({
           order_id: orderID,
           amount: totals.total,
@@ -118,16 +115,15 @@
 
     if (!response.ok || !sessionData.checkout_url) {
       throw new Error(
-        sessionData.error || "Failed to establish ZB Bank payment session."
+        sessionData.error || "Failed to establish payment session with ZB Bank."
       );
     }
 
-    // Clear cart and redirect user to ZB Bank Checkout
+    // 3. Clear cart and redirect customer to payment page
     localStorage.removeItem("cart");
     window.location.href = sessionData.checkout_url;
   }
 
-  // 7. CONFIRM PAYMENT (Called by order-success.html)
   async function confirmPayment(orderID) {
     if (!supabaseClient) return;
 
@@ -143,7 +139,6 @@
     localStorage.removeItem("cart");
   }
 
-  // EXPORT TO GLOBAL SCOPE
   window.GosiePaymentGateway = {
     executePaymentRedirect: executePaymentRedirect,
     generateOrderID: generateOrderID,
@@ -151,3 +146,4 @@
     confirmPayment: confirmPayment
   };
 })();
+      
