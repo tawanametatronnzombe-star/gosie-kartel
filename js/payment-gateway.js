@@ -1,18 +1,21 @@
 /**
- * Gosie Kartel — ZB Bank Payment Gateway Integration
- * Website: https://tawanametatronnzombe-star.github.io/gosie-kartel/
+ * Gosie Kartel — Unified Payment Gateway (ZB Bank Smile&Pay Integration)
+ * Site: https://tawanametatronnzombe-star.github.io/gosie-kartel/
  */
 
 (function () {
   "use strict";
 
+  // 1. SUPABASE CLIENT
   const SUPABASE_URL = "https://tnlktzagziuwjjzgrrna.supabase.co";
-  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRubGt0emFneml1d2pqemdycm5hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU5MjA5MzIsImV4cCI6MjEwMTQ5NjkzMn0.uuj1wWwG8DfhCK8bqvzoGIaxuhDwlrNIxXwAL9jkd2c";
+  const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRubGt0emFneml1d2pqemdycm5hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU5MjA5MzIsImV4cCI6MjEwMTQ5NjkzMn0.uuj1wWwG8DfhCK8bqvzoGIaxuhDwlrNIxXwAL9jkd2c";
 
   const supabaseClient = window.supabase
     ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
     : null;
 
+  // 2. ORDER ID GENERATOR
   function generateOrderID() {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     let code = "";
@@ -23,6 +26,7 @@
     return `GK-${code}-${number}`;
   }
 
+  // 3. READ LOCAL CART
   function getCart() {
     try {
       return JSON.parse(localStorage.getItem("cart") || "[]");
@@ -31,73 +35,119 @@
     }
   }
 
-  function calculateTotal(cart) {
-    let total = 0;
+  // 4. CALCULATE CART TOTALS
+  function calculateCartTotals(cart) {
+    let subtotal = 0;
     cart.forEach((item) => {
       const qty = Number(item.quantity || item.qty || 1);
       const price = Number(item.price || 0);
-      total += price * qty;
+      subtotal += price * qty;
     });
-    return total;
+
+    const shipping = subtotal > 150 || subtotal === 0 ? 0 : 15;
+    return {
+      subtotal: subtotal,
+      shipping: shipping,
+      total: subtotal + shipping
+    };
   }
 
-  async function processOrderAndPay(customer) {
-    const cart = getCart();
-    if (!cart || cart.length === 0) {
-      throw new Error("Your cart is empty.");
-    }
-
-    const orderID = generateOrderID();
-    const totalAmount = calculateTotal(cart);
-
-    // 1. Create order record in Supabase
+  // 5. CREATE PENDING ORDER RECORD IN SUPABASE
+  async function createOrderRecord(customer, cart, totals, orderID) {
     const orderPayload = {
       order_id: orderID,
       customer_name: customer.name,
       email: customer.email,
       phone: customer.phone,
-      address: customer.address,
       country: customer.country,
+      city: customer.city || "",
+      address: customer.address,
       zip_code: customer.zip || null,
       products: cart,
-      total: totalAmount,
+      subtotal: totals.subtotal,
+      shipping: totals.shipping,
+      total: totals.total,
       status: "Awaiting Payment",
       created_at: new Date().toISOString()
     };
 
     if (supabaseClient) {
-      const { error } = await supabaseClient.from("Orders").insert([orderPayload]);
+      const { error } = await supabaseClient
+        .from("Orders")
+        .insert([orderPayload]);
+
       if (error) {
-        console.error("Supabase insert error:", error.message);
+        console.error("Supabase Order Creation Error:", error.message);
       }
     }
 
-    // 2. Call backend function to securely obtain payment redirect URL
-    const response = await fetch(`${SUPABASE_URL}/functions/v1/create-zb-session`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        order_id: orderID,
-        amount: totalAmount,
-        customer_email: customer.email,
-        customer_name: customer.name
-      })
-    });
-
-    const data = await response.json();
-
-    if (!response.ok || !data.checkout_url) {
-      throw new Error(data.error || "Failed to initialize ZB Payment gateway.");
-    }
-
-    // 3. Clear cart and redirect user to ZB checkout page
-    localStorage.removeItem("cart");
-    window.location.href = data.checkout_url;
+    return orderPayload;
   }
 
+  // 6. MAIN PAYMENT REDIRECT (ZB Smile&Pay via Supabase Edge Function)
+  async function executePaymentRedirect(customer, providerChoice) {
+    const cart = getCart();
+
+    if (!cart || cart.length === 0) {
+      throw new Error("Your cart is empty. Please add items before checking out.");
+    }
+
+    const orderID = generateOrderID();
+    const totals = calculateCartTotals(cart);
+
+    // Save pending record to Supabase "Orders" table first
+    await createOrderRecord(customer, cart, totals, orderID);
+
+    // Securely invoke serverless function to request ZB Smile&Pay session
+    const response = await fetch(
+      `${SUPABASE_URL}/functions/v1/create-zb-session`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          order_id: orderID,
+          amount: totals.total,
+          customer_email: customer.email,
+          customer_name: customer.name,
+          provider: providerChoice || "zb_smile_and_pay"
+        })
+      }
+    );
+
+    const sessionData = await response.json();
+
+    if (!response.ok || !sessionData.checkout_url) {
+      throw new Error(
+        sessionData.error || "Failed to establish ZB Bank payment session."
+      );
+    }
+
+    // Clear cart and redirect user to ZB Bank Checkout
+    localStorage.removeItem("cart");
+    window.location.href = sessionData.checkout_url;
+  }
+
+  // 7. CONFIRM PAYMENT (Called by order-success.html)
+  async function confirmPayment(orderID) {
+    if (!supabaseClient) return;
+
+    try {
+      await supabaseClient
+        .from("Orders")
+        .update({ status: "Paid" })
+        .eq("order_id", orderID);
+    } catch (err) {
+      console.warn("Confirm Payment error:", err);
+    }
+
+    localStorage.removeItem("cart");
+  }
+
+  // EXPORT TO GLOBAL SCOPE
   window.GosiePaymentGateway = {
-    processOrderAndPay: processOrderAndPay,
+    executePaymentRedirect: executePaymentRedirect,
     generateOrderID: generateOrderID,
-    calculateTotal: calculateTotal
+    calculateCartTotals: calculateCartTotals,
+    confirmPayment: confirmPayment
   };
 })();
