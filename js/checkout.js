@@ -247,19 +247,6 @@ function handleCountryPostalToggle(countryCode) {
 function initCountries() {
   const countrySelect = document.getElementById("cust-country");
   if (!countrySelect) return;
-
-  // Render quick search bar inside the select block
-  const parent = countrySelect.parentNode;
-  if (parent && !document.getElementById("country-search-input")) {
-    const searchWrap = document.createElement("div");
-    searchWrap.style.marginBottom = "8px";
-
-    const searchInput = document.createElement("input");
-    searchInput.type = "text";
-    searchInput.id = "country-search-input";
-    searchInput.placeholder = "🔍 Search country here...";
-    searchInput.style.cssText = "width:100%; padding:10px 12px; background:var(--bg2); border:1px solid var(--border2); border-radius:var(--rs); color:var(--white); font-size:13px; outline:none;";
-
     searchInput.addEventListener("input", (e) => {
       populateCountryOptions(e.target.value);
     });
