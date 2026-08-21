@@ -6,6 +6,175 @@
     <title>About Us | Gosie Kartel</title>
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0e1016;
+            --surface: #161a24;
+            --surface-2: #1d2230;
+            --line: #2a3142;
+            --text: #eef1f7;
+            --muted: #98a1b5;
+            --brand: #4ade9b;
+            --brand-2: #38bdf8;
+            --radius: 14px;
+            --shadow: 0 10px 30px rgba(0,0,0,.35);
+            --font: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: radial-gradient(1200px 600px at 80% -10%, #1b2536, transparent), var(--bg);
+            color: var(--text);
+            font-family: var(--font);
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a { color: var(--brand-2); text-decoration: none; }
+
+        /* Navigation */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: rgba(14, 16, 22, .8);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .nav-container {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 0 18px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            letter-spacing: .3px;
+            color: var(--text);
+            font-size: 16px;
+        }
+
+        .navbar .logo::before {
+            content: "";
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--brand), var(--brand-2));
+            display: inline-block;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            margin: 0;
+            padding: 0;
+            align-items: center;
+        }
+
+        .nav-menu li a {
+            color: var(--muted);
+            font-size: 13.5px;
+            font-weight: 600;
+            transition: color .2s ease;
+        }
+
+        .nav-menu li a:hover, .nav-menu li a.active {
+            color: var(--text);
+        }
+
+        .container {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 0 18px;
+            width: 100%;
+        }
+
+        .about-section {
+            padding: 40px 0 60px;
+        }
+
+        .about-section h1 {
+            text-align: center;
+            margin-bottom: 24px;
+            font-size: clamp(28px, 4vw, 36px);
+            font-weight: 800;
+        }
+
+        .about-content {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        .about-content p {
+            color: var(--muted);
+            font-size: 15px;
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+
+        .about-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .brand-values h2 {
+            font-size: 22px;
+            margin-bottom: 18px;
+            text-align: center;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .value-card {
+            background: var(--surface-2);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .value-card h3 {
+            margin: 0 0 8px;
+            color: var(--brand);
+            font-size: 18px;
+        }
+
+        .value-card p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        footer {
+            border-top: 1px solid var(--line);
+            color: var(--muted);
+            font-size: 12.5px;
+            padding: 24px 18px 40px;
+            text-align: center;
+            margin-top: auto;
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar">
