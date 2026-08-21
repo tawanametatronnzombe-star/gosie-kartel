@@ -4,321 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Track Order | Gosie Kartel</title>
+    <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Montserrat', sans-serif; background: #f9f9f9; padding: 20px; }
-        
         .container { max-width: 800px; margin: 0 auto; }
-        
-        .navbar {
-            background: #1a1a1a;
-            color: #fff;
-            padding: 15px 0;
-            margin-bottom: 40px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-        }
-        
-        .logo {
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #fff;
-            text-decoration: none;
-        }
-        
-        .track-section {
-            background: #fff;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-        }
-        
-        .track-section h1 {
-            color: #1a1a1a;
-            margin-bottom: 10px;
-            font-size: 2em;
-        }
-        
-        .track-section p {
-            color: #666;
-            margin-bottom: 30px;
-        }
-        
-        .search-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: #f5f5f5;
-            border-radius: 8px;
-        }
-        
-        .search-form input {
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1em;
-            font-family: 'Montserrat', sans-serif;
-        }
-        
-        .search-form input:focus {
-            outline: none;
-            border-color: #0d6efd;
-            box-shadow: 0 0 5px rgba(13, 110, 253, 0.3);
-        }
-        
-        .btn {
-            padding: 12px;
-            background: #0d6efd;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: 600;
-            font-family: 'Montserrat', sans-serif;
-            transition: background 0.3s ease;
-        }
-        
-        .btn:hover {
-            background: #0b5ed7;
-        }
-        
-        .loading {
-            text-align: center;
-            color: #0d6efd;
-            display: none;
-        }
-        
-        .error {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            border: 1px solid #f5c6cb;
-            display: none;
-        }
-        
-        .success {
-            background: #d4edda;
-            color: #155724;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            border: 1px solid #c3e6cb;
-            display: none;
-        }
-        
-        .order-details {
-            background: #f9f9f9;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 20px;
-            display: none;
-        }
-        
-        .order-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #0d6efd;
-        }
-        
-        .order-id {
-            font-size: 1.3em;
-            font-weight: bold;
-            color: #1a1a1a;
-        }
-        
-        .order-status {
-            display: inline-block;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 0.9em;
-            text-transform: uppercase;
-        }
-        
+        .navbar { background: #1a1a1a; color: #fff; padding: 15px 0; margin-bottom: 40px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px; }
+        .logo { font-size: 1.5em; font-weight: bold; color: #fff; text-decoration: none; }
+        .track-section { background: #fff; padding: 40px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.1); }
+        .track-section h1 { color: #1a1a1a; margin-bottom: 10px; font-size: 2em; }
+        .track-section p { color: #666; margin-bottom: 30px; }
+        .search-form { display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; padding: 20px; background: #f5f5f5; border-radius: 8px; }
+        .search-form input { padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em; font-family: 'Montserrat', sans-serif; }
+        .btn { padding: 12px; background: #0d6efd; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-size: 1em; font-weight: 600; font-family: 'Montserrat', sans-serif; }
+        .btn:hover { background: #0b5ed7; }
+        .error { background: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px; margin-bottom: 20px; display: none; }
+        .success { background: #d4edda; color: #155724; padding: 15px; border-radius: 5px; margin-bottom: 20px; display: none; }
+        .order-details { background: #f9f9f9; padding: 20px; border-radius: 8px; margin-top: 20px; display: none; }
+        .order-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 2px solid #0d6efd; }
+        .order-id { font-size: 1.3em; font-weight: bold; color: #1a1a1a; }
+        .order-status { display: inline-block; padding: 8px 15px; border-radius: 20px; font-weight: bold; font-size: 0.9em; text-transform: uppercase; }
         .status-processing { background: #ffc107; color: #333; }
         .status-in-transit { background: #17a2b8; color: #fff; }
         .status-out-delivery { background: #fd7e14; color: #fff; }
         .status-delivered { background: #28a745; color: #fff; }
-        
-        .timeline {
-            margin: 30px 0;
-            padding: 20px;
-            background: #fff;
-            border-radius: 8px;
-        }
-        
-        .timeline-item {
-            display: flex;
-            margin-bottom: 20px;
-            align-items: flex-start;
-        }
-        
-        .timeline-marker {
-            width: 40px;
-            height: 40px;
-            background: #e0e0e0;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 20px;
-            flex-shrink: 0;
-            font-weight: bold;
-            color: #666;
-        }
-        
-        .timeline-marker.active {
-            background: #28a745;
-            color: #fff;
-        }
-        
-        .timeline-content {
-            flex: 1;
-        }
-        
-        .timeline-title {
-            font-weight: bold;
-            color: #1a1a1a;
-            margin-bottom: 5px;
-        }
-        
-        .timeline-status {
-            color: #28a745;
-            font-weight: bold;
-        }
-        
-        .timeline-status.pending {
-            color: #999;
-        }
-        
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin: 20px 0;
-        }
-        
-        .info-box {
-            background: #fff;
-            padding: 15px;
-            border-radius: 8px;
-            border-left: 4px solid #0d6efd;
-        }
-        
-        .info-box h3 {
-            color: #0d6efd;
-            margin-bottom: 10px;
-            font-size: 0.9em;
-            text-transform: uppercase;
-        }
-        
-        .info-box p {
-            color: #333;
-            line-height: 1.6;
-            margin-bottom: 5px;
-        }
-        
-        .items-section {
-            margin-top: 30px;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-        }
-        
-        .items-section h3 {
-            margin-bottom: 15px;
-            color: #1a1a1a;
-        }
-        
-        .item-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .item-row:last-child {
-            border-bottom: none;
-        }
-        
-        .item-name {
-            font-weight: 500;
-            color: #333;
-        }
-        
-        .item-price {
-            color: #0d6efd;
-            font-weight: bold;
-        }
-        
-        .summary-box {
-            background: #e8f5e9;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 20px;
-            border-left: 4px solid #28a745;
-        }
-        
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            color: #333;
-        }
-        
-        .summary-row.total {
-            font-size: 1.2em;
-            font-weight: bold;
-            color: #28a745;
-            border-top: 2px solid #28a745;
-            padding-top: 10px;
-        }
-        
-        .no-results {
-            text-align: center;
-            color: #999;
-            padding: 40px 20px;
-            display: none;
-        }
-        
-        @media (max-width: 600px) {
-            .track-section {
-                padding: 20px;
-            }
-            
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .order-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
-        }
+        .timeline { margin: 30px 0; padding: 20px; background: #fff; border-radius: 8px; }
+        .timeline-item { display: flex; margin-bottom: 20px; align-items: flex-start; }
+        .timeline-marker { width: 40px; height: 40px; background: #e0e0e0; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 20px; flex-shrink: 0; font-weight: bold; color: #666; }
+        .timeline-marker.active { background: #28a745; color: #fff; }
+        .timeline-content { flex: 1; }
+        .timeline-title { font-weight: bold; color: #1a1a1a; margin-bottom: 5px; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; }
+        .info-box { background: #fff; padding: 15px; border-radius: 8px; border-left: 4px solid #0d6efd; }
+        .items-section { margin-top: 30px; background: #fff; padding: 20px; border-radius: 8px; }
+        .item-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; }
+        .summary-box { background: #e8f5e9; padding: 20px; border-radius: 8px; margin-top: 20px; border-left: 4px solid #28a745; }
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 10px; }
+        .summary-row.total { font-size: 1.2em; font-weight: bold; color: #28a745; border-top: 2px solid #28a745; padding-top: 10px; }
+        .no-results { text-align: center; color: #999; padding: 40px 20px; display: none; }
     </style>
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <a href="./index.html" class="logo">Gosie Kartel</a>
+            <a href="index.html" class="logo">Gosie Kartel</a>
         </div>
     </nav>
 
@@ -333,15 +64,10 @@
                 <button class="btn" onclick="trackOrder()">Track Order</button>
             </div>
 
-            <div class="loading" id="loading">
-                <p>Loading order details...</p>
-            </div>
-
             <div class="error" id="error-message"></div>
             <div class="success" id="success-message"></div>
 
             <div class="order-details" id="order-details">
-                <!-- Order Header -->
                 <div class="order-header">
                     <div>
                         <div class="order-id" id="display-order-id"></div>
@@ -350,7 +76,6 @@
                     <div class="order-status" id="display-order-status"></div>
                 </div>
 
-                <!-- Shipping Information -->
                 <div class="info-grid">
                     <div class="info-box">
                         <h3>Shipping Address</h3>
@@ -366,32 +91,19 @@
                     </div>
                 </div>
 
-                <!-- Status Timeline -->
                 <div class="timeline" id="timeline"></div>
 
-                <!-- Items Ordered -->
                 <div class="items-section">
                     <h3>Items in This Order</h3>
                     <div id="order-items"></div>
                 </div>
 
-                <!-- Order Summary -->
                 <div class="summary-box">
-                    <div class="summary-row">
-                        <span>Subtotal:</span>
-                        <span id="display-subtotal">$0.00</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Shipping:</span>
-                        <span id="display-shipping">$0.00</span>
-                    </div>
-                    <div class="summary-row total">
-                        <span>Order Total:</span>
-                        <span id="display-total">$0.00</span>
-                    </div>
+                    <div class="summary-row"><span>Subtotal:</span><span id="display-subtotal">$0.00</span></div>
+                    <div class="summary-row"><span>Shipping:</span><span id="display-shipping">$0.00</span></div>
+                    <div class="summary-row total"><span>Order Total:</span><span id="display-total">$0.00</span></div>
                 </div>
 
-                <!-- Days Since Order -->
                 <p style="margin-top: 20px; color: #666; font-size: 0.9em; text-align: center;" id="days-info"></p>
             </div>
 
@@ -402,180 +114,104 @@
     </div>
 
     <script>
-        const API_URL = "http://localhost:3000/api"; // Change to your backend URL
+        document.addEventListener("DOMContentLoaded", () => {
+            const params = new URLSearchParams(window.location.search);
+            if (params.has("id") && params.has("email")) {
+                document.getElementById("order-id").value = params.get("id");
+                document.getElementById("order-email").value = params.get("email");
+                trackOrder();
+            }
+        });
 
-        async function trackOrder() {
+        function trackOrder() {
             const orderId = document.getElementById("order-id").value.trim();
             const email = document.getElementById("order-email").value.trim().toLowerCase();
-            const loadingEl = document.getElementById("loading");
             const errorEl = document.getElementById("error-message");
             const successEl = document.getElementById("success-message");
             const detailsEl = document.getElementById("order-details");
             const noResultsEl = document.getElementById("no-results");
 
-            // Reset displays
             errorEl.style.display = "none";
             successEl.style.display = "none";
             detailsEl.style.display = "none";
             noResultsEl.style.display = "none";
-            loadingEl.style.display = "block";
 
             if (!orderId || !email) {
                 errorEl.textContent = "Please enter both Order ID and Email address.";
                 errorEl.style.display = "block";
-                loadingEl.style.display = "none";
                 return;
             }
 
-            try {
-                // Try API first (if backend is running)
-                try {
-                    const response = await fetch(`${API_URL}/orders/${orderId}?email=${email}`);
-                    
-                    if (response.ok) {
-                        const order = await response.json();
-                        displayOrder(order);
-                        successEl.textContent = "Order found! Your details are displayed below.";
-                        successEl.style.display = "block";
-                        loadingEl.style.display = "none";
-                        return;
-                    }
-                } catch (apiError) {
-                    console.log("Backend API not available, using localStorage fallback");
-                }
+            const orders = JSON.parse(localStorage.getItem("orders")) || [];
+            const order = orders.find(o => (o.orderId === orderId || o.id === orderId) && o.email === email);
 
-                // Fallback to localStorage if API is not available
-                const orders = JSON.parse(localStorage.getItem("orders")) || [];
-                const order = orders.find(o => o.orderId === orderId && o.email === email);
-
-                if (!order) {
-                    noResultsEl.style.display = "block";
-                    loadingEl.style.display = "none";
-                    return;
-                }
-
-                // Calculate status based on order age
-                const orderTime = new Date(order.createdAt).getTime();
-                const now = Date.now();
-                const daysSinceOrder = Math.floor((now - orderTime) / (1000 * 60 * 60 * 24));
-
-                let status = order.status;
-                let progress = 1;
-
-                if (daysSinceOrder >= 7) {
-                    status = "Delivered";
-                    progress = 4;
-                } else if (daysSinceOrder >= 5) {
-                    status = "Out for Delivery";
-                    progress = 3;
-                } else if (daysSinceOrder >= 2) {
-                    status = "In Transit";
-                    progress = 2;
-                }
-
-                const enrichedOrder = { ...order, status, progress, daysSinceOrder };
-                displayOrder(enrichedOrder);
-                successEl.textContent = "Order found! Your details are displayed below.";
-                successEl.style.display = "block";
-                loadingEl.style.display = "none";
-
-            } catch (error) {
-                console.error("Error:", error);
-                errorEl.textContent = "An error occurred. Please try again later.";
-                errorEl.style.display = "block";
-                loadingEl.style.display = "none";
+            if (!order) {
+                noResultsEl.style.display = "block";
+                return;
             }
+
+            const orderTime = new Date(order.createdAt).getTime();
+            const daysSinceOrder = Math.floor((Date.now() - orderTime) / (1000 * 60 * 60 * 24));
+
+            let status = order.status || "Processing";
+            let progress = 1;
+            if (daysSinceOrder >= 7) { status = "Delivered"; progress = 4; }
+            else if (daysSinceOrder >= 5) { status = "Out for Delivery"; progress = 3; }
+            else if (daysSinceOrder >= 2) { status = "In Transit"; progress = 2; }
+
+            displayOrder({ ...order, status, progress, daysSinceOrder });
+            successEl.textContent = "Order found! Details displayed below.";
+            successEl.style.display = "block";
         }
 
         function displayOrder(order) {
-            const detailsEl = document.getElementById("order-details");
-            const noResultsEl = document.getElementById("no-results");
+            document.getElementById("display-order-id").textContent = order.orderId || order.id;
+            document.getElementById("display-order-date").textContent = new Date(order.createdAt).toLocaleDateString();
 
-            // Display order header
-            document.getElementById("display-order-id").textContent = order.orderId;
-            document.getElementById("display-order-date").textContent = new Date(order.createdAt).toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            });
-
-            // Display status with appropriate styling
             const statusEl = document.getElementById("display-order-status");
             statusEl.textContent = order.status;
-            statusEl.classList.remove("status-processing", "status-in-transit", "status-out-delivery", "status-delivered");
-            
-            if (order.status === "Delivered") {
-                statusEl.classList.add("status-delivered");
-            } else if (order.status === "Out for Delivery") {
-                statusEl.classList.add("status-out-delivery");
-            } else if (order.status === "In Transit") {
-                statusEl.classList.add("status-in-transit");
-            } else {
-                statusEl.classList.add("status-processing");
-            }
+            statusEl.className = "order-status";
+            if (order.status === "Delivered") statusEl.classList.add("status-delivered");
+            else if (order.status === "Out for Delivery") statusEl.classList.add("status-out-delivery");
+            else if (order.status === "In Transit") statusEl.classList.add("status-in-transit");
+            else statusEl.classList.add("status-processing");
 
-            // Display shipping information
-            const shipping = order.shippingInfo;
-            document.getElementById("shipping-name").textContent = `${shipping.firstName} ${shipping.lastName}`;
-            document.getElementById("shipping-address").textContent = shipping.address;
-            document.getElementById("shipping-city").textContent = `${shipping.city}, ${shipping.zipCode}`;
-            document.getElementById("shipping-phone").textContent = shipping.phone;
+            const shipping = order.shippingInfo || {};
+            document.getElementById("shipping-name").textContent = `${shipping.firstName || ''} ${shipping.lastName || ''}`;
+            document.getElementById("shipping-address").textContent = shipping.address || '';
+            document.getElementById("shipping-city").textContent = `${shipping.city || ''}, ${shipping.zipCode || ''}`;
+            document.getElementById("shipping-phone").textContent = shipping.phone || '';
             document.getElementById("display-email").textContent = order.email;
 
-            // Display timeline
-            const timelineEl = document.getElementById("timeline");
             const progress = order.progress || 1;
-            const timelineSteps = [
-                { label: "Order Placed", description: "Your order has been confirmed" },
-                { label: "Processing", description: "We're preparing your order" },
-                { label: "In Transit", description: "Your order is on its way" },
-                { label: "Delivered", description: "Order delivered successfully" }
-            ];
-
-            timelineEl.innerHTML = timelineSteps.map((step, index) => {
-                const isActive = (index + 1) <= progress;
+            const steps = ["Order Placed", "Processing", "In Transit", "Delivered"];
+            document.getElementById("timeline").innerHTML = steps.map((step, idx) => {
+                const isActive = (idx + 1) <= progress;
                 return `
                     <div class="timeline-item">
-                        <div class="timeline-marker ${isActive ? 'active' : ''}">
-                            ${isActive ? '✓' : index + 1}
-                        </div>
+                        <div class="timeline-marker ${isActive ? 'active' : ''}">${isActive ? '✓' : idx + 1}</div>
                         <div class="timeline-content">
-                            <div class="timeline-title">${step.label}</div>
-                            <div class="timeline-status ${isActive ? '' : 'pending'}">
-                                ${isActive ? '✓ Completed' : 'Pending'}
-                            </div>
-                            <p style="color: #999; font-size: 0.9em; margin-top: 5px;">${step.description}</p>
+                            <div class="timeline-title">${step}</div>
+                            <div style="color:${isActive ? '#28a745' : '#999'}">${isActive ? '✓ Completed' : 'Pending'}</div>
                         </div>
                     </div>
                 `;
             }).join('');
 
-            // Display items
-            const itemsEl = document.getElementById("order-items");
-            itemsEl.innerHTML = (order.items || []).map(item => `
+            document.getElementById("order-items").innerHTML = (order.items || []).map(item => `
                 <div class="item-row">
-                    <span class="item-name">${item.name}</span>
-                    <span class="item-price">$${item.price.toFixed(2)}</span>
+                    <span>${item.name}</span>
+                    <span>$${Number(item.price).toFixed(2)}</span>
                 </div>
             `).join('');
 
-            // Display summary
-            document.getElementById("display-subtotal").textContent = `$${(order.subtotal || 0).toFixed(2)}`;
-            document.getElementById("display-shipping").textContent = order.shipping === 0 ? "FREE" : `$${(order.shipping || 0).toFixed(2)}`;
-            document.getElementById("display-total").textContent = `$${(order.total || 0).toFixed(2)}`;
+            document.getElementById("display-subtotal").textContent = `$${Number(order.subtotal || 0).toFixed(2)}`;
+            document.getElementById("display-shipping").textContent = order.shipping === 0 ? "FREE" : `$${Number(order.shipping || 0).toFixed(2)}`;
+            document.getElementById("display-total").textContent = `$${Number(order.total || 0).toFixed(2)}`;
+            document.getElementById("days-info").textContent = `Order placed ${order.daysSinceOrder || 0} day(s) ago`;
 
-            // Display days info
-            const daysInfo = order.daysSinceOrder || 0;
-            document.getElementById("days-info").textContent = `Order placed ${daysInfo} day${daysInfo !== 1 ? 's' : ''} ago`;
-
-            detailsEl.style.display = "block";
-            noResultsEl.style.display = "none";
+            document.getElementById("order-details").style.display = "block";
         }
-
-        // Allow Enter key to submit
-        document.getElementById("order-email").addEventListener("keypress", function(e) {
-            if (e.key === "Enter") trackOrder();
-        });
     </script>
 </body>
 </html>
