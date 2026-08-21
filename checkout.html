@@ -1,323 +1,262 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Checkout — Gosie Kartel</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Secure Checkout — Gosie Kartel</title>
+<meta name="description" content="Modern, responsive checkout: cart, shipping, promo codes, payment and order review in one page." />
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#060606;
-  --bg2:#0a0a0a;
-  --card:#0d0d0d;
-  --card2:#111;
-  --border:#1c1c1c;
-  --border2:#242424;
-  --gold:#c9a84c;
-  --gold2:#d4b460;
-  --gold-dim:rgba(201,168,76,.1);
-  --gold-glow:rgba(201,168,76,.18);
-  --white:#f0f0f0;
-  --white2:#b8b8b8;
-  --gray:#6a6a6a;
-  --gray2:#3a3a3a;
-  --error:#cf4f4f;
-  --success:#4caf7a;
-  --r:8px;
-  --rs:5px;
-}
-html{scroll-behavior:smooth}
-body{
-  font-family:'DM Sans',sans-serif;
-  background:var(--bg);
-  color:var(--white);
-  min-height:100vh;
-  -webkit-font-smoothing:antialiased;
-}
-
-/* ── SCROLLBAR ── */
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
-
-/* ── HEADER ── */
-header{
-  position:sticky;top:0;z-index:100;
-  background:rgba(6,6,6,.92);
-  backdrop-filter:blur(18px);
-  border-bottom:1px solid var(--border);
-}
-.header-inner{
-  max-width:1160px;margin:0 auto;padding:0 28px;
-  height:64px;display:flex;align-items:center;justify-content:space-between;
-}
-.logo{display:flex;align-items:center;gap:11px;text-decoration:none}
-.logo-mark{
-  width:36px;height:36px;background:var(--gold);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Oswald',sans-serif;font-weight:700;font-size:13px;
-  letter-spacing:.04em;color:#060606;flex-shrink:0;
-}
-.logo-name{
-  font-family:'Oswald',sans-serif;font-weight:700;
-  font-size:18px;letter-spacing:.18em;color:var(--white);
-  text-transform:uppercase;
-}
-
-/* ── LAYOUT ── */
-main{max-width:1160px;margin:32px auto 80px;padding:0 28px}
-.checkout-grid{display:grid;grid-template-columns:1fr 400px;gap:32px}
-@media(max-width:920px){.checkout-grid{grid-template-columns:1fr}}
-
-.card{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:var(--r);padding:24px;margin-bottom:24px;
-}
-.card-header{display:flex;align-items:center;gap:12px;margin-bottom:20px}
-.card-header-num{
-  width:26px;height:26px;border-radius:50%;background:var(--gold-dim);
-  border:1px solid var(--gold);color:var(--gold);display:flex;
-  align-items:center;justify-content:center;font-size:12px;font-weight:600;
-}
-.card-title{font-family:'Oswald',sans-serif;font-size:18px;letter-spacing:.08em;text-transform:uppercase}
-
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.form-grid.full{grid-template-columns:1fr}
-@media(max-width:600px){.form-grid{grid-template-columns:1fr}}
-
-.field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
-.field label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--white2);font-weight:500}
-.field input, .field select{
-  background:var(--bg2);border:1px solid var(--border2);
-  border-radius:var(--rs);padding:12px 14px;color:var(--white);
-  font-family:'DM Sans',sans-serif;font-size:14px;outline:none;
-  transition:border-color .2s;
-  width:100%;
-}
-.field input:focus, .field select:focus{border-color:var(--gold)}
-.field select option{background:var(--bg2);color:var(--white)}
-
-/* ── COMPACT ORDER SUMMARY CARDS ── */
-.shein-cart-item{
-  display:flex;align-items:center;gap:12px;
-  padding:12px 0;border-bottom:1px solid var(--border);
-}
-.shein-item-img-wrap{
-  position:relative;width:56px;height:56px;
-  background:var(--card2);border-radius:var(--rs);overflow:hidden;flex-shrink:0;
-}
-.shein-item-img{width:100%;height:100%;object-fit:cover}
-.shein-qty-badge{
-  position:absolute;bottom:2px;right:2px;
-  background:rgba(0,0,0,.8);color:var(--gold);
-  font-family:'DM Mono',monospace;font-size:10px;font-weight:600;
-  padding:1px 4px;border-radius:3px;
-}
-.shein-item-info{flex:1;display:flex;flex-direction:column;gap:3px;min-width:0}
-.shein-item-name{font-size:13px;font-weight:600;color:var(--white);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.shein-item-attr{font-size:11px;color:var(--white2);background:var(--bg2);display:inline-block;padding:2px 6px;border-radius:3px;align-self:flex-start}
-.shein-item-price-row{display:flex;align-items:center;justify-content:space-between;margin-top:2px}
-.shein-unit-price{font-size:12px;color:var(--gray)}
-.shein-line-price{font-family:'DM Mono',monospace;font-size:13px;font-weight:600;color:var(--gold)}
-
-.summary-row{display:flex;justify-content:space-between;padding:8px 0;font-size:13px;color:var(--white2)}
-.summary-row.total{border-top:1px solid var(--border2);margin-top:12px;padding-top:12px;font-size:16px;font-weight:700;color:var(--white)}
-
-/* Payment Methods */
-.payment-methods{display:flex;flex-direction:column;gap:10px}
-.pm-option{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px;border:1px solid var(--border2);border-radius:var(--rs);
-  cursor:pointer;background:var(--bg2);transition:.2s;
-}
-.pm-option:hover{border-color:var(--gold)}
-.pm-option.active{border-color:var(--gold);background:var(--gold-dim)}
-.pm-left{display:flex;align-items:center;gap:12px}
-
-.cta-btn{
-  width:100%;padding:16px;background:var(--gold);border:none;
-  border-radius:var(--rs);color:#060606;font-family:'Oswald',sans-serif;
-  font-size:16px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-  cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px;
-}
-.cta-btn:hover{background:var(--gold2);box-shadow:0 0 20px var(--gold-glow)}
-.cta-btn:disabled{opacity:.5;cursor:not-allowed}
-
-/* Error Notification Bar */
-#error-bar{
-  background:rgba(207,79,79,.15);border:1px solid var(--error);color:var(--error);
-  padding:12px;border-radius:var(--rs);font-size:13px;margin-bottom:16px;display:none;
-}
+  :root{
+    --bg:#0e1016; --surface:#161a24; --surface-2:#1d2230; --line:#2a3142;
+    --text:#eef1f7; --muted:#98a1b5; --brand:#4ade9b; --brand-2:#38bdf8;
+    --danger:#f87171; --warn:#fbbf24; --radius:14px; --shadow:0 10px 30px rgba(0,0,0,.35);
+    --font:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1200px 600px at 80% -10%,#1b2536,transparent),var(--bg);color:var(--text);font-family:var(--font);line-height:1.5}
+  a{color:var(--brand-2)}
+  header.topbar{position:sticky;top:0;z-index:20;backdrop-filter:blur(10px);background:rgba(14,16,22,.8);border-bottom:1px solid var(--line)}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 18px}
+  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.3px}
+  .logo .dot{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--brand),var(--brand-2))}
+  .secure{font-size:13px;color:var(--muted);display:flex;gap:6px;align-items:center}
+  .steps{display:flex;gap:8px;margin:22px 0 10px;flex-wrap:wrap}
+  .step{flex:1;min-width:130px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);font-size:13px;color:var(--muted);display:flex;gap:8px;align-items:center;transition:.25s}
+  .step .n{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--surface-2);font-size:12px}
+  .step.active{border-color:var(--brand);color:var(--text);box-shadow:0 0 0 1px var(--brand) inset}
+  .step.active .n{background:var(--brand);color:#08130d;font-weight:700}
+  .step.done .n{background:var(--brand-2);color:#04141d}
+  .grid{display:grid;grid-template-columns:1fr 380px;gap:20px;align-items:start;padding-bottom:60px}
+  @media(max-width:940px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-bottom:18px;box-shadow:var(--shadow)}
+  .card h2{margin:0 0 4px;font-size:17px}
+  .card p.hint{margin:0 0 14px;color:var(--muted);font-size:13px}
+  .row{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+  .row.three{grid-template-columns:1fr 1fr 1fr}
+  @media(max-width:560px){.row,.row.three{grid-template-columns:1fr}}
+  .field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+  label{font-size:12.5px;color:var(--muted);font-weight:600;letter-spacing:.2px}
+  input,select,textarea{background:var(--surface-2);border:1px solid var(--line);color:var(--text);padding:11px 12px;border-radius:10px;font-size:14px;font-family:inherit;outline:none;transition:.18s;width:100%}
+  input:focus,select:focus,textarea:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(74,222,155,.15)}
+  input.invalid,select.invalid{border-color:var(--danger);box-shadow:0 0 0 3px rgba(248,113,113,.13)}
+  .err{color:var(--danger);font-size:12px;min-height:14px}
+  .opt{display:flex;gap:12px;align-items:center;border:1px solid var(--line);background:var(--surface-2);border-radius:12px;padding:12px;cursor:pointer;margin-bottom:10px;transition:.18s}
+  .opt:hover{border-color:#3d465c}
+  .opt.sel{border-color:var(--brand);background:rgba(74,222,155,.07)}
+  .opt input{width:auto;accent-color:var(--brand)}
+  .opt .t{flex:1}
+  .opt .t strong{display:block;font-size:14px}
+  .opt .t span{font-size:12.5px;color:var(--muted)}
+  .opt .price{font-weight:700;font-size:14px}
+  .items{display:flex;flex-direction:column;gap:12px}
+  .item{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;padding-bottom:12px;border-bottom:1px dashed var(--line)}
+  .item:last-child{border-bottom:0;padding-bottom:0}
+  .thumb{width:64px;height:64px;border-radius:12px;display:grid;place-items:center;font-size:26px;background:linear-gradient(135deg,#243044,#1a2130)}
+  .item .name{font-size:14px;font-weight:600}
+  .item .meta{font-size:12px;color:var(--muted)}
+  .qty{display:inline-flex;align-items:center;gap:0;border:1px solid var(--line);border-radius:9px;overflow:hidden;margin-top:6px}
+  .qty button{background:var(--surface-2);border:0;color:var(--text);width:28px;height:28px;cursor:pointer;font-size:15px}
+  .qty button:hover{background:#2b3346}
+  .qty span{min-width:30px;text-align:center;font-size:13px}
+  .link{background:none;border:0;color:var(--muted);font-size:12px;cursor:pointer;padding:0;text-decoration:underline}
+  .link:hover{color:var(--danger)}
+  .summary{position:sticky;top:84px}
+  .line{display:flex;justify-content:space-between;font-size:14px;margin:8px 0;color:var(--muted)}
+  .line strong{color:var(--text)}
+  .total{display:flex;justify-content:space-between;font-size:19px;font-weight:800;border-top:1px solid var(--line);margin-top:14px;padding-top:14px}
+  .promo{display:flex;gap:8px;margin:12px 0}
+  .btn{border:0;border-radius:11px;padding:12px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:.18s}
+  .btn-primary{background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#062017;width:100%}
+  .btn-primary:hover{filter:brightness(1.07)}
+  .btn-primary:disabled{opacity:.55;cursor:not-allowed}
+  .btn-ghost{background:var(--surface-2);color:var(--text);border:1px solid var(--line)}
+  .badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .badge{font-size:11.5px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:5px 10px}
+  .pay-tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+  .tab{flex:1;min-width:110px;text-align:center;padding:10px;border:1px solid var(--line);border-radius:11px;background:var(--surface-2);cursor:pointer;font-size:13px;font-weight:600}
+  .tab.sel{border-color:var(--brand);color:var(--brand)}
+  .cardview{background:linear-gradient(135deg,#1f2a3d,#121722);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:16px;position:relative;overflow:hidden}
+  .cardview .num{font-size:19px;letter-spacing:2.5px;margin:22px 0 14px;font-family:ui-monospace,Menlo,monospace}
+  .cardview .sm{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);text-transform:uppercase}
+  .cardview .brandtag{position:absolute;top:16px;right:18px;font-weight:800;color:var(--brand)}
+  .switch{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--muted);margin:6px 0}
+  .switch input{width:auto;accent-color:var(--brand)}
+  .toast{position:fixed;right:18px;bottom:18px;background:var(--surface-2);border:1px solid var(--line);border-left:4px solid var(--brand);padding:12px 16px;border-radius:11px;font-size:13.5px;box-shadow:var(--shadow);transform:translateY(140%);transition:.3s;z-index:60;max-width:320px}
+  .toast.show{transform:translateY(0)}
+  .toast.error{border-left-color:var(--danger)}
+  .modal{position:fixed;inset:0;background:rgba(5,7,12,.75);display:none;place-items:center;z-index:70;padding:18px}
+  .modal.open{display:grid}
+  .modal .box{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:28px;max-width:420px;text-align:center;box-shadow:var(--shadow)}
+  .tick{width:64px;height:64px;border-radius:50%;background:rgba(74,222,155,.15);color:var(--brand);display:grid;place-items:center;font-size:32px;margin:0 auto 14px}
+  footer{border-top:1px solid var(--line);color:var(--muted);font-size:12.5px;padding:18px 0 40px;text-align:center}
 </style>
 </head>
 <body>
-
-<header>
-  <div class="header-inner">
-    <a href="index.html" class="logo">
-      <div class="logo-mark">GK</div>
-      <span class="logo-name">Gosie Kartel</span>
-    </a>
+<header class="topbar">
+  <div class="wrap">
+    <div class="logo"><span class="dot"></span> Gosie Kartel</div>
+    <div class="secure">🔒 Secure SSL checkout</div>
   </div>
 </header>
 
-<main>
-  <div id="error-bar"></div>
-  <form id="checkout-form">
-    <div class="checkout-grid">
-      
-      <div class="left-col">
-        <div class="card">
-          <div class="card-header">
-            <div class="card-header-num">1</div>
-            <span class="card-title">Customer Information</span>
+<main class="wrap">
+  <div class="steps" id="steps">
+    <div class="step active" data-step="1"><span class="n">1</span> Contact</div>
+    <div class="step" data-step="2"><span class="n">2</span> Shipping</div>
+    <div class="step" data-step="3"><span class="n">3</span> Delivery</div>
+    <div class="step" data-step="4"><span class="n">4</span> Payment</div>
+  </div>
+
+  <form class="grid" id="checkout-form" novalidate>
+    <div>
+      <!-- CONTACT -->
+      <section class="card" data-section="1">
+        <h2>Contact information</h2>
+        <p class="hint">We'll send the receipt and delivery updates here.</p>
+        <div class="row">
+          <div class="field"><label for="fullname">Full name</label><input id="fullname" name="fullname" autocomplete="name" placeholder="Jane Doe" /><div class="err" data-err="fullname"></div></div>
+          <div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" placeholder="jane@example.com" /><div class="err" data-err="email"></div></div>
+        </div>
+        <div class="row">
+          <div class="field"><label for="phone">Phone number</label><input id="phone" name="phone" autocomplete="tel" placeholder="+263 77 000 0000" /><div class="err" data-err="phone"></div></div>
+          <div class="field"><label for="company">Company (optional)</label><input id="company" name="company" placeholder="Acme Inc." /><div class="err"></div></div>
+        </div>
+        <label class="switch"><input type="checkbox" id="news" checked /> Email me deals and order updates</label>
+      </section>
+
+      <!-- SHIPPING -->
+      <section class="card" data-section="2">
+        <h2>Shipping address</h2>
+        <p class="hint">Where should we deliver your order?</p>
+        <div class="field"><label for="address1">Street address</label><input id="address1" name="address1" autocomplete="address-line1" placeholder="12 Samora Machel Ave" /><div class="err" data-err="address1"></div></div>
+        <div class="field"><label for="address2">Apartment, suite (optional)</label><input id="address2" placeholder="Unit 4B" /><div class="err"></div></div>
+        <div class="row three">
+          <div class="field"><label for="city">City</label><input id="city" name="city" autocomplete="address-level2" placeholder="Harare" /><div class="err" data-err="city"></div></div>
+          <div class="field"><label for="state">State / Province</label><input id="state" placeholder="Harare Metro" /><div class="err"></div></div>
+          <div class="field"><label for="zip">Postal code</label><input id="zip" name="zip" autocomplete="postal-code" placeholder="00263" /><div class="err" data-err="zip"></div></div>
+        </div>
+        <div class="field"><label for="country">Country</label>
+          <select id="country" name="country">
+            <option value="ZW" data-tax="0.145">Zimbabwe</option>
+            <option value="ZA" data-tax="0.15">South Africa</option>
+            <option value="US" data-tax="0.0825">United States</option>
+            <option value="GB" data-tax="0.20">United Kingdom</option>
+            <option value="DE" data-tax="0.19">Germany</option>
+            <option value="KE" data-tax="0.16">Kenya</option>
+          </select><div class="err" data-err="country"></div>
+        </div>
+        <label class="switch"><input type="checkbox" id="samebilling" checked /> Billing address is the same as shipping</label>
+        <div id="billing-block" style="display:none">
+          <div class="field"><label for="baddress">Billing street address</label><input id="baddress" placeholder="Billing address" /><div class="err" data-err="baddress"></div></div>
+          <div class="row"><div class="field"><label for="bcity">Billing city</label><input id="bcity" /><div class="err"></div></div>
+          <div class="field"><label for="bzip">Billing postal code</label><input id="bzip" /><div class="err"></div></div></div>
+        </div>
+      </section>
+
+      <!-- DELIVERY -->
+      <section class="card" data-section="3">
+        <h2>Delivery method</h2>
+        <p class="hint">Estimated dates update automatically.</p>
+        <div id="shipping-options"></div>
+        <div class="field" style="margin-top:6px"><label for="notes">Delivery notes (optional)</label><textarea id="notes" rows="2" placeholder="Gate code, landmarks, preferred time…"></textarea></div>
+      </section>
+
+      <!-- PAYMENT -->
+      <section class="card" data-section="4">
+        <h2>Payment</h2>
+        <p class="hint">All transactions are encrypted end to end.</p>
+        <div class="pay-tabs" id="pay-tabs">
+          <div class="tab sel" data-pay="card">💳 Card</div>
+          <div class="tab" data-pay="mobile">📱 Mobile money</div>
+          <div class="tab" data-pay="paypal">🅿️ PayPal</div>
+          <div class="tab" data-pay="cod">📦 Cash on delivery</div>
+        </div>
+
+        <div id="pane-card">
+          <div class="cardview">
+            <div class="brandtag" id="cc-brand">CARD</div>
+            <div style="font-size:12px;color:var(--muted)">Card number</div>
+            <div class="num" id="cc-preview">•••• •••• •••• ••••</div>
+            <div class="sm"><span id="cc-name-preview">CARDHOLDER NAME</span><span id="cc-exp-preview">MM/YY</span></div>
           </div>
-          <div class="form-grid">
-            <div class="field">
-              <label for="cust-name">Full Name *</label>
-              <input type="text" id="cust-name" placeholder="John Doe" required />
+          <div class="field"><label for="ccname">Name on card</label><input id="ccname" autocomplete="cc-name" placeholder="JANE DOE" /><div class="err" data-err="ccname"></div></div>
+          <div class="field"><label for="ccnum">Card number</label><input id="ccnum" inputmode="numeric" autocomplete="cc-number" maxlength="23" placeholder="4242 4242 4242 4242" /><div class="err" data-err="ccnum"></div></div>
+          <div class="row three">
+            <div class="field"><label for="ccexp">Expiry (MM/YY)</label><input id="ccexp" inputmode="numeric" maxlength="5" placeholder="08/29" /><div class="err" data-err="ccexp"></div></div>
+            <div class="field"><label for="cvc">CVC</label><input id="cvc" inputmode="numeric" maxlength="4" placeholder="123" /><div class="err" data-err="cvc"></div></div>
+            <div class="field"><label for="installments">Installments</label>
+              <select id="installments"><option value="1">Pay in full</option><option value="3">3 × monthly</option><option value="6">6 × monthly</option><option value="12">12 × monthly</option></select><div class="err"></div>
             </div>
-            <div class="field">
-              <label for="cust-email">Email Address *</label>
-              <input type="email" id="cust-email" placeholder="john@example.com" required />
-            </div>
-          </div>
-          <div class="field">
-            <label for="cust-phone">Phone Number *</label>
-            <input type="tel" id="cust-phone" placeholder="+263 77 123 4567" required />
           </div>
         </div>
 
-        <div class="card">
-          <div class="card-header">
-            <div class="card-header-num">2</div>
-            <span class="card-title">Shipping Address</span>
+        <div id="pane-mobile" style="display:none">
+          <div class="field"><label for="wallet">Wallet</label>
+            <select id="wallet"><option>EcoCash</option><option>OneMoney</option><option>M-Pesa</option><option>MTN MoMo</option></select><div class="err"></div>
           </div>
-          
-          <div class="field">
-            <label for="cust-country">Country / Region *</label>
-            <select id="cust-country" required>
-              <option value="">-- Select Country --</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="cust-address">Street Address *</label>
-            <input type="text" id="cust-address" placeholder="123 Samora Machel Ave" required />
-          </div>
-
-          <div class="form-grid">
-            <div class="field">
-              <label for="cust-city">City *</label>
-              <input type="text" id="cust-city" placeholder="Harare" required />
-            </div>
-            
-            <div class="field" id="field-zip">
-              <label for="cust-zip" id="zip-label">ZIP / Postal Code *</label>
-              <input type="text" id="cust-zip" placeholder="00263" />
-            </div>
-          </div>
+          <div class="field"><label for="walletphone">Wallet phone number</label><input id="walletphone" inputmode="numeric" placeholder="0771234567" /><div class="err" data-err="walletphone"></div></div>
         </div>
 
-        <div class="card">
-          <div class="card-header">
-            <div class="card-header-num">3</div>
-            <span class="card-title">Select Payment Provider</span>
-          </div>
-          <div class="payment-methods">
-            <label class="pm-option active" id="opt-dpo">
-              <div class="pm-left">
-                <input type="radio" name="payment_provider" value="dpo" checked />
-                <span>DPO Pay (Global Cards, Visa, Mastercard)</span>
-              </div>
-            </label>
-            <label class="pm-option" id="opt-paynow">
-              <div class="pm-left">
-                <input type="radio" name="payment_provider" value="paynow" />
-                <span>Paynow (EcoCash, InnBucks, Zimswitch)</span>
-              </div>
-            </label>
-            <label class="pm-option" id="opt-flutterwave">
-              <div class="pm-left">
-                <input type="radio" name="payment_provider" value="flutterwave" />
-                <span>Flutterwave (International Cards & Wallets)</span>
-              </div>
-            </label>
-          </div>
+        <div id="pane-paypal" style="display:none">
+          <p class="hint">You'll be redirected to PayPal to approve the payment, then returned here.</p>
+          <div class="field"><label for="ppemail">PayPal email</label><input id="ppemail" type="email" placeholder="jane@paypal.com" /><div class="err" data-err="ppemail"></div></div>
         </div>
-      </div>
 
-      <div class="right-col">
-        <div class="card" style="position:sticky; top:84px;">
-          <div class="card-header">
-            <span class="card-title">Order Summary</span>
-          </div>
-
-          <div id="checkout-items"></div>
-
-          <div class="summary-row" style="margin-top:16px;">
-            <span>Subtotal</span>
-            <span id="summary-subtotal">$0.00</span>
-          </div>
-          <div class="summary-row">
-            <span>Shipping</span>
-            <span id="summary-shipping">$0.00</span>
-          </div>
-          <div class="summary-row total">
-            <span>Total</span>
-            <span id="summary-total" style="color:var(--gold); font-family:'DM Mono',monospace;">$0.00</span>
-          </div>
-
-          <div style="margin-top:24px;">
-            <button type="submit" class="cta-btn" id="complete-btn">
-              <span>Complete Payment</span>
-            </button>
-          </div>
+        <div id="pane-cod" style="display:none">
+          <p class="hint">Pay the courier in cash on arrival. A small handling fee applies.</p>
         </div>
-      </div>
 
+        <label class="switch"><input type="checkbox" id="terms" /> I agree to the Terms of Service and Refund Policy</label>
+        <div class="err" data-err="terms"></div>
+      </section>
     </div>
+
+    <!-- SUMMARY -->
+    <aside>
+      <div class="card summary">
+        <h2>Order summary</h2>
+        <p class="hint"><span id="item-count">0</span> items in your cart</p>
+        <div class="items" id="cart-items"></div>
+
+        <div class="promo">
+          <input id="promo" placeholder="Promo code (try SAVE10)" />
+          <button type="button" class="btn btn-ghost" id="apply-promo">Apply</button>
+        </div>
+        <div class="err" data-err="promo"></div>
+
+        <div class="line"><span>Subtotal</span><strong id="s-sub">$0.00</strong></div>
+        <div class="line"><span>Discount</span><strong id="s-disc">-$0.00</strong></div>
+        <div class="line"><span>Shipping</span><strong id="s-ship">$0.00</strong></div>
+        <div class="line"><span>Tax (<span id="s-taxrate">0%</span>)</span><strong id="s-tax">$0.00</strong></div>
+        <div class="line"><span>Handling</span><strong id="s-fee">$0.00</strong></div>
+        <div class="total"><span>Total</span><span id="s-total">$0.00</span></div>
+        <div class="line" id="s-installment" style="display:none"><span>Per installment</span><strong id="s-per">$0.00</strong></div>
+
+        <button class="btn btn-primary" id="pay-btn" type="submit" style="margin-top:14px">Pay $0.00</button>
+        <div class="badges">
+          <span class="badge">🔐 PCI-DSS</span><span class="badge">↩️ 30-day returns</span>
+          <span class="badge">🚚 Tracked delivery</span><span class="badge">🛡️ Buyer protection</span>
+        </div>
+      </div>
+    </aside>
   </form>
 </main>
 
+<footer class="wrap">© <span id="year"></span> Gosie Kartel — All prices in USD.</footer>
+
+<div class="toast" id="toast"></div>
+<div class="modal" id="modal">
+  <div class="box">
+    <div class="tick">✓</div>
+    <h2 style="margin:0 0 6px">Order confirmed</h2>
+    <p class="hint" id="order-msg">Thanks! Your order is on its way.</p>
+    <button class="btn btn-primary" id="close-modal" type="button">Continue shopping</button>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/checkout.js"></script>
-<script src="js/payment-gateway.js"></script>
-
-<script>
-document.getElementById("checkout-form").addEventListener("submit", async function(e) {
-  e.preventDefault();
-  
-  const errBar = document.getElementById("error-bar");
-  if (errBar) errBar.style.display = "none";
-
-  const customer = {
-    name: document.getElementById("cust-name").value.trim(),
-    email: document.getElementById("cust-email").value.trim(),
-    phone: document.getElementById("cust-phone").value.trim(),
-    country: document.getElementById("cust-country").value,
-    city: document.getElementById("cust-city").value.trim(),
-    address: document.getElementById("cust-address").value.trim(),
-    zip: document.getElementById("cust-zip") ? document.getElementById("cust-zip").value.trim() : ""
-  };
-
-  const provider = document.querySelector('input[name="payment_provider"]:checked')?.value || 'dpo';
-
-  try {
-    await window.GosiePaymentGateway.executePaymentRedirect(customer, provider);
-  } catch (err) {
-    if (errBar) {
-      errBar.innerText = err.message || "Something went wrong.";
-      errBar.style.display = "block";
-    } else {
-      alert(err.message || "Something went wrong.");
-    }
-  }
-});
-</script>
+<script src="/checkout.js" defer></script>
 </body>
-</html>
+            </html>
+            
