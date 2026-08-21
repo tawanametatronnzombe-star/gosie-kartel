@@ -5,34 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart | Gosie Kartel</title>
     <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="container nav-container">
+    <header class="navbar">
+        <div class="nav-container">
             <a href="index.html" class="logo">Gosie Kartel</a>
-            <ul class="nav-menu">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="shop.html">Shop</a></li>
-                <li><a href="cart.html" class="active">Cart</a></li>
-            </ul>
+            <nav>
+                <ul style="display: flex; gap: 15px; list-style: none; margin: 0; padding: 0;">
+                    <li><a href="index.html" style="color: #a0aec0; text-decoration: none;">HOME</a></li>
+                    <li><a href="shop.html" style="color: #a0aec0; text-decoration: none;">SHOP</a></li>
+                    <li><a href="cart.html" style="color: #fff; text-decoration: none;">CART</a></li>
+                </ul>
+            </nav>
         </div>
-    </nav>
+    </header>
 
-    <section class="cart-section">
-        <div class="container">
-            <h1>Shopping Cart</h1>
-            <div id="cart-items"></div>
-            <div class="cart-summary" id="cart-summary">
-                <h3>Order Summary</h3>
-                <div class="summary-row"><span>Subtotal:</span><span id="subtotal">$0.00</span></div>
-                <div class="summary-row"><span>Shipping:</span><span id="shipping">$0.00</span></div>
-                <div class="summary-row total"><span>Total:</span><span id="total">$0.00</span></div>
-                <a href="checkout.html" class="btn btn-primary btn-large" id="checkout-btn" style="display:none;">Proceed to Checkout</a>
+    <main style="max-width: 800px; margin: 0 auto; padding: 0 15px;">
+        <h1 style="font-size: 2em; margin-bottom: 20px;">Shopping Cart</h1>
+
+        <div class="order-summary-card" style="margin-bottom: 20px;">
+            <div id="empty-cart" style="display: none; text-align: center; padding: 20px; color: #a0aec0;">
+                Your cart is currently empty. <a href="shop.html" style="color: #0d6efd;">Go shopping</a>
             </div>
-            <p class="empty-cart" id="empty-cart">Your cart is empty. <a href="shop.html">Start shopping</a></p>
+
+            <div id="cart-items" style="display: flex; flex-direction: column; gap: 15px;">
+                <!-- Cart items load here dynamically -->
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid #30363d; margin: 20px 0;">
+
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: #a0aec0;">Subtotal:</span>
+                    <span id="subtotal">$0.00</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="color: #a0aec0;">Shipping:</span>
+                    <span id="shipping">$0.00</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 1.2em; font-weight: bold; margin-top: 10px;">
+                    <span>Total:</span>
+                    <span id="total">$0.00</span>
+                </div>
+            </div>
+
+            <a href="checkout.html" id="checkout-btn" class="payment-method-btn" style="background: #0d6efd; padding: 15px; text-align: center; text-decoration: none; font-weight: bold; margin-top: 20px; display: block;">PROCEED TO CHECKOUT</a>
         </div>
-    </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Gosie Kartel | All prices in USD.</p>
+        <p class="footer-email">Contact: tawanametatronnzombe@gmail.com</p>
+    </footer>
 
     <script src="js/products.js"></script>
     <script src="js/cart.js"></script>
