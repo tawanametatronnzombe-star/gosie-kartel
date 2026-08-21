@@ -11,7 +11,7 @@
   const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
   /* ------------------------------ State ------------------------------ */
-  const CART_KEY = "cart"; // Aligned with Gosie Kartel global cart key
+  const CART_KEYS = ["cart", "gosie_cart", "shopping_cart"];
 
   const defaultCart = [
     { id: "p1", name: "Gosie Kartel Winter Hoodie", variant: "Black / Heavyweight", price: 85.0, qty: 1, icon: "🧥" },
@@ -32,7 +32,7 @@
   };
 
   const state = {
-    cart: load(),
+    cart: loadCart(),
     shipping: "std",
     payment: "card",
     promo: null,
@@ -43,24 +43,73 @@
   /* ---------------------------- Utilities ---------------------------- */
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
-  const money = (n) => "$" + (Math.round(n * 100) / 100).toFixed(2);
+  const money = (n) => "$" + (Math.round((Number(n) || 0) * 100) / 100).toFixed(2);
 
-  function load() {
-    try {
-      const raw = localStorage.getItem(CART_KEY);
-      const parsed = raw ? JSON.parse(raw) : null;
-      return Array.isArray(parsed) && parsed.length ? parsed : structuredClone(defaultCart);
-    } catch (_) {
-      return structuredClone(defaultCart);
-    }
+  function normalizeItem(item) {
+    return {
+      id: item.id || item.product_id || "prod_" + Math.random().toString(36).substr(2, 5),
+      name: item.name || item.title || item.product_name || "Unknown Product",
+      variant: item.variant || item.selectedSize || item.size || item.color || "Standard",
+      price: parseFloat(item.price) || 0,
+      qty: parseInt(item.qty || item.quantity || 1, 10),
+      icon: item.icon || item.emoji || "🛍️"
+    };
   }
+
+  function loadCart() {
+    for (const key of CART_KEYS) {
+      try {
+        const raw = localStorage.getItem(key);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            return parsed.map(normalizeItem);
+          }
+        }
+      } catch (_) {}
+    }
+    return [];
+  }
+
   function save() {
-    try { localStorage.setItem(CART_KEY, JSON.stringify(state.cart)); } catch (_) {}
+    try {
+      CART_KEYS.forEach(key => localStorage.setItem(key, JSON.stringify(state.cart)));
+    } catch (_) {}
+  }
+
+  async function fetchCartFallback() {
+    if (state.cart.length > 0) return;
+
+    // Try URL parameter product payload
+    const params = new URLSearchParams(window.location.search);
+    const prodId = params.get("product_id") || params.get("id");
+    
+    if (prodId && supabaseClient) {
+      try {
+        const { data, error } = await supabaseClient.from("Products").select("*").eq("id", prodId).single();
+        if (data && !error) {
+          state.cart = [normalizeItem(data)];
+          save();
+          renderCart();
+          recalc();
+          return;
+        }
+      } catch (err) {
+        console.warn("Could not fetch product from URL params", err);
+      }
+    }
+
+    // Default fallback to show options if cart remains empty
+    if (!state.cart.length) {
+      state.cart = defaultCart.map(normalizeItem);
+      save();
+    }
   }
 
   let toastTimer;
   function toast(msg, isError) {
     const t = $("#toast");
+    if (!t) return;
     t.textContent = msg;
     t.classList.toggle("error", !!isError);
     t.classList.add("show");
@@ -79,29 +128,35 @@
   /* ------------------------------ Cart UI ---------------------------- */
   function renderCart() {
     const box = $("#cart-items");
+    if (!box) return;
     box.innerHTML = "";
+    
     if (!state.cart.length) {
       box.innerHTML = '<p class="hint">Your cart is empty. Explore our collection.</p>';
+      $("#item-count").textContent = "0";
+      return;
     }
+
     state.cart.forEach((item) => {
       const el = document.createElement("div");
       el.className = "item";
       el.innerHTML = `
-        <div class="thumb">${item.icon || "🛍️"}</div>
+        <div class="thumb">${item.icon}</div>
         <div>
           <div class="name">${item.name}</div>
-          <div class="meta">${item.variant || item.selectedSize || "Standard"} · ${money(item.price)} ea</div>
+          <div class="meta">${item.variant} · ${money(item.price)} ea</div>
           <div class="qty">
             <button type="button" data-act="dec" data-id="${item.id}" aria-label="Decrease">−</button>
-            <span>${item.qty || item.quantity || 1}</span>
+            <span>${item.qty}</span>
             <button type="button" data-act="inc" data-id="${item.id}" aria-label="Increase">+</button>
           </div>
           <button type="button" class="link" data-act="rm" data-id="${item.id}" style="margin-left:8px">Remove</button>
         </div>
-        <div style="font-weight:700">${money(item.price * (item.qty || item.quantity || 1))}</div>`;
+        <div style="font-weight:700">${money(item.price * item.qty)}</div>`;
       box.appendChild(el);
     });
-    $("#item-count").textContent = state.cart.reduce((s, i) => s + Number(i.qty || i.quantity || 1), 0);
+
+    $("#item-count").textContent = state.cart.reduce((s, i) => s + i.qty, 0);
   }
 
   function cartAction(e) {
@@ -110,14 +165,15 @@
     const { act, id } = btn.dataset;
     const item = state.cart.find((i) => i.id === id);
     if (!item) return;
-    const currentQty = Number(item.qty || item.quantity || 1);
-    if (act === "inc") item.qty = Math.min(99, currentQty + 1);
-    if (act === "dec") item.qty = Math.max(1, currentQty - 1);
-    item.quantity = item.qty;
+
+    if (act === "inc") item.qty = Math.min(99, item.qty + 1);
+    if (act === "dec") item.qty = Math.max(1, item.qty - 1);
+    
     if (act === "rm") {
       state.cart = state.cart.filter((i) => i.id !== id);
       toast(`${item.name} removed from cart`);
     }
+    
     save();
     renderCart();
     recalc();
@@ -126,6 +182,7 @@
   /* --------------------------- Shipping UI --------------------------- */
   function renderShipping() {
     const box = $("#shipping-options");
+    if (!box) return;
     box.innerHTML = "";
     SHIPPING_METHODS.forEach((m) => {
       const el = document.createElement("label");
@@ -157,7 +214,7 @@
 
   /* ------------------------------ Totals ----------------------------- */
   function totals() {
-    const subtotal = state.cart.reduce((s, i) => s + i.price * Number(i.qty || i.quantity || 1), 0);
+    const subtotal = state.cart.reduce((s, i) => s + i.price * i.qty, 0);
     let discount = 0;
     let shipPrice = (SHIPPING_METHODS.find((m) => m.id === state.shipping) || {}).price || 0;
 
@@ -167,7 +224,7 @@
       if (p.type === "flat") discount = Math.min(p.value, subtotal);
       if (p.type === "freeship") shipPrice = 0;
     }
-    if (subtotal - discount >= 150) shipPrice = 0; // free shipping threshold
+    if (subtotal - discount >= 150) shipPrice = 0;
 
     const fee = state.payment === "cod" ? 3.5 : state.payment === "paypal" ? subtotal * 0.015 : 0;
     const taxable = Math.max(0, subtotal - discount);
@@ -178,19 +235,21 @@
 
   function recalc() {
     const t = totals();
-    $("#s-sub").textContent = money(t.subtotal);
-    $("#s-disc").textContent = "-" + money(t.discount);
-    $("#s-ship").textContent = t.shipPrice ? money(t.shipPrice) : "FREE";
-    $("#s-taxrate").textContent = (state.taxRate * 100).toFixed(2).replace(/\.?0+$/, "") + "%";
-    $("#s-tax").textContent = money(t.tax);
-    $("#s-fee").textContent = money(t.fee);
-    $("#s-total").textContent = money(t.total);
-    $("#pay-btn").textContent = state.cart.length ? "Pay " + money(t.total) : "Cart is empty";
-    $("#pay-btn").disabled = !state.cart.length;
+    if ($("#s-sub")) $("#s-sub").textContent = money(t.subtotal);
+    if ($("#s-disc")) $("#s-disc").textContent = "-" + money(t.discount);
+    if ($("#s-ship")) $("#s-ship").textContent = t.shipPrice ? money(t.shipPrice) : "FREE";
+    if ($("#s-taxrate")) $("#s-taxrate").textContent = (state.taxRate * 100).toFixed(2).replace(/\.?0+$/, "") + "%";
+    if ($("#s-tax")) $("#s-tax").textContent = money(t.tax);
+    if ($("#s-fee")) $("#s-fee").textContent = money(t.fee);
+    if ($("#s-total")) $("#s-total").textContent = money(t.total);
+    if ($("#pay-btn")) {
+      $("#pay-btn").textContent = state.cart.length ? "Pay " + money(t.total) : "Cart is empty";
+      $("#pay-btn").disabled = !state.cart.length;
+    }
 
     const showInst = state.payment === "card" && state.installments > 1;
-    $("#s-installment").style.display = showInst ? "flex" : "none";
-    if (showInst) $("#s-per").textContent = money(t.total / state.installments) + " × " + state.installments;
+    if ($("#s-installment")) $("#s-installment").style.display = showInst ? "flex" : "none";
+    if (showInst && $("#s-per")) $("#s-per").textContent = money(t.total / state.installments) + " × " + state.installments;
   }
 
   /* ------------------------------ Promo ------------------------------ */
@@ -247,6 +306,7 @@
 
   function wireCard() {
     const num = $("#ccnum"), exp = $("#ccexp"), cvc = $("#cvc"), name = $("#ccname");
+    if (!num) return;
 
     num.addEventListener("input", () => {
       num.value = formatCard(num.value);
@@ -283,7 +343,7 @@
         tab.classList.add("sel");
         state.payment = tab.dataset.pay;
         ["card", "mobile", "paypal", "cod"].forEach((p) => {
-          $("#pane-" + p).style.display = p === state.payment ? "" : "none";
+          if ($("#pane-" + p)) $("#pane-" + p).style.display = p === state.payment ? "" : "none";
         });
         recalc();
         markStep(4);
@@ -412,18 +472,21 @@
   }
 
   /* ------------------------------- Init ------------------------------ */
-  function init() {
-    $("#year").textContent = new Date().getFullYear();
+  async function init() {
+    if ($("#year")) $("#year").textContent = new Date().getFullYear();
 
+    await fetchCartFallback();
     renderCart();
     renderShipping();
     wireCard();
     wirePayTabs();
     recalc();
 
-    $("#cart-items").addEventListener("click", cartAction);
-    $("#apply-promo").addEventListener("click", applyPromo);
-    $("#promo").addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); applyPromo(); } });
+    const cartBox = $("#cart-items");
+    if (cartBox) cartBox.addEventListener("click", cartAction);
+    
+    if ($("#apply-promo")) $("#apply-promo").addEventListener("click", applyPromo);
+    if ($("#promo")) $("#promo").addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); applyPromo(); } });
 
     Object.keys(rules).forEach((id) => {
       const el = document.getElementById(id);
@@ -433,36 +496,38 @@
       }
     });
 
-    $("#country").addEventListener("change", (e) => {
-      state.taxRate = parseFloat(e.target.selectedOptions[0].dataset.tax || "0");
-      recalc();
-      toast("Tax rate updated for " + e.target.selectedOptions[0].textContent);
-    });
+    if ($("#country")) {
+      $("#country").addEventListener("change", (e) => {
+        state.taxRate = parseFloat(e.target.selectedOptions[0].dataset.tax || "0");
+        recalc();
+        toast("Tax rate updated for " + e.target.selectedOptions[0].textContent);
+      });
+    }
 
-    $("#samebilling").addEventListener("change", (e) => {
-      $("#billing-block").style.display = e.target.checked ? "none" : "";
-    });
+    if ($("#samebilling")) {
+      $("#samebilling").addEventListener("change", (e) => {
+        $("#billing-block").style.display = e.target.checked ? "none" : "";
+      });
+    }
 
-    $("#terms").addEventListener("change", () => setError("terms", ""));
+    if ($("#terms")) $("#terms").addEventListener("change", () => setError("terms", ""));
 
     $$("[data-section]").forEach((sec) => {
       sec.addEventListener("focusin", () => markStep(+sec.dataset.section));
     });
 
-    $("#close-modal").addEventListener("click", () => {
-      $("#modal").classList.remove("open");
-      $("#checkout-form").reset();
-      state.cart = structuredClone(defaultCart);
-      save();
-      renderCart();
-      recalc();
-    });
+    if ($("#close-modal")) {
+      $("#close-modal").addEventListener("click", () => {
+        $("#modal").classList.remove("open");
+        $("#checkout-form").reset();
+        state.cart = defaultCart.map(normalizeItem);
+        save();
+        renderCart();
+        recalc();
+      });
+    }
 
-    $("#checkout-form").addEventListener("submit", submit);
-
-    window.addEventListener("beforeunload", (e) => {
-      if (state.cart.length && $("#fullname").value) { e.preventDefault(); e.returnValue = ""; }
-    });
+    if ($("#checkout-form")) $("#checkout-form").addEventListener("submit", submit);
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
