@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details | Gosie Kartel</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">Gosie Kartel</a>
+            <nav>
+                <ul style="display: flex; gap: 15px; list-style: none; margin: 0; padding: 0;">
+                    <li><a href="index.html" style="color: #a0aec0; text-decoration: none;">HOME</a></li>
+                    <li><a href="shop.html" style="color: #a0aec0; text-decoration: none;">SHOP</a></li>
+                    <li><a href="cart.html" style="color: #a0aec0; text-decoration: none;">CART (<span id="cart-count">0</span>)</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main style="max-width: 900px; margin: 0 auto; padding: 0 15px;">
+        <div id="product-detail-container" class="order-summary-card" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; align-items: center;">
+            <img id="detail-image" src="" alt="Product" style="width: 100%; height: auto; max-height: 400px; object-fit: cover; border-radius: 8px;">
+            <div>
+                <h1 id="detail-title" style="font-size: 2em; margin-bottom: 10px;">Loading...</h1>
+                <p id="detail-price" style="font-size: 1.5em; color: #0d6efd; font-weight: bold; margin-bottom: 20px;">$0.00</p>
+                <p style="color: #a0aec0; line-height: 1.6; margin-bottom: 25px;">Designed with top-tier materials for maximal comfort and modern street aesthetic.</p>
+                <button id="add-to-cart-action" class="payment-method-btn" style="background: #0d6efd; padding: 15px 30px; font-weight: bold;">ADD TO CART</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Gosie Kartel | All prices in USD.</p>
+        <p class="footer-email">Contact: tawanametatronnzombe@gmail.com</p>
+    </footer>
+
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const params = new URLSearchParams(window.location.search);
+            const productId = params.get("id") || 1;
+            const product = products.find(p => p.id == productId);
+
+            if (product) {
+                document.getElementById("detail-image").src = product.image;
+                document.getElementById("detail-title").textContent = product.name;
+                document.getElementById("detail-price").textContent = `$${product.price.toFixed(2)}`;
+                
+                if (product.name.toLowerCase().includes("beanie") && !product.name.toLowerCase().includes("cyan")) {
+                    document.getElementById("detail-image").style.objectFit = "contain";
+                }
+
+                document.getElementById("add-to-cart-action").addEventListener("click", () => {
+                    addToCart(product.id);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
