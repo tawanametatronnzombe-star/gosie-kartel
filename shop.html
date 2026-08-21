@@ -4,46 +4,551 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shop | Gosie Kartel</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style1.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0e1016;
+            --surface: #161a24;
+            --surface-2: #1d2230;
+            --line: #2a3142;
+            --text: #eef1f7;
+            --muted: #98a1b5;
+            --brand: #4ade9b;
+            --brand-2: #38bdf8;
+            --danger: #f87171;
+            --radius: 14px;
+            --shadow: 0 10px 30px rgba(0,0,0,.35);
+            --font: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        /* RESET OVERRIDES to neutralize external style1.css layout bugs */
+        html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            overflow-x: hidden !important;
+        }
+
+        *, *::before, *::after { box-sizing: border-box !important; }
+
+        body {
+            background: radial-gradient(1200px 600px at 80% -10%, #1b2536, transparent), var(--bg);
+            color: var(--text);
+            font-family: var(--font);
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a { color: var(--brand-2); text-decoration: none; }
+
+        /* Navigation Alignment & Sticky Overlap Fix */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            background: rgba(14, 16, 22, .95);
+            border-bottom: 1px solid var(--line);
+            width: 100% !important;
+            left: 0 !important;
+            margin: 0 !important;
+        }
+
+        .nav-container {
+            max-width: 1180px;
+            margin: 0 auto !important;
+            padding: 0 18px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            letter-spacing: .3px;
+            color: var(--text);
+            font-size: 16px;
+        }
+
+        .navbar .logo::before {
+            content: "";
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--brand), var(--brand-2));
+            display: inline-block;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            margin: 0;
+            padding: 0;
+            align-items: center;
+        }
+
+        .nav-menu li a {
+            color: var(--muted);
+            font-size: 13.5px;
+            font-weight: 600;
+            transition: color .2s ease;
+        }
+
+        .nav-menu li a:hover, .nav-menu li a.active {
+            color: var(--text);
+        }
+
+        .cart-icon {
+            background: var(--surface-2);
+            border: 1px solid var(--line);
+            padding: 6px 12px;
+            border-radius: 20px;
+            color: var(--text) !important;
+        }
+
+        /* Container Layout */
+        .container {
+            max-width: 1180px;
+            margin: 0 auto !important;
+            padding: 0 18px;
+            width: 100%;
+        }
+
+        /* Page Header */
+        .page-header {
+            padding: 40px 18px 20px;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            margin: 0 0 8px;
+            font-size: clamp(28px, 4vw, 36px);
+            font-weight: 800;
+        }
+
+        .page-header p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        /* Shop Section */
+        .shop-section {
+            padding: 20px 0 40px;
+        }
+
+        .shop-filters {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .filter-select {
+            background: var(--surface-2);
+            border: 1px solid var(--line);
+            color: var(--text);
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 13.5px;
+            font-family: inherit;
+            outline: none;
+            cursor: pointer;
+            transition: border-color .18s;
+        }
+
+        .filter-select:focus {
+            border-color: var(--brand);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 16px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform .2s ease, border-color .2s ease;
+        }
+
+        .product-card:hover {
+            border-color: var(--line);
+            transform: translateY(-2px);
+        }
+
+        /* Product Image Fixes */
+        .product-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover; /* Keeps all products properly rendered without distortion */
+            border-radius: 10px;
+            display: block;
+            margin: 0 auto 14px;
+            background: var(--surface-2);
+        }
+
+        /* Kartel Beanie Exception Rule */
+        .product-card[data-product="kartel-beanie"] img,
+        .cart-item[data-product="kartel-beanie"] img {
+            object-fit: contain !important;
+        }
+
+        .product-card h3 {
+            margin: 0 0 6px;
+            font-size: 16px;
+            color: var(--text);
+        }
+
+        .product-card p {
+            margin: 0 0 12px;
+            color: var(--brand);
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        /* Buttons */
+        .btn {
+            border: 0;
+            border-radius: 11px;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: .18s;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .product-card .add-to-cart-btn {
+            background: linear-gradient(135deg, var(--brand), var(--brand-2)) !important;
+            color: #062017 !important;
+        }
+
+        .product-card .add-to-cart-btn:hover {
+            filter: brightness(1.07);
+        }
+
+        /* Cart Section */
+        .cart-section {
+            padding: 30px 0 60px;
+        }
+
+        .cart-section .container {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .cart-section h2 {
+            margin: 0 0 18px;
+            font-size: 20px;
+            border-bottom: 1px solid var(--line);
+            padding-bottom: 12px;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--surface-2);
+            border: 1px solid var(--line);
+            padding: 12px 16px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            gap: 12px;
+        }
+
+        .cart-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+            background: var(--surface);
+            flex-shrink: 0;
+        }
+
+        .cart-item strong {
+            color: var(--text) !important;
+        }
+
+        .cart-item span {
+            color: var(--muted);
+        }
+
+        .cart-summary {
+            margin-top: 20px;
+            background: var(--surface-2);
+            border: 1px solid var(--line);
+            padding: 18px;
+            border-radius: 12px;
+        }
+
+        .cart-summary .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .cart-summary .summary-row strong {
+            color: var(--text);
+            font-size: 16px;
+        }
+
+        #checkout-btn {
+            background: linear-gradient(135deg, var(--brand), var(--brand-2));
+            color: #062017;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        #empty-cart {
+            color: var(--muted);
+            margin-top: 10px;
+        }
+
+        /* Footer */
+        footer.footer {
+            border-top: 1px solid var(--line);
+            color: var(--muted);
+            font-size: 12.5px;
+            padding: 24px 18px 40px;
+            text-align: center;
+            margin-top: auto;
+            width: 100%;
+        }
+
+        .footer-email {
+            word-break: break-all;
+        }
+
+        @media(max-width: 580px) {
+            .nav-container { padding: 0 12px; }
+            .nav-menu { gap: 10px; }
+            .nav-menu li a { font-size: 12px; }
+            .cart-item { flex-direction: column; align-items: flex-start; gap: 10px; }
+        }
+    </style>
 </head>
 <body>
-    <header class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="logo">Gosie Kartel</a>
-            <nav>
-                <ul style="display: flex; gap: 15px; list-style: none; margin: 0; padding: 0;">
-                    <li><a href="index.html" style="color: #a0aec0; text-decoration: none;">HOME</a></li>
-                    <li><a href="shop.html" style="color: #fff; text-decoration: none;">SHOP</a></li>
-                    <li><a href="cart.html" style="color: #a0aec0; text-decoration: none;">CART (<span id="cart-count">0</span>)</a></li>
-                    <li><a href="track-order.html" style="color: #a0aec0; text-decoration: none;">TRACK</a></li>
-                </ul>
-            </nav>
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="./index.html" class="logo">Gosie Kartel</a>
+            <ul class="nav-menu">
+                <li><a href="./index.html">Home</a></li>
+                <li><a href="./shop.html" class="active">Shop</a></li>
+                <li><a href="./about.html">About</a></li>
+                <li><a href="./contact.html">Contact</a></li>
+                <li><a href="#" class="cart-icon">🛒 <span id="cart-count">0</span></a></li>
+            </ul>
         </div>
-    </header>
+    </nav>
 
-    <main style="max-width: 1200px; margin: 0 auto; padding: 0 15px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-            <h1 style="font-size: 2em; text-transform: uppercase;">Shop Catalog</h1>
-            <select id="category-filter" class="form-group" style="width: auto; padding: 8px 12px; background: #161b22; color: #fff; border: 1px solid #30363d; border-radius: 6px;">
-                <option value="all">All Categories</option>
-                <option value="hoodies">Hoodies</option>
-                <option value="tracksuits">Tracksuits</option>
-                <option value="accessories">Accessories</option>
-            </select>
+    <section class="page-header">
+        <h1>Shop All Products</h1>
+        <p>Discover our latest winter collection</p>
+    </section>
+
+    <section class="shop-section">
+        <div class="container">
+            <div class="shop-filters">
+                <select id="category-filter" class="filter-select">
+                    <option value="all">All Categories</option>
+                    <option value="hoodies">Hoodies</option>
+                    <option value="tracksuits">Tracksuits</option>
+                    <option value="accessories">Accessories</option>
+                </select>
+                <select id="sort-filter" class="filter-select">
+                    <option value="default">Sort By</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="name">Name</option>
+                </select>
+            </div>
+
+            <div class="products-grid" id="product-container"></div>
         </div>
+    </section>
 
-        <div id="shop-products" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding-bottom: 40px;">
-            <!-- Rendered dynamically by products.js -->
+    <section class="cart-section">
+        <div class="container">
+            <h2>Shopping Cart</h2>
+            <div id="cart-items"></div>
+            <div class="cart-summary">
+                <div class="summary-row"><span>Subtotal:</span><span id="subtotal">$0.00</span></div>
+                <div class="summary-row"><span>Shipping:</span><span id="shipping">$0.00</span></div>
+                <div class="summary-row"><strong>Total:</strong><strong id="total">$0.00</strong></div>
+                <button class="btn" id="checkout-btn" style="display:none; margin-top: 15px;">Proceed to Checkout</button>
+            </div>
+            <p id="empty-cart">Your cart is empty.</p>
         </div>
-    </main>
+    </section>
 
-    <footer>
-        <p>&copy; 2026 Gosie Kartel | All prices in USD.</p>
-        <p class="footer-email">Contact: tawanametatronnzombe@gmail.com</p>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 Gosie Kartel | <span class="footer-email">Contact: tawanametatronnzombe@gmail.com</span></p>
+            </div>
+        </div>
     </footer>
 
-    <script src="js/products.js"></script>
-    <script src="js/cart.js"></script>
+    <script>
+        // Products with categories
+        const products = [
+            { id:1, name:"Winter Hoodie Black", price:45, category:"hoodies", image:"https://i.postimg.cc/Z5prPwgN/winter-hoodie-black.png" },
+            { id:2, name:"Tracksuit Hoodie Set", price:80, category:"tracksuits", image:"https://i.postimg.cc/d3f86pwB/tracksuit-hoodie-set.png" },
+            { id:3, name:"Kartel Beanie", price:20, category:"accessories", image:"https://i.postimg.cc/9MpbdL4H/kartel-beanie.jpg" }
+        ];
+
+        // Render products with optional filtering/sorting
+        function renderProducts(filteredProducts = products) {
+            const container = document.getElementById("product-container");
+            container.innerHTML = "";
+            filteredProducts.forEach(p => {
+                const div = document.createElement("div");
+                div.className = "product-card";
+                
+                // Exemption tag for Kartel Beanie
+                if (p.name.toLowerCase().includes("beanie")) {
+                    div.setAttribute("data-product", "kartel-beanie");
+                }
+
+                div.innerHTML = `
+                    <img src="${p.image}" alt="${p.name}">
+                    <h3>${p.name}</h3>
+                    <p>$${p.price.toFixed(2)}</p>
+                    <button class="btn add-to-cart-btn" data-id="${p.id}" style="width:100%; margin-top:10px;">Add to Cart</button>
+                `;
+                container.appendChild(div);
+            });
+
+            document.querySelectorAll(".add-to-cart-btn").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const id = parseInt(btn.dataset.id);
+                    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+                    const product = products.find(p => p.id === id);
+                    cart.push(product);
+                    localStorage.setItem("cart", JSON.stringify(cart));
+                    updateCart();
+                });
+            });
+        }
+
+        // Filter and sort
+        function applyFilters() {
+            const category = document.getElementById("category-filter").value;
+            const sort = document.getElementById("sort-filter").value;
+            let result = [...products];
+
+            if (category !== "all") {
+                result = result.filter(p => p.category === category);
+            }
+
+            if (sort === "price-low") result.sort((a, b) => a.price - b.price);
+            if (sort === "price-high") result.sort((a, b) => b.price - a.price);
+            if (sort === "name") result.sort((a, b) => a.name.localeCompare(b.name));
+
+            renderProducts(result);
+        }
+
+        // Cart
+        function renderCart() {
+            const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+            const container = document.getElementById("cart-items");
+            const subtotalEl = document.getElementById("subtotal");
+            const shippingEl = document.getElementById("shipping");
+            const totalEl = document.getElementById("total");
+            const emptyEl = document.getElementById("empty-cart");
+            const checkoutBtn = document.getElementById("checkout-btn");
+
+            container.innerHTML = "";
+            document.getElementById("cart-count").textContent = cartItems.length;
+
+            if (cartItems.length === 0) {
+                emptyEl.style.display = "block";
+                checkoutBtn.style.display = "none";
+                subtotalEl.textContent = "$0.00";
+                shippingEl.textContent = "$0.00";
+                totalEl.textContent = "$0.00";
+                return;
+            }
+
+            emptyEl.style.display = "none";
+            checkoutBtn.style.display = "inline-block";
+
+            let subtotal = 0;
+            cartItems.forEach((item, index) => {
+                subtotal += item.price;
+                const div = document.createElement("div");
+                div.className = "cart-item";
+                if (item.name.toLowerCase().includes("beanie")) {
+                    div.setAttribute("data-product", "kartel-beanie");
+                }
+                div.innerHTML = `
+                    <div style="display:flex;align-items:center;gap:15px;">
+                        <img src="${item.image}" alt="${item.name}">
+                        <div>
+                            <strong style="display:block;">${item.name}</strong>
+                            <span>$${item.price.toFixed(2)}</span>
+                        </div>
+                    </div>
+                    <button onclick="removeItem(${index})" style="background:#f87171; color:white; border:none; padding:6px 12px; border-radius:8px; cursor:pointer; font-weight:600;">Remove</button>
+                `;
+                container.appendChild(div);
+            });
+
+            const shipping = subtotal > 100 ? 0 : 10;
+            subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+            shippingEl.textContent = shipping === 0 ? "FREE" : `$${shipping.toFixed(2)}`;
+            totalEl.textContent = `$${(subtotal + shipping).toFixed(2)}`;
+        }
+
+        function removeItem(index) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            cart.splice(index, 1);
+            localStorage.setItem("cart", JSON.stringify(cart));
+            updateCart();
+        }
+
+        function updateCart() {
+            renderCart();
+        }
+
+        document.getElementById("category-filter").addEventListener("change", applyFilters);
+        document.getElementById("sort-filter").addEventListener("change", applyFilters);
+
+        document.getElementById("checkout-btn").addEventListener("click", () => {
+            window.location.href = 'checkout.html';
+        });
+
+        window.onload = () => {
+            renderProducts();
+            renderCart();
+        };
+    </script>
 </body>
-</html>
+    </html>
+    
