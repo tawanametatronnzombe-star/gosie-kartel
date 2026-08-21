@@ -1,39 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Feedback | Gosie Kartel</title>
-<link rel="stylesheet" href="css/style.css">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
-<style>
-    body { font-family: 'Montserrat', sans-serif; background:#f9f9f9; margin:0; padding:0; }
-    .feedback-section { padding: 60px 20px; max-width: 700px; margin: 0 auto; }
-    h1 { font-size: 2.2em; margin-bottom: 10px; text-align:center; }
-    .section-subtitle { text-align:center; font-size:1em; margin-bottom: 30px; color:#555; }
-    .feedback-form { display: flex; flex-direction: column; gap:15px; }
-    .feedback-form input, .feedback-form select, .feedback-form textarea {
-        padding: 12px;
-        border-radius: 8px;
-        border: 1px solid #ccc;
-        font-size: 1em;
-        width: 100%;
-        box-sizing: border-box;
-    }
-    .feedback-form textarea { resize: vertical; }
-    .btn-large { padding: 12px; font-size:1.1em; border:none; border-radius:8px; background:#0d6efd; color:#fff; cursor:pointer; transition:0.3s; }
-    .btn-large:hover { background:#0b5ed7; }
-    .rating { margin-top:10px; }
-    .stars { display:flex; gap:5px; justify-content:center; font-size:1.8em; cursor:pointer; }
-    .stars span { color:#ccc; transition: color 0.2s; }
-    #order-status, #feedback-success { text-align:center; margin-top:20px; font-size:1.1em; }
-    .success-message h2 { color:#0d6efd; margin-bottom:10px; }
-    .success-message p { color:#333; }
-    @media(max-width:500px) {
-        .feedback-section { padding:40px 10px; }
-        .stars { font-size:1.5em; }
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback | Gosie Kartel</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background:#f9f9f9; margin:0; padding:0; }
+        .feedback-section { padding: 60px 20px; max-width: 700px; margin: 0 auto; }
+        h1 { font-size: 2.2em; margin-bottom: 10px; text-align:center; }
+        .section-subtitle { text-align:center; font-size:1em; margin-bottom: 30px; color:#555; }
+        .feedback-form { display: flex; flex-direction: column; gap:15px; }
+        .feedback-form input, .feedback-form select, .feedback-form textarea {
+            padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 1em; width: 100%; box-sizing: border-box;
+        }
+        .btn-large { padding: 12px; font-size:1.1em; border:none; border-radius:8px; background:#0d6efd; color:#fff; cursor:pointer; }
+        .stars { display:flex; gap:5px; justify-content:center; font-size:1.8em; cursor:pointer; }
+        .stars span { color:#ccc; transition: color 0.2s; }
+        .success-message h2 { color:#0d6efd; margin-bottom:10px; }
+    </style>
 </head>
 <body>
     <nav class="navbar">
@@ -74,14 +60,13 @@
             </div>
             <button type="submit" class="btn btn-primary btn-large">Send Feedback</button>
         </form>
-        <div id="feedback-success" class="success-message" style="display:none;">
+        <div id="feedback-success" class="success-message" style="display:none; text-align:center;">
             <h2>Thank You!</h2>
-            <p>Your feedback has been sent successfully. We'll get back to you soon!</p>
+            <p>Your email client was launched to deliver your feedback directly to tawanametatronnzombe@gmail.com.</p>
         </div>
     </section>
 
     <script>
-        // Feedback form submission
         document.getElementById('feedback-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const name = document.getElementById('feedback-name').value;
@@ -90,18 +75,21 @@
             const message = document.getElementById('feedback-message').value;
             const rating = document.getElementById('rating-value').value;
 
-            const subject = `Feedback from ${name} - ${type}`;
-            const body = `Name: ${name}%0D%0AEmail: ${email}%0D%0AType: ${type}%0D%0ARating: ${rating}/5%0D%0A%0D%0AMessage:%0D%0A${message}`;
+            const subject = encodeURIComponent(`Feedback from ${name} - ${type}`);
+            const body = encodeURIComponent(
+                `Name: ${name}%0D%0A` +
+                `Email: ${email}%0D%0A` +
+                `Type: ${type}%0D%0A` +
+                `Rating: ${rating}/5%0D%0A%0D%0A` +
+                `Message:%0D%0A${message}`
+            );
 
-            // Open default mail client
             window.location.href = `mailto:tawanametatronnzombe@gmail.com?subject=${subject}&body=${body}`;
 
-            // Show success message
             document.getElementById('feedback-form').style.display = 'none';
             document.getElementById('feedback-success').style.display = 'block';
         });
 
-        // Star rating functionality
         const stars = document.querySelectorAll('.stars span');
         stars.forEach(star => {
             star.addEventListener('click', function() {
