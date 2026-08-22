@@ -6,7 +6,7 @@
 
     <!-- Supabase configuration -->
     <meta name="supabase-url" content="https://tnlktzagziuwjjzgrrna.supabase.co">
-    <meta name="supabase-anon-key" content="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRubGt0emFneml1d2pqemdycm5hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU5MjA5MzIsImV4cCI6MjEw[...]">
+    <meta name="supabase-anon-key" content="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRubGt0emFneml1d2pqemdycm5hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU5MjA5MzIsImV4cCI62E0[...]">
 
     <!-- Google Search Console Verification -->
     <meta name="google-site-verification" content="Ndkn0ix6AkxzZIWgf_ezGyBcvr3LysgbPNirxnPVJcs">
@@ -280,15 +280,19 @@
         background: #272e40;
       }
 
-      /* Footer styling matching checkout footer */
+      /* Fixed footer styling */
       footer {
         border-top: 1px solid var(--line);
         color: var(--muted);
         font-size: 12.5px;
-        padding: 24px 18px 40px;
+        padding: 24px 18px calc(40px + env(safe-area-inset-bottom));
         text-align: center;
         width: 100%;
-        margin: 0 !important;
+        margin-top: auto !important;
+        margin-bottom: 0 !important;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+        box-sizing: border-box;
       }
 
       @media (max-width: 580px) {
