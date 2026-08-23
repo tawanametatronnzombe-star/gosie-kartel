@@ -19,7 +19,7 @@
   header.topbar{position:sticky;top:0;z-index:20;backdrop-filter:blur(10px);background:rgba(14,16,22,.8);border-bottom:1px solid var(--line)}
   .wrap{max-width:1180px;margin:0 auto;padding:0 18px;width:100%}
   .topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
-  .logo{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.3px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.3px;color:var(--text);text-decoration:none}
   .logo .dot{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--brand),var(--brand-2))}
   .secure{font-size:13px;color:var(--muted);display:flex;gap:6px;align-items:center}
   
@@ -55,10 +55,11 @@
   .opt .t span{font-size:12.5px;color:var(--muted)}
   .opt .price{font-weight:700;font-size:14px}
   
-  .items{display:flex;flex-direction:column;gap:12px}
+  .items{display:flex;flex-direction:column;gap:12px;max-height:360px;overflow-y:auto;padding-right:4px}
   .item{display:grid;grid-template-columns:54px 1fr auto;gap:12px;align-items:center;padding-bottom:12px;border-bottom:1px dashed var(--line)}
   .item:last-child{border-bottom:0;padding-bottom:0}
-  .thumb{width:54px;height:54px;border-radius:12px;display:grid;place-items:center;font-size:22px;background:linear-gradient(135deg,#243044,#1a2130);flex-shrink:0}
+  .thumb{width:54px;height:54px;border-radius:12px;display:grid;place-items:center;font-size:22px;background:linear-gradient(135deg,#243044,#1a2130);flex-shrink:0;overflow:hidden}
+  .thumb img{width:100%;height:100%;object-fit:cover}
   .item .name{font-size:14px;font-weight:600;word-break:break-word}
   .item .meta{font-size:12px;color:var(--muted)}
   .qty{display:inline-flex;align-items:center;gap:0;border:1px solid var(--line);border-radius:9px;overflow:hidden;margin-top:6px}
@@ -122,7 +123,7 @@
 <body>
 <header class="topbar">
   <div class="wrap">
-    <div class="logo"><span class="dot"></span> Gosie Kartel</div>
+    <a href="index.html" class="logo"><span class="dot"></span> Gosie Kartel</a>
     <div class="secure">🔒 Secure SSL checkout</div>
   </div>
 </header>
@@ -185,7 +186,18 @@
       <section class="card" data-section="3">
         <h2>Delivery method</h2>
         <p class="hint">Estimated dates update automatically.</p>
-        <div id="shipping-options"></div>
+        <div id="shipping-options">
+          <label class="opt sel">
+            <input type="radio" name="shipping" value="standard" checked data-cost="5.00">
+            <div class="t"><strong>Standard Courier</strong><span>3 - 5 business days</span></div>
+            <div class="price">$5.00</div>
+          </label>
+          <label class="opt">
+            <input type="radio" name="shipping" value="express" data-cost="15.00">
+            <div class="t"><strong>Express Delivery</strong><span>1 - 2 business days</span></div>
+            <div class="price">$15.00</div>
+          </label>
+        </div>
         <div class="field" style="margin-top:6px"><label for="notes">Delivery notes (optional)</label><textarea id="notes" rows="2" placeholder="Gate code, landmarks, preferred time…"></textarea></div>
       </section>
 
@@ -270,7 +282,7 @@
   </form>
 </main>
 
-<footer class="wrap">© <span id="year"></span> Gosie Kartel — All prices in USD.</footer>
+<footer class="wrap">© <span id="year">2026</span> Gosie Kartel — All prices in USD.</footer>
 
 <div class="toast" id="toast"></div>
 <div class="modal" id="modal">
@@ -278,11 +290,146 @@
     <div class="tick">✓</div>
     <h2 style="margin:0 0 6px">Order confirmed</h2>
     <p class="hint" id="order-msg">Thanks! Your order is on its way.</p>
-    <button class="btn btn-primary" id="close-modal" type="button">Continue shopping</button>
+    <a href="shop.html" class="btn btn-primary" id="close-modal">Continue shopping</a>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="checkout.js" defer></script>
+<!-- Inline Cart Sync Engine -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Try reading cart from multiple common localStorage keys
+  let cart = JSON.parse(localStorage.getItem('cart') || localStorage.getItem('gosie_cart') || '[]');
+  
+  let discountRate = 0;
+
+  function saveCart() {
+    localStorage.setItem('cart', JSON.stringify(cart));
+    localStorage.setItem('gosie_cart', JSON.stringify(cart));
+    renderCart();
+  }
+
+  function renderCart() {
+    const container = document.getElementById('cart-items');
+    const itemCount = document.getElementById('item-count');
+    
+    container.innerHTML = '';
+
+    if (!cart || cart.length === 0) {
+      container.innerHTML = '<p class="hint" style="text-align:center;padding:12px">Your cart is empty. <a href="shop.html">Go to Shop</a></p>';
+      itemCount.textContent = '0';
+      updateTotals(0);
+      return;
+    }
+
+    let totalItems = 0;
+    let subtotal = 0;
+
+    cart.forEach((item, index) => {
+      totalItems += item.quantity || 1;
+      const price = parseFloat(item.price || 0);
+      subtotal += price * (item.quantity || 1);
+
+      const itemEl = document.createElement('div');
+      itemEl.className = 'item';
+      itemEl.innerHTML = `
+        <div class="thumb">
+          ${item.image ? `<img src="${item.image}" alt="${item.name}">` : '🛍️'}
+        </div>
+        <div>
+          <div class="name">${item.name || 'Streetwear Item'}</div>
+          <div class="meta">${item.size ? 'Size: ' + item.size + ' | ' : ''}$${price.toFixed(2)} each</div>
+          <div class="qty">
+            <button type="button" onclick="changeQty(${index}, -1)">-</button>
+            <span>${item.quantity || 1}</span>
+            <button type="button" onclick="changeQty(${index}, 1)">+</button>
+          </div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-weight:700">$${(price * (item.quantity || 1)).toFixed(2)}</div>
+          <button type="button" class="link" onclick="removeItem(${index})">Remove</button>
+        </div>
+      `;
+      container.appendChild(itemEl);
+    });
+
+    itemCount.textContent = totalItems;
+    updateTotals(subtotal);
+  }
+
+  window.changeQty = function(index, delta) {
+    if (cart[index]) {
+      cart[index].quantity = (cart[index].quantity || 1) + delta;
+      if (cart[index].quantity <= 0) {
+        cart.splice(index, 1);
+      }
+      saveCart();
+    }
+  };
+
+  window.removeItem = function(index) {
+    if (cart[index]) {
+      cart.splice(index, 1);
+      saveCart();
+    }
+  };
+
+  function updateTotals(subtotal) {
+    const countrySelect = document.getElementById('country');
+    const selectedCountryOpt = countrySelect ? countrySelect.options[countrySelect.selectedIndex] : null;
+    const taxRate = selectedCountryOpt ? parseFloat(selectedCountryOpt.getAttribute('data-tax') || 0) : 0;
+
+    const shippingRadio = document.querySelector('input[name="shipping"]:checked');
+    const shippingCost = shippingRadio ? parseFloat(shippingRadio.getAttribute('data-cost') || 0) : 0;
+
+    const discountAmount = subtotal * discountRate;
+    const taxableSubtotal = Math.max(0, subtotal - discountAmount);
+    const taxAmount = taxableSubtotal * taxRate;
+    const grandTotal = taxableSubtotal + shippingCost + taxAmount;
+
+    document.getElementById('s-sub').textContent = '$' + subtotal.toFixed(2);
+    document.getElementById('s-disc').textContent = '-$' + discountAmount.toFixed(2);
+    document.getElementById('s-ship').textContent = '$' + shippingCost.toFixed(2);
+    document.getElementById('s-taxrate').textContent = (taxRate * 100).toFixed(1) + '%';
+    document.getElementById('s-tax').textContent = '$' + taxAmount.toFixed(2);
+    document.getElementById('s-total').textContent = '$' + grandTotal.toFixed(2);
+    
+    const payBtn = document.getElementById('pay-btn');
+    if (payBtn) {
+      payBtn.textContent = 'Pay $' + grandTotal.toFixed(2);
+    }
+  }
+
+  // Promo Code handling
+  const applyPromoBtn = document.getElementById('apply-promo');
+  if (applyPromoBtn) {
+    applyPromoBtn.addEventListener('click', () => {
+      const code = (document.getElementById('promo').value || '').trim().toUpperCase();
+      const errEl = document.querySelector('[data-err="promo"]');
+      if (code === 'SAVE10') {
+        discountRate = 0.10;
+        errEl.style.color = 'var(--brand)';
+        errEl.textContent = '10% discount applied!';
+      } else if (code === '') {
+        discountRate = 0;
+        errEl.textContent = '';
+      } else {
+        discountRate = 0;
+        errEl.style.color = 'var(--danger)';
+        errEl.textContent = 'Invalid promo code';
+      }
+      renderCart();
+    });
+  }
+
+  // Country & Shipping change listeners
+  document.getElementById('country')?.addEventListener('change', renderCart);
+  document.querySelectorAll('input[name="shipping"]').forEach(radio => {
+    radio.addEventListener('change', renderCart);
+  });
+
+  // Initial load
+  renderCart();
+});
+</script>
 </body>
- </html>
+</html>
