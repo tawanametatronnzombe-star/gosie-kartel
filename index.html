@@ -285,14 +285,18 @@
         border-top: 1px solid var(--line);
         color: var(--muted);
         font-size: 12.5px;
-        padding: 24px 18px calc(40px + env(safe-area-inset-bottom));
+        line-height: 1.6;
+        padding: 24px 18px calc(70px + env(safe-area-inset-bottom)) !important;
         text-align: center;
-        width: 100%;
+        width: 100% !important;
         margin-top: auto !important;
         margin-bottom: 0 !important;
         word-break: break-word;
         overflow-wrap: anywhere;
-        box-sizing: border-box;
+        box-sizing: border-box !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       @media (max-width: 580px) {
