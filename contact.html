@@ -21,10 +21,19 @@
         --font: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
     }
 
-    *, *::before, *::after { box-sizing: border-box; }
+    *, *::before, *::after { 
+        box-sizing: border-box !important; 
+    }
+
+    html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: hidden !important;
+    }
 
     body {
-        margin: 0;
         background: radial-gradient(1200px 600px at 80% -10%, #1b2536, transparent), var(--bg);
         color: var(--text);
         font-family: var(--font);
@@ -34,7 +43,11 @@
         flex-direction: column;
     }
 
-    a { color: var(--brand-2); text-decoration: none; }
+    a { 
+        color: var(--brand-2); 
+        text-decoration: none; 
+        word-break: break-word;
+    }
 
     /* Navigation */
     .navbar {
@@ -44,6 +57,8 @@
         backdrop-filter: blur(10px);
         background: rgba(14, 16, 22, .8);
         border-bottom: 1px solid var(--line);
+        width: 100% !important;
+        left: 0;
     }
 
     .nav-container {
@@ -132,6 +147,7 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 24px;
+        width: 100%;
     }
 
     .contact-info, .contact-form {
@@ -140,6 +156,8 @@
         border-radius: var(--radius);
         padding: 24px;
         box-shadow: var(--shadow);
+        width: 100%;
+        overflow: hidden;
     }
 
     .contact-info h3, .contact-form h3 {
@@ -155,6 +173,7 @@
         gap: 15px;
         margin-bottom: 20px;
         align-items: flex-start;
+        word-break: break-all;
     }
 
     .contact-item .icon {
@@ -179,6 +198,7 @@
         margin: 0 0 4px;
         color: var(--muted);
         font-size: 13.5px;
+        word-break: break-word;
     }
 
     .contact-form input,
@@ -226,11 +246,19 @@
         padding: 24px 18px 40px;
         text-align: center;
         margin-top: auto;
+        width: 100%;
+        word-break: break-word;
     }
 
     @media(max-width: 900px) {
         .contact-grid {
             grid-template-columns: 1fr;
+        }
+        .nav-container {
+            padding: 0 12px;
+        }
+        .contact-section {
+            padding: 24px 12px 40px;
         }
     }
 </style>
@@ -245,7 +273,7 @@ JOIN FAN PORTAL
 </button>
 
 <nav class="navbar">
-    <div class="container nav-container">
+    <div class="nav-container">
         <a href="index.html" class="logo">Gosie Kartel</a>
         <ul class="nav-menu">
             <li><a href="index.html">Home</a></li>
@@ -316,5 +344,4 @@ function sendContactEmail(e) {
 </script>
 
 </body>
-                                                                                                      </html>
-                                                                                                      
+</html>
