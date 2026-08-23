@@ -199,7 +199,7 @@
         .product-card img {
             width: 100%;
             height: 220px;
-            object-fit: cover; /* Keeps all products properly rendered without distortion */
+            object-fit: cover;
             border-radius: 10px;
             display: block;
             margin: 0 auto 14px;
@@ -330,19 +330,65 @@
             margin-top: 10px;
         }
 
-        /* Footer */
+        /* Fixed & Enhanced Footer */
         footer.footer {
             border-top: 1px solid var(--line);
+            background: var(--surface);
             color: var(--muted);
-            font-size: 12.5px;
-            padding: 24px 18px 40px;
-            text-align: center;
+            font-size: 13px;
+            padding: 40px 0 24px;
             margin-top: auto;
             width: 100%;
         }
 
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-col h4 {
+            color: var(--text);
+            font-size: 15px;
+            margin: 0 0 12px;
+            font-weight: 700;
+        }
+
+        .footer-col p {
+            margin: 0 0 8px;
+            line-height: 1.6;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 8px;
+        }
+
+        .footer-links a {
+            color: var(--muted);
+            transition: color .18s;
+        }
+
+        .footer-links a:hover {
+            color: var(--brand);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--line);
+            padding-top: 20px;
+            text-align: center;
+            font-size: 12px;
+        }
+
         .footer-email {
             word-break: break-all;
+            color: var(--brand-2);
         }
 
         @media(max-width: 580px) {
@@ -350,6 +396,8 @@
             .nav-menu { gap: 10px; }
             .nav-menu li a { font-size: 12px; }
             .cart-item { flex-direction: column; align-items: flex-start; gap: 10px; }
+            footer.footer { padding: 30px 0 20px; }
+            .footer-content { gap: 20px; }
         }
     </style>
 </head>
@@ -409,21 +457,38 @@
 
     <footer class="footer">
         <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h4>Gosie Kartel</h4>
+                    <p>Premium streetwear & apparel built for the modern edge.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="./index.html">Home</a></li>
+                        <li><a href="./shop.html">Shop</a></li>
+                        <li><a href="./about.html">About Us</a></li>
+                        <li><a href="./contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Customer Care</h4>
+                    <p>Support Email:<br><a href="mailto:tawanametatronnzombe@gmail.com" class="footer-email">tawanametatronnzombe@gmail.com</a></p>
+                </div>
+            </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 Gosie Kartel | <span class="footer-email">Contact: tawanametatronnzombe@gmail.com</span></p>
+                <p>&copy; 2026 Gosie Kartel. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Products with categories
         const products = [
             { id:1, name:"Winter Hoodie Black", price:45, category:"hoodies", image:"https://i.postimg.cc/Z5prPwgN/winter-hoodie-black.png" },
             { id:2, name:"Tracksuit Hoodie Set", price:80, category:"tracksuits", image:"https://i.postimg.cc/d3f86pwB/tracksuit-hoodie-set.png" },
             { id:3, name:"Kartel Beanie", price:20, category:"accessories", image:"https://i.postimg.cc/9MpbdL4H/kartel-beanie.jpg" }
         ];
 
-        // Render products with optional filtering/sorting
         function renderProducts(filteredProducts = products) {
             const container = document.getElementById("product-container");
             container.innerHTML = "";
@@ -431,7 +496,6 @@
                 const div = document.createElement("div");
                 div.className = "product-card";
                 
-                // Exemption tag for Kartel Beanie
                 if (p.name.toLowerCase().includes("beanie")) {
                     div.setAttribute("data-product", "kartel-beanie");
                 }
@@ -457,7 +521,6 @@
             });
         }
 
-        // Filter and sort
         function applyFilters() {
             const category = document.getElementById("category-filter").value;
             const sort = document.getElementById("sort-filter").value;
@@ -474,7 +537,6 @@
             renderProducts(result);
         }
 
-        // Cart
         function renderCart() {
             const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
             const container = document.getElementById("cart-items");
@@ -550,5 +612,4 @@
         };
     </script>
 </body>
-    </html>
-    
+</html>
