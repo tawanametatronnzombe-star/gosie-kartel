@@ -17,7 +17,7 @@
   body{margin:0;background:radial-gradient(1200px 600px at 80% -10%,#1b2536,transparent),var(--bg);color:var(--text);font-family:var(--font);line-height:1.5;min-height:100vh}
   a{color:var(--brand-2);text-decoration:none}
   
-  /* FIXED UNIFORM TOP BAR ACROSS ALL PAGES */
+  /* TOP BAR */
   header.topbar{
     position:sticky;
     top:0;
@@ -34,7 +34,6 @@
   .nav-right{display:flex;align-items:center;gap:12px}
   .secure{font-size:13px;color:var(--muted);display:flex;gap:6px;align-items:center;font-weight:600}
   
-  /* Close Page Button */
   .btn-close-page{
     background:var(--surface-2);
     border:1px solid var(--line);
@@ -51,7 +50,7 @@
   }
   .btn-close-page:hover{background:var(--danger);color:#fff;border-color:var(--danger)}
 
-  /* INTERACTIVE STEP TABS WITH LIGHT GREEN HIGHLIGHT */
+  /* INTERACTIVE STEP TABS (MATCHING CIRCLED STYLE) */
   .steps{display:flex;gap:8px;margin:22px 0 16px;flex-wrap:wrap}
   .step{
     flex:1;
@@ -71,9 +70,9 @@
     user-select:none;
   }
   .step:hover{border-color:var(--brand);color:var(--text)}
-  .step .n{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--surface-2);font-size:12px;flex-shrink:0;font-weight:700}
+  .step .n{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--surface-2);font-size:12px;flex-shrink:0;font-weight:700;transition:.25s ease}
   
-  /* Light Green Highlight Rule */
+  /* CIRCLED ACTIVE STATE MATCH */
   .step.active{
     border-color:var(--brand) !important;
     color:var(--text) !important;
@@ -84,7 +83,7 @@
   
   .grid{display:grid;grid-template-columns:1fr 380px;gap:20px;align-items:start;padding-bottom:60px}
   
-  /* CARD SECTIONS WITH LIGHT GREEN SELECTION STATE */
+  /* CARD SECTIONS */
   .card{
     background:var(--surface);
     border:1px solid var(--line);
@@ -150,7 +149,7 @@
   .badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
   .badge{font-size:11.5px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:5px 10px}
   
-  /* RESPONSIVE PAYMENT TABS WITH LIGHT GREEN SELECTION */
+  /* PAYMENT TABS */
   .pay-tabs{display:grid;grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:8px;margin-bottom:16px}
   .tab{text-align:center;padding:12px 8px;border:1px solid var(--line);border-radius:11px;background:var(--surface-2);cursor:pointer;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;transition:.18s;user-select:none}
   .tab:hover{border-color:var(--brand)}
@@ -175,7 +174,6 @@
   
   footer{border-top:1px solid var(--line);color:var(--muted);font-size:12.5px;padding:18px 0 40px;text-align:center}
 
-  /* RESPONSIVE BREAKPOINTS */
   @media(max-width:940px){
     .grid{grid-template-columns:1fr}
     .summary{position:static}
@@ -241,198 +239,8 @@
         </div>
         <div class="field"><label for="country">Country</label>
           <select id="country" name="country">
-            <option value="AF" data-tax="0.00" data-zip="false">Afghanistan</option>
-            <option value="AL" data-tax="0.20">Albania</option>
-            <option value="DZ" data-tax="0.19">Algeria</option>
-            <option value="AD" data-tax="0.045">Andorra</option>
-            <option value="AO" data-tax="0.14">Angola</option>
-            <option value="AG" data-tax="0.15" data-zip="false">Antigua and Barbuda</option>
-            <option value="AR" data-tax="0.21">Argentina</option>
-            <option value="AM" data-tax="0.20">Armenia</option>
-            <option value="AU" data-tax="0.10">Australia</option>
-            <option value="AT" data-tax="0.20">Austria</option>
-            <option value="AZ" data-tax="0.18">Azerbaijan</option>
-            <option value="BS" data-tax="0.10" data-zip="false">Bahamas</option>
-            <option value="BH" data-tax="0.10">Bahrain</option>
-            <option value="BD" data-tax="0.15">Bangladesh</option>
-            <option value="BB" data-tax="0.175">Barbados</option>
-            <option value="BY" data-tax="0.20">Belarus</option>
-            <option value="BE" data-tax="0.21">Belgium</option>
-            <option value="BZ" data-tax="0.125" data-zip="false">Belize</option>
-            <option value="BJ" data-tax="0.18" data-zip="false">Benin</option>
-            <option value="BT" data-tax="0.00">Bhutan</option>
-            <option value="BO" data-tax="0.13">Bolivia</option>
-            <option value="BA" data-tax="0.17">Bosnia and Herzegovina</option>
-            <option value="BW" data-tax="0.14" data-zip="false">Botswana</option>
-            <option value="BR" data-tax="0.17">Brazil</option>
-            <option value="BN" data-tax="0.00">Brunei</option>
-            <option value="BG" data-tax="0.20">Bulgaria</option>
-            <option value="BF" data-tax="0.18" data-zip="false">Burkina Faso</option>
-            <option value="BI" data-tax="0.18" data-zip="false">Burundi</option>
-            <option value="KH" data-tax="0.10">Cambodia</option>
-            <option value="CM" data-tax="0.1925">Cameroon</option>
-            <option value="CA" data-tax="0.13">Canada</option>
-            <option value="CV" data-tax="0.15">Cape Verde</option>
-            <option value="CF" data-tax="0.19" data-zip="false">Central African Republic</option>
-            <option value="TD" data-tax="0.18" data-zip="false">Chad</option>
-            <option value="CL" data-tax="0.19">Chile</option>
-            <option value="CN" data-tax="0.13">China</option>
-            <option value="CO" data-tax="0.19">Colombia</option>
-            <option value="KM" data-tax="0.00" data-zip="false">Comoros</option>
-            <option value="CG" data-tax="0.18" data-zip="false">Congo (Brazzaville)</option>
-            <option value="CD" data-tax="0.16" data-zip="false">Congo (Kinshasa)</option>
-            <option value="CR" data-tax="0.13">Costa Rica</option>
-            <option value="HR" data-tax="0.25">Croatia</option>
-            <option value="CU" data-tax="0.10">Cuba</option>
-            <option value="CY" data-tax="0.19">Cyprus</option>
-            <option value="CZ" data-tax="0.21">Czechia</option>
-            <option value="DK" data-tax="0.25">Denmark</option>
-            <option value="DJ" data-tax="0.10" data-zip="false">Djibouti</option>
-            <option value="DM" data-tax="0.15" data-zip="false">Dominica</option>
-            <option value="DO" data-tax="0.18">Dominican Republic</option>
-            <option value="EC" data-tax="0.12">Ecuador</option>
-            <option value="EG" data-tax="0.14">Egypt</option>
-            <option value="SV" data-tax="0.13">El Salvador</option>
-            <option value="GQ" data-tax="0.15" data-zip="false">Equatorial Guinea</option>
-            <option value="ER" data-tax="0.05" data-zip="false">Eritrea</option>
-            <option value="EE" data-tax="0.22">Estonia</option>
-            <option value="SZ" data-tax="0.15">Eswatini</option>
-            <option value="ET" data-tax="0.15">Ethiopia</option>
-            <option value="FJ" data-tax="0.09" data-zip="false">Fiji</option>
-            <option value="FI" data-tax="0.24">Finland</option>
-            <option value="FR" data-tax="0.20">France</option>
-            <option value="GA" data-tax="0.18" data-zip="false">Gabon</option>
-            <option value="GM" data-tax="0.15" data-zip="false">Gambia</option>
-            <option value="GE" data-tax="0.18">Georgia</option>
-            <option value="DE" data-tax="0.19">Germany</option>
-            <option value="GH" data-tax="0.15">Ghana</option>
-            <option value="GR" data-tax="0.24">Greece</option>
-            <option value="GD" data-tax="0.15" data-zip="false">Grenada</option>
-            <option value="GT" data-tax="0.12">Guatemala</option>
-            <option value="GN" data-tax="0.18" data-zip="false">Guinea</option>
-            <option value="GW" data-tax="0.15" data-zip="false">Guinea-Bissau</option>
-            <option value="GY" data-tax="0.14" data-zip="false">Guyana</option>
-            <option value="HT" data-tax="0.10">Haiti</option>
-            <option value="HN" data-tax="0.15">Honduras</option>
-            <option value="HU" data-tax="0.27">Hungary</option>
-            <option value="IS" data-tax="0.24">Iceland</option>
-            <option value="IN" data-tax="0.18">India</option>
-            <option value="ID" data-tax="0.11">Indonesia</option>
-            <option value="IR" data-tax="0.09">Iran</option>
-            <option value="IQ" data-tax="0.00" data-zip="false">Iraq</option>
-            <option value="IE" data-tax="0.23">Ireland</option>
-            <option value="IL" data-tax="0.17">Israel</option>
-            <option value="IT" data-tax="0.22">Italy</option>
-            <option value="JM" data-tax="0.15" data-zip="false">Jamaica</option>
-            <option value="JP" data-tax="0.10">Japan</option>
-            <option value="JO" data-tax="0.16">Jordan</option>
-            <option value="KZ" data-tax="0.12">Kazakhstan</option>
-            <option value="KE" data-tax="0.16">Kenya</option>
-            <option value="KI" data-tax="0.00" data-zip="false">Kiribati</option>
-            <option value="KP" data-tax="0.00" data-zip="false">Korea, North</option>
-            <option value="KR" data-tax="0.10">Korea, South</option>
-            <option value="KW" data-tax="0.            <option value="KG" data-tax="0.12">Kyrgyzstan</option>
-            <option value="LA" data-tax="0.10">Laos</option>
-            <option value="LV" data-tax="0.21">Latvia</option>
-            <option value="LB" data-tax="0.11">Lebanon</option>
-            <option value="LS" data-tax="0.15">Lesotho</option>
-            <option value="LR" data-tax="0.10" data-zip="false">Liberia</option>
-            <option value="LY" data-tax="0.00" data-zip="false">Libya</option>
-            <option value="LI" data-tax="0.081">Liechtenstein</option>
-            <option value="LT" data-tax="0.21">Lithuania</option>
-            <option value="LU" data-tax="0.17">Luxembourg</option>
-            <option value="MG" data-tax="0.20">Madagascar</option>
-            <option value="MW" data-tax="0.165" data-zip="false">Malawi</option>
-            <option value="MY" data-tax="0.10">Malaysia</option>
-            <option value="MV" data-tax="0.08">Maldives</option>
-            <option value="ML" data-tax="0.18" data-zip="false">Mali</option>
-            <option value="MT" data-tax="0.18">Malta</option>
-            <option value="MH" data-tax="0.00" data-zip="false">Marshall Islands</option>
-            <option value="MR" data-tax="0.16" data-zip="false">Mauritania</option>
-            <option value="MU" data-tax="0.15">Mauritius</option>
-            <option value="MX" data-tax="0.16">Mexico</option>
-            <option value="FM" data-tax="0.00" data-zip="false">Micronesia</option>
-            <option value="MD" data-tax="0.20">Moldova</option>
-            <option value="MC" data-tax="0.20">Monaco</option>
-            <option value="MN" data-tax="0.10">Mongolia</option>
-            <option value="ME" data-tax="0.21">Montenegro</option>
-            <option value="MA" data-tax="0.20">Morocco</option>
-            <option value="MZ" data-tax="0.16">Mozambique</option>
-            <option value="MM" data-tax="0.05">Myanmar</option>
-            <option value="NA" data-tax="0.15">Namibia</option>
-            <option value="NR" data-tax="0.00" data-zip="false">Nauru</option>
-            <option value="NP" data-tax="0.13">Nepal</option>
-            <option value="NL" data-tax="0.21">Netherlands</option>
-            <option value="NZ" data-tax="0.15">New Zealand</option>
-            <option value="NI" data-tax="0.15">Nicaragua</option>
-            <option value="NE" data-tax="0.19" data-zip="false">Niger</option>
-            <option value="NG" data-tax="0.075">Nigeria</option>
-            <option value="MK" data-tax="0.18">North Macedonia</option>
-            <option value="NO" data-tax="0.25">Norway</option>
-            <option value="OM" data-tax="0.05">Oman</option>
-            <option value="PK" data-tax="0.18">Pakistan</option>
-            <option value="PW" data-tax="0.10" data-zip="false">Palau</option>
-            <option value="PA" data-tax="0.07">Panama</option>
-            <option value="PG" data-tax="0.10">Papua New Guinea</option>
-            <option value="PY" data-tax="0.10">Paraguay</option>
-            <option value="PE" data-tax="0.18">Peru</option>
-            <option value="PH" data-tax="0.12">Philippines</option>
-            <option value="PL" data-tax="0.23">Poland</option>
-            <option value="PT" data-tax="0.23">Portugal</option>
-            <option value="QA" data-tax="0.00" data-zip="false">Qatar</option>
-            <option value="RO" data-tax="0.19">Romania</option>
-            <option value="RU" data-tax="0.20">Russia</option>
-            <option value="RW" data-tax="0.18" data-zip="false">Rwanda</option>
-            <option value="KN" data-tax="0.17" data-zip="false">Saint Kitts and Nevis</option>
-            <option value="LC" data-tax="0.125" data-zip="false">Saint Lucia</option>
-            <option value="VC" data-tax="0.16" data-zip="false">Saint Vincent and the Grenadines</option>
-            <option value="WS" data-tax="0.15" data-zip="false">Samoa</option>
-            <option value="SM" data-tax="0.00">San Marino</option>
-            <option value="ST" data-tax="0.15" data-zip="false">Sao Tome and Principe</option>
-            <option value="SA" data-tax="0.15">Saudi Arabia</option>
-            <option value="SN" data-tax="0.18">Senegal</option>
-            <option value="RS" data-tax="0.20">Serbia</option>
-            <option value="SC" data-tax="0.15" data-zip="false">Seychelles</option>
-            <option value="SL" data-tax="0.15" data-zip="false">Sierra Leone</option>
-            <option value="SG" data-tax="0.09">Singapore</option>
-            <option value="SK" data-tax="0.20">Slovakia</option>
-            <option value="SI" data-tax="0.22">Slovenia</option>
-            <option value="SB" data-tax="0.15" data-zip="false">Solomon Islands</option>
-            <option value="SO" data-tax="0.00" data-zip="false">Somalia</option>
-            <option value="ZA" data-tax="0.15">South Africa</option>
-            <option value="SS" data-tax="0.18" data-zip="false">South Sudan</option>
-            <option value="ES" data-tax="0.21">Spain</option>
-            <option value="LK" data-tax="0.15">Sri Lanka</option>
-            <option value="SD" data-tax="0.17" data-zip="false">Sudan</option>
-            <option value="SR" data-tax="0.10" data-zip="false">Suriname</option>
-            <option value="SE" data-tax="0.25">Sweden</option>
-            <option value="CH" data-tax="0.081">Switzerland</option>
-            <option value="SY" data-tax="0.00" data-zip="false">Syria</option>
-            <option value="TW" data-tax="0.05">Taiwan</option>
-            <option value="TJ" data-tax="0.15">Tajikistan</option>
-            <option value="TZ" data-tax="0.18">Tanzania</option>
-            <option value="TH" data-tax="0.07">Thailand</option>
-            <option value="TL" data-tax="0.025" data-zip="false">Timor-Leste</option>
-            <option value="TG" data-tax="0.18" data-zip="false">Togo</option>
-            <option value="TO" data-tax="0.15" data-zip="false">Tonga</option>
-            <option value="TT" data-tax="0.125">Trinidad and Tobago</option>
-            <option value="TN" data-tax="0.19">Tunisia</option>
-            <option value="TR" data-tax="0.20">Turkey</option>
-            <option value="TM" data-tax="0.15">Turkmenistan</option>
-            <option value="TV" data-tax="0.00" data-zip="false">Tuvalu</option>
-            <option value="UG" data-tax="0.18" data-zip="false">Uganda</option>
-            <option value="UA" data-tax="0.20">Ukraine</option>
-            <option value="AE" data-tax="0.05" data-zip="false">United Arab Emirates</option>
-            <option value="GB" data-tax="0.20">United Kingdom</option>
             <option value="US" data-tax="0.0825">United States</option>
-            <option value="UY" data-tax="0.22">Uruguay</option>
-            <option value="UZ" data-tax="0.12">Uzbekistan</option>
-            <option value="VU" data-tax="0.15" data-zip="false">Vanuatu</option>
-            <option value="VA" data-tax="0.00">Vatican City</option>
-            <option value="VE" data-tax="0.16">Venezuela</option>
-            <option value="VN" data-tax="0.10">Vietnam</option>
-            <option value="YE" data-tax="0.05" data-zip="false">Yemen</option>
-            <option value="ZM" data-tax="0.16">Zambia</option>
+            <option value="GB" data-tax="0.20">United Kingdom</option>
             <option value="ZW" selected data-tax="0.145" data-zip="false">Zimbabwe</option>
           </select><div class="err" data-err="country"></div>
         </div>
@@ -556,10 +364,39 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  let cart = JSON.parse(localStorage.getItem('cart') || localStorage.getItem('gosie_cart') || '[]');
   let discountRate = 0;
 
-  // Step Switching Handler
+  // Process raw cart items from shop.html into grouped cart items with quantities
+  function parseCart() {
+    const raw = JSON.parse(localStorage.getItem('cart') || '[]');
+    const map = new Map();
+    raw.forEach(p => {
+      const id = p.id || p.name;
+      if (map.has(id)) {
+        const existing = map.get(id);
+        existing.quantity = (existing.quantity || 1) + 1;
+      } else {
+        map.set(id, { ...p, quantity: p.quantity || 1 });
+      }
+    });
+    return Array.from(map.values());
+  }
+
+  let cart = parseCart();
+
+  function saveCart() {
+    // Save as flattened array back to localStorage to match shop.html format
+    const flatCart = [];
+    cart.forEach(item => {
+      for (let i = 0; i < item.quantity; i++) {
+        flatCart.push({ id: item.id, name: item.name, price: item.price, category: item.category, image: item.image });
+      }
+    });
+    localStorage.setItem('cart', JSON.stringify(flatCart));
+    renderCart();
+  }
+
+  // STEP SWITCHING & CIRCLED STYLE HIGHLIGHT
   const stepEls = document.querySelectorAll('.step');
   const cards = document.querySelectorAll('.card[data-section]');
 
@@ -599,7 +436,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Shipping option highlights
+  // SHIPPING SELECTION
   const shippingOpts = document.querySelectorAll('#shipping-options .opt');
   shippingOpts.forEach(opt => {
     opt.addEventListener('click', () => {
@@ -611,7 +448,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Close Page Button
+  // CLOSE PAGE BUTTON
   const closeBtn = document.getElementById('close-page-btn');
   if (closeBtn) {
     closeBtn.addEventListener('click', () => {
@@ -623,7 +460,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Payment Tabs
+  // PAYMENT TABS
   const tabs = document.querySelectorAll('.pay-tabs .tab');
   const panes = {
     card: document.getElementById('pane-card'),
@@ -644,53 +481,56 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Toggle Billing Address
-  const sameBillingCheck = document.getElementById('samebilling');
-  const billingBlock = document.getElementById('billing-block');
-  if (sameBillingCheck && billingBlock) {
-    sameBillingCheck.addEventListener('change', () => {
-      billingBlock.style.display = sameBillingCheck.checked ? 'none' : 'block';
+  // PROMO CODE HANDLING
+  const applyPromoBtn = document.getElementById('apply-promo');
+  if (applyPromoBtn) {
+    applyPromoBtn.addEventListener('click', () => {
+      const val = (document.getElementById('promo').value || '').trim().toUpperCase();
+      const errEl = document.querySelector('[data-err="promo"]');
+      if (val === 'SAVE10') {
+        discountRate = 0.10;
+        if (errEl) { errEl.style.color = 'var(--brand)'; errEl.textContent = '10% discount applied!'; }
+      } else if (val === '') {
+        discountRate = 0;
+        if (errEl) errEl.textContent = '';
+      } else {
+        discountRate = 0;
+        if (errEl) { errEl.style.color = 'var(--danger)'; errEl.textContent = 'Invalid promo code.'; }
+      }
+      renderCart();
     });
   }
 
-  // Country & Zip toggle
-  const countrySelect = document.getElementById('country');
-  const zipField = document.getElementById('zip-field');
-  const bzipField = document.getElementById('bzip-field');
-  const addressRowThree = document.getElementById('address-row-three');
+  // RENDER PRODUCTS FROM SHOP
+  window.changeQty = function(index, delta) {
+    if (!cart[index]) return;
+    cart[index].quantity = (cart[index].quantity || 1) + delta;
+    if (cart[index].quantity <= 0) {
+      cart.splice(index, 1);
+    }
+    saveCart();
+  };
 
-  function handleCountryChange() {
+  function updateTotals(subtotal) {
+    const selectedShipping = document.querySelector('#shipping-options input[type="radio"]:checked');
+    const shipCost = selectedShipping ? parseFloat(selectedShipping.getAttribute('data-cost') || 0) : 5.00;
+    
+    const countrySelect = document.getElementById('country');
     const selectedOpt = countrySelect ? countrySelect.options[countrySelect.selectedIndex] : null;
-    const supportsZip = selectedOpt ? selectedOpt.getAttribute('data-zip') !== 'false' : true;
+    const taxRate = selectedOpt ? parseFloat(selectedOpt.getAttribute('data-tax') || 0) : 0.145;
 
-    if (zipField) {
-      zipField.style.display = supportsZip ? 'flex' : 'none';
-      if (!supportsZip) document.getElementById('zip').value = '';
-    }
-    if (bzipField) {
-      bzipField.style.display = supportsZip ? 'flex' : 'none';
-      if (!supportsZip) document.getElementById('bzip').value = '';
-    }
+    const discount = subtotal * discountRate;
+    const taxableSubtotal = subtotal - discount;
+    const tax = taxableSubtotal * taxRate;
+    const total = taxableSubtotal + shipCost + tax;
 
-    if (addressRowThree) {
-      if (supportsZip) {
-        addressRowThree.classList.remove('no-zip');
-      } else {
-        addressRowThree.classList.add('no-zip');
-      }
-    }
-
-    renderCart();
-  }
-
-  if (countrySelect) {
-    countrySelect.addEventListener('change', handleCountryChange);
-  }
-
-  function saveCart() {
-    localStorage.setItem('cart', JSON.stringify(cart));
-    localStorage.setItem('gosie_cart', JSON.stringify(cart));
-    renderCart();
+    document.getElementById('s-sub').textContent = `$${subtotal.toFixed(2)}`;
+    document.getElementById('s-disc').textContent = `-$${discount.toFixed(2)}`;
+    document.getElementById('s-ship').textContent = `$${shipCost.toFixed(2)}`;
+    document.getElementById('s-taxrate').textContent = `${(taxRate * 100).toFixed(1)}%`;
+    document.getElementById('s-tax').textContent = `$${tax.toFixed(2)}`;
+    document.getElementById('s-total').textContent = `$${total.toFixed(2)}`;
+    document.getElementById('pay-btn').textContent = `Pay $${total.toFixed(2)}`;
   }
 
   function renderCart() {
@@ -710,9 +550,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let subtotal = 0;
 
     cart.forEach((item, index) => {
-      totalItems += item.quantity || 1;
+      const q = item.quantity || 1;
+      totalItems += q;
       const price = parseFloat(item.price || 0);
-      subtotal += price * (item.quantity || 1);
+      subtotal += price * q;
 
       const itemEl = document.createElement('div');
       itemEl.className = 'item';
@@ -722,12 +563,27 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div>
           <div class="name">${item.name || 'Streetwear Item'}</div>
-          <div class="meta">${item.size ? 'Size: ' + item.size + ' | ' : ''}$${price.toFixed(2)} each</div>
+          <div class="meta">$${price.toFixed(2)} each</div>
           <div class="qty">
             <button type="button" onclick="changeQty(${index}, -1)">-</button>
-            <span>${item.quantity || 1}</span>
+            <span>${q}</span>
             <button type="button" onclick="changeQty(${index}, 1)">+</button>
           </div>
         </div>
         <div style="text-align:right">
-          <div style="font-weight:700">$${(price * (item.quantity || 1)).toFixed(2)}</d
+          <div style="font-weight:700">$${(price * q).toFixed(2)}</div>
+        </div>
+      `;
+      container.appendChild(itemEl);
+    });
+
+    itemCount.textContent = totalItems;
+    updateTotals(subtotal);
+  }
+
+  // INITIAL RENDER
+  renderCart();
+});
+</script>
+</body>
+</html>
